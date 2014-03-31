@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-Run File</actionName>
+            <displayName>Run File</displayName>
+            <properties>
+                <Env.JAVA_HOME>/usr/lib/jvm/java-7-oracle</Env.JAVA_HOME>
+            </properties>
+        </action>
+    </actions>

@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template = "WEB-INF/template.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f ="http://java.sun.com/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name ="content">
+        <h3>Wareneingang</h3>
+        <h:form id="form">
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Bitte EAN eingeben: "></h:outputLabel>
+                <h:inputText id = "ean" value = "#{inboundBean.ean}" >
+                    <!--<f:validateLength minimum="13" maximum="13" />-->                    
+                </h:inputText>
+                <h:commandButton id = "submitButton" actionListener = "#{inboundBean.addEan}" value="OK">
+                    <f:ajax execute="form:ean" render="form:inboundTable"/>
+                </h:commandButton>
+            </h:panelGrid>
+
+
+            <h:dataTable binding="#{table}" id = "inboundTable" class = "table table-bordered" value="#{inboundBean.eanList}" var="ean">
+                <h:column>
+                    <f:facet name="header">Nr.</f:facet>
+                    <h:outputText value="#{table.rowIndex + 1}"></h:outputText>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">EAN</f:facet>
+                    <h:outputText value="#{ean}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Kommentar</f:facet>
+                    <!--<h:commandButton class = "btn btn-default" value="Artikel anlegen" action ="#{childArticleOverviewController.doEdit(article)}"/>-->                   
+                    <h:outputText value="Artikel unbekannt" rendered = "#{!inboundBean.checkInput(ean)}"></h:outputText>
+                    <h:outputText value="Artikel erkannt" rendered = "#{inboundBean.checkInput(ean)}"></h:outputText>
+                </h:column>
+            </h:dataTable> 
+        </h:form>
+        <h:form>
+            <h:commandButton id ="processInbound" actionListener="#{inboundBean.processInbound}" value="Einbuchen"/>
+            <h:commandButton id ="clearList" actionListener ="#{inboundBean.clearList}" value ="Abbrechen und Liste leeren"/>
+        </h:form>
+        <script type="text/javascript">
+
+            // Cursor auf EAN-Feld setzen
+            $(document).ready(function() {
+                $('#form\\:ean').val('');
+                $('#form\\:ean').focus();
+            });
+            // EAN-Feld nach WE-Scan leeren
+            $('#form\\:submitButton').click(function() {
+                $('#form\\:ean').val('');
+                $('#form\\:ean').focus();
+            });
+//            $('#form\\:inboundTable td').filter(function() {
+//                return $.trim($(this).text()) === 'Artikel unbekannt';
+//            }).css('background-color', 'red');
+            $("td").filter(function() {
+                return $.trim($(this).text()) == 'Artikel unbekannt';
+            }).addClass("danger");
+            $("td").filter(function() {
+                return $.trim($(this).text()) == 'Artikel erkannt';
+            }).addClass("success");
+
+//            // Tabelle mit Datatables zeichnen
+//            var asInitVals = new Array();
+//            var oTable;
+//            $(document).ready(function() {
+//
+//                oTable = $('#form\\:inboundTable').dataTable({
+//                    "bFilter": true,
+//                    "bStateSave": true,
+//                    "iDisplayLength": 25,
+//                    "oLanguage": {
+//                        "sSearch": "Filter:",
+//                        "sLengthMenu": "Anzeige von _MENU_ Artikeln pro Seite",
+//                        "sZeroRecords": "Leider keine Artikel gefunden",
+//                        "sInfo": "Zeige _START_ bis _END_ von _TOTAL_ Artikeln",
+//                        "sInfoEmpty": "Zeige 0 bis 0 von 0 Artikeln",
+//                        "sInfoFiltered": "(Gefiltert von gesamt _MAX_ Artikeln)",
+//                        "oPaginate": {
+//                            "sNext": "Weiter",
+//                            "sPrevious": "Zurück"
+//                        }
+//                    }
+//
+//
+//                }
+//
+//                );
+//            });
+        </script>
+
+    </ui:define>                
+
+
+
+
+</ui:composition>
