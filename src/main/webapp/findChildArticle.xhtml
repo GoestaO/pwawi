@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template = "WEB-INF/template.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f ="http://java.sun.com/jsf/core">
+
+
+    <ui:define name="content">
+        <h3> Unterartikel suchen </h3>
+
+
+        <h:form>
+            <h:panelGrid columns="2">
+
+                <h:outputLabel value="Marke"></h:outputLabel>
+                <h:inputText id = "brand" class = "form-control" value ="#{findChildArticleController.childArticle.brand}"></h:inputText>
+                
+                <h:outputLabel value="Farbe"></h:outputLabel>
+                <h:selectOneMenu id = "color" class = "form-control" value="#{findChildArticleController.childArticle.color}" converter="#{colorConverter}">
+                    <f:selectItem itemLabel="" noSelectionOption="true" />
+                    <f:selectItems value ="#{colorListBean.colorList}" var ="color" itemValue ="#{color.name}" itemLabel ="#{color.name}" />
+                </h:selectOneMenu>
+
+                <h:outputLabel value="Größe"></h:outputLabel>
+                <h:selectOneMenu class = "form-control" id = "sizes" value="#{findChildArticleController.childArticle.size}" converter="#{sizeConverter}">
+                    <f:selectItem itemLabel="" noSelectionOption="true" />
+                    <f:selectItems value ="#{selectManySizeBean.sizeList}" var ="size" itemValue ="#{size.name}" itemLabel ="#{size.name}" />
+                </h:selectOneMenu>
+                <h:commandButton value ="Suchen" actionListener="#{findChildArticleController.findChildArticle}">
+                    <f:ajax execute="j_idt14:sizes j_idt14:attribute j_idt14:brand" render="result"></f:ajax>
+                </h:commandButton>
+            </h:panelGrid>
+
+
+            <h:dataTable class = "table table-striped" id = "result" value="#{findChildArticleController.result}" var="childArticle">
+                <f:facet name="header">Marke</f:facet>
+                <h:outputLabel value="#{childArticle.brand}"/>
+                <f:facet name="header">Attribut</f:facet>
+                <h:outputLabel value="#{childArticle.attributes}"/>
+                <f:facet name="header">Farbe</f:facet>
+                <h:outputLabel value="#{childArticle.color}"/>                
+                <f:facet name="header">Größe</f:facet>
+                <h:outputLabel value="#{childArticle.size}"/>
+            </h:dataTable>
+        </h:form>
+        <!--        <h:form>
+                    <h:commandButton value = "test" action ="#{findChildArticleController.test()}"></h:commandButton>
+                </h:form>-->
+    </ui:define>
+</ui:composition>
+

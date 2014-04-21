@@ -1,12 +1,16 @@
 package de.pelango.wawi.services;
 
+import de.pelango.wawi.model.Attribute;
 import de.pelango.wawi.model.ChildArticle;
+import de.pelango.wawi.model.Color;
+import de.pelango.wawi.model.Material;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import de.pelango.wawi.model.ParentArticle;
+import de.pelango.wawi.model.Sizes;
 import java.math.BigInteger;
 import javax.persistence.PersistenceContext;
 
@@ -75,7 +79,21 @@ public class ArticleService {
         } catch (javax.persistence.NoResultException nrex) {
             return null;
         }
-
+    }
+    
+    public List<ChildArticle> findChildArticle(String brand, Attribute attribute, Color color, Sizes size) {
+        List<ChildArticle> result;
+        TypedQuery<ChildArticle> query = em.createQuery("select c from ChildArticle c where c.brand =:brand or :brand is null and c.attribute = :attribute or :attribute is null and c.color = :color or :color is null and c.size = :size or :size is null", ChildArticle.class);
+        query.setParameter("brand", brand);
+        query.setParameter("attribute", attribute);
+        query.setParameter("color", color);
+        query.setParameter("size", size);
+        try {
+            result = query.getResultList();
+        } catch (javax.persistence.NoResultException nrex) {
+            result = null;
+        }
+        return result;
     }
 
     /**
