@@ -25,16 +25,24 @@ public class SizeConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        Long id = service.getSizeId(value);
-        Sizes s = new Sizes();
-        s.setId(id);
-        s.setName(value);
-        return s;
+        if (value != null) {
+            Long id = service.getSizeId(value);
+            Sizes s = new Sizes();
+            s.setId(id);
+            s.setName(value);
+            return s;
+        } else {
+            return null;
+        }
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        return value.toString();
+        if (value != null) {
+            return value.toString();
+        } else {
+            return null;
+        }
     }
 
 }

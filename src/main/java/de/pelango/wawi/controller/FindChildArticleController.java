@@ -6,12 +6,14 @@
 package de.pelango.wawi.controller;
 
 import de.pelango.wawi.model.ChildArticle;
+import de.pelango.wawi.model.Color;
+import de.pelango.wawi.model.Sizes;
 import de.pelango.wawi.services.ArticleService;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.event.ActionEvent;
-import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 /**
@@ -19,35 +21,63 @@ import javax.inject.Named;
  * @author goesta
  */
 @Named
-@ViewScoped
+@RequestScoped
 public class FindChildArticleController implements Serializable {
 
     @EJB
     private ArticleService service;
 
-    private ChildArticle childArticle;
+    private String brand;
 
-    private List<ChildArticle> result;
+    private Color color;
 
-    public ChildArticle getChildArticle() {
-        return childArticle;
+    private Sizes size;
+
+    private List<ChildArticle> searchResult;
+
+    public ArticleService getService() {
+        return service;
     }
 
-    public void setChildArticle(ChildArticle childArticle) {
-        this.childArticle = childArticle;
+    public void setService(ArticleService service) {
+        this.service = service;
     }
 
-    public List<ChildArticle> getResult() {
-        return result;
+    public String getBrand() {
+        return brand;
     }
 
-    public void setResult(List<ChildArticle> result) {
-        this.result = result;
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
-    public List<ChildArticle> findChildArticle(ActionEvent event) {
-        result = service.findChildArticle(this.childArticle.getBrand(), this.childArticle.getAttributes(), this.childArticle.getColor(), this.childArticle.getSize());
-        return result;
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public Sizes getSize() {
+        return size;
+    }
+
+    public void setSize(Sizes size) {
+        this.size = size;
+    }
+
+    public List<ChildArticle> getSearchResult() {
+        return searchResult;
+    }
+
+    public void setSearchResult(List<ChildArticle> searchResult) {
+        this.searchResult = searchResult;
+    }
+
+    public void findChildArticle(ActionEvent event) {
+        System.out.println("hersteller = " + this.brand);
+        searchResult = service.findChildArticle(this.getBrand(), this.getColor(), this.getSize());
     }
 
 }

@@ -80,14 +80,55 @@ public class ArticleService {
             return null;
         }
     }
-    
-    public List<ChildArticle> findChildArticle(String brand, Attribute attribute, Color color, Sizes size) {
+
+    public List<ChildArticle> findChildArticle(String brand, Color color, Sizes size) {
         List<ChildArticle> result;
-        TypedQuery<ChildArticle> query = em.createQuery("select c from ChildArticle c where c.brand =:brand or :brand is null and c.attribute = :attribute or :attribute is null and c.color = :color or :color is null and c.size = :size or :size is null", ChildArticle.class);
-        query.setParameter("brand", brand);
-        query.setParameter("attribute", attribute);
-        query.setParameter("color", color);
-        query.setParameter("size", size);
+        String queryString = "";
+
+        if (!brand.isEmpty() && color != null && size != null) {
+            queryString = "select c from ChildArticle c where c.brand = :brand and c.color =:color and c.size = :size";
+        }
+
+        if (!brand.isEmpty() && color != null && size == null) {
+            queryString = "select c from ChildArticle c where c.brand = :brand and c.color =:color";
+        }
+
+        if (!brand.isEmpty() && color == null && size != null) {
+            queryString = "select c from ChildArticle c where c.brand = :brand and c.size = :size";
+        }
+
+        if (brand.isEmpty() && color != null && size != null) {
+            queryString = "select c from ChildArticle c where c.color =:color and c.size = :size";
+        }
+
+        if (!brand.isEmpty() && color == null && size == null) {
+            queryString = "select c from ChildArticle c where c.brand = :brand";
+        }
+
+        if (brand.isEmpty() && color != null && size == null) {
+            queryString = "select c from ChildArticle c where c.color =:color";
+        }
+
+        if (brand.isEmpty() && color == null && size != null) {
+            queryString = "select c from ChildArticle c where c.size = :size";
+        }
+        if (brand.isEmpty() && color == null && size == null) {
+            queryString = "select c from ChildArticle c";
+        }
+
+        System.out.println("queryString = " + queryString);
+
+        TypedQuery<ChildArticle> query = em.createQuery(queryString, ChildArticle.class);
+
+        if (!brand.isEmpty()) {
+            query.setParameter("brand", brand);
+        }
+        if (color != null) {
+            query.setParameter("color", color);
+        }
+        if (size != null) {
+            query.setParameter("size", size);
+        }
         try {
             result = query.getResultList();
         } catch (javax.persistence.NoResultException nrex) {

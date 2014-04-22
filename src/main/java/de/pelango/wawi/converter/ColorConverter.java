@@ -25,15 +25,23 @@ public class ColorConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        Color color = new Color();
-        color.setName(value);
-        color.setId(service.getColorId(value));
-        return color;
+        if (value != null) {
+            Color color = new Color();
+            color.setName(value);
+            color.setId(service.getColorId(value));
+            return color;
+        } else {
+            return null;
+        }
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        return value.toString();
+        if (value != null) {
+            return value.toString();
+        } else {
+            return null;
+        }
     }
 
 }

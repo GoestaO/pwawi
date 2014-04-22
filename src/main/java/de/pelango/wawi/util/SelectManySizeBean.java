@@ -29,6 +29,7 @@ public class SelectManySizeBean implements Serializable {
     private String sizeType = "Default";
 
     private List<Sizes> sizeList;
+    private List<Sizes> allSizesList;
 
     public List<Sizes> getSizeList() {
 //        List<Sizes> sizes = service.getSizes();
@@ -44,6 +45,15 @@ public class SelectManySizeBean implements Serializable {
 
     public void setSizeList(List<Sizes> sizeList) {
         this.sizeList = sizeList;
+    }
+
+    public List<Sizes> getAllSizesList() {
+        allSizesList = service.getSizes();
+        return allSizesList;
+    }
+
+    public void setAllSizesList(List<Sizes> allSizesList) {
+        this.allSizesList = allSizesList;
     }
 
     public void attributeChanged(ValueChangeEvent e) {
