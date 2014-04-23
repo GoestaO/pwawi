@@ -17,7 +17,6 @@ import javax.faces.convert.FacesConverter;
  *
  * @author goesta
  */
-
 @FacesConverter(value = "materialConverter", forClass = Material.class)
 public class MaterialConverter implements Converter {
 
@@ -26,16 +25,25 @@ public class MaterialConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        Long id = service.getMaterialId(value);
-        Material m = new Material();
-        m.setId(id);
-        m.setName(value);
-        return m;
+        if (value != null) {
+            Long id = service.getMaterialId(value);
+            Material m = new Material();
+            m.setId(id);
+            m.setName(value);
+            return m;
+        } else {
+            return null;
+        }
+
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        return value.toString();
+        if (value != null) {
+            return value.toString();
+        } else {
+            return null;
+        }
     }
 
 }

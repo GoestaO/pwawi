@@ -1,7 +1,6 @@
 package de.pelango.wawi.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.*;
 
@@ -54,7 +53,7 @@ public class ParentArticle implements Serializable {
 
     private boolean specialProduct;
 
-    @ManyToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JoinTable(name = "ARTICLE_MATERIAL",
             joinColumns = @JoinColumn(name = "ParentArticle_ID"),
             inverseJoinColumns = @JoinColumn(name = "materials_ID"))

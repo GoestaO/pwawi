@@ -135,15 +135,58 @@ public class ArticleService {
         return result;
     }
 
-    /**
-     * Returns all ParentArticles of one brand
-     *
-     * @return
-     */
-    public List<ParentArticle> findByBrand() {
-        TypedQuery<ParentArticle> query = em.createQuery("select p from ParentArticle p where p.brand = :brand", ParentArticle.class);
-        List<ParentArticle> resultList = query.getResultList();
-        return resultList;
+    public List<ParentArticle> findParentArticle(String brand, Color color, Material material) {
+        List<ParentArticle> result;
+        String queryString = "";
+
+        if (!brand.isEmpty() && color != null && material != null) {
+            queryString = "select c from ParentArticle c where c.brand = :brand and c.color =:color and c.material = :material";
+        }
+
+        if (!brand.isEmpty() && color != null && material == null) {
+            queryString = "select c from ParentArticle c where c.brand = :brand and c.color =:color";
+        }
+
+        if (!brand.isEmpty() && color == null && material != null) {
+            queryString = "select c from ParentArticle c where c.brand = :brand and c.material = :material";
+        }
+
+        if (brand.isEmpty() && color != null && material != null) {
+            queryString = "select c from ParentArticle c where c.color =:color and c.material = :material";
+        }
+
+        if (!brand.isEmpty() && color == null && material == null) {
+            queryString = "select c from ParentArticle c where c.brand = :brand";
+        }
+
+        if (brand.isEmpty() && color != null && material == null) {
+            queryString = "select c from ParentArticle c where c.color =:color";
+        }
+
+        if (brand.isEmpty() && color == null && material != null) {
+            queryString = "select c from ParentArticle c where c.material = :material";
+        }
+        if (brand.isEmpty() && color == null && material == null) {
+            queryString = "select c from ParentArticle c";
+        }
+
+        TypedQuery<ParentArticle> query = em.createQuery(queryString, ParentArticle.class);
+
+        if (!brand.isEmpty()) {
+            query.setParameter("brand", brand);
+        }
+        if (color != null) {
+            query.setParameter("color", color);
+        }
+        if (material != null) {
+            query.setParameter("material", material);
+        }
+        try {
+            result = query.getResultList();
+        } catch (javax.persistence.NoResultException nrex) {
+            result = null;
+        }
+        return result;
     }
 
 }

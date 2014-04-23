@@ -27,85 +27,89 @@ import javax.inject.Named;
 @Named
 @SessionScoped
 public class FindChildArticleController implements Serializable {
-
+    
     @EJB
     private ArticleService service;
-
+    
     @Inject
-    private Conversation conv;
-
+    private FindParentArticleController findParentArticleController;
+    
     private ChildArticle ca;
-
+    
     private BigInteger ean;
-
+    
     private String brand;
-
+    
     private Color color;
-
+    
     private Sizes size;
-
+    
     private List<ChildArticle> searchResult;
-
+    
     public ChildArticle getCa() {
         return ca;
     }
-
+    
     public void setCa(ChildArticle ca) {
         this.ca = ca;
     }
-
+    
     public BigInteger getEan() {
         return ean;
     }
-
+    
     public void setEan(BigInteger ean) {
         this.ean = ean;
     }
-
+    
     public String getBrand() {
         return brand;
     }
-
+    
     public void setBrand(String brand) {
         this.brand = brand;
     }
-
+    
     public Color getColor() {
         return color;
     }
-
+    
     public void setColor(Color color) {
         this.color = color;
     }
-
+    
     public Sizes getSize() {
         return size;
     }
-
+    
     public void setSize(Sizes size) {
         this.size = size;
     }
-
+    
     public List<ChildArticle> getSearchResult() {
         return searchResult;
     }
-
+    
     public void setSearchResult(List<ChildArticle> searchResult) {
         this.searchResult = searchResult;
     }
-
+    
     public void findChildArticle(ActionEvent event) {
-
+        
         searchResult = service.findChildArticle(this.getBrand(), this.getColor(), this.getSize());
     }
-
+    
     public String doUpdateArticle(ChildArticle ca, BigInteger ean) {
         if (ean != null) {
             ca.setEan(ean.longValue());
             service.update(ca);
         }
         return "inbound?faces-redirect=true";
-
     }
-
+    
+    public String findParent() {
+        findParentArticleController.setEan(this.getEan());
+        return "findParentArticle?faces-redirect=true";
+    }
+    
 }
