@@ -40,8 +40,6 @@ public class ChildArticleOverviewController implements Serializable {
 
     public String doEdit(ChildArticle childArticle) {
         childArticleEditController.setChildArticle(childArticle);
-//        System.out.println("childArticle = " + childArticleController.getChildArticle().getColor().getName());
-//        System.out.println("childArticle = " + childArticle);
         return "childArticleEdit?faces-redirect=true";
     }
 

@@ -14,6 +14,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.event.ActionEvent;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -28,12 +29,16 @@ public class InboundBean implements Serializable {
 
     private List<BigInteger> eanList = new ArrayList();
     private BigInteger ean;
+
     @EJB
     private ArticleService service;
 
+    @Inject
+    private FindChildArticleController findChildArticleController;
 //    public void init() {
 //        eanList = new ArrayList();
 //    }
+
     public List<BigInteger> getEanList() {
         return eanList;
     }
@@ -48,6 +53,14 @@ public class InboundBean implements Serializable {
 
     public void setEan(BigInteger ean) {
         this.ean = ean;
+    }
+
+    public FindChildArticleController getFindChildArticleController() {
+        return findChildArticleController;
+    }
+
+    public void setFindChildArticleController(FindChildArticleController findChildArticleController) {
+        this.findChildArticleController = findChildArticleController;
     }
 
     public void addEan(ActionEvent event) {
@@ -91,6 +104,11 @@ public class InboundBean implements Serializable {
             return false;
         }
         return false;
+    }
+
+    public String doSearch(BigInteger ean) {
+        findChildArticleController.setEan(ean);
+        return "findChildArticle?faces-redirect=true";
     }
 
 }

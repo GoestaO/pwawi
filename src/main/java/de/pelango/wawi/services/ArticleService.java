@@ -116,8 +116,6 @@ public class ArticleService {
             queryString = "select c from ChildArticle c";
         }
 
-        System.out.println("queryString = " + queryString);
-
         TypedQuery<ChildArticle> query = em.createQuery(queryString, ChildArticle.class);
 
         if (!brand.isEmpty()) {

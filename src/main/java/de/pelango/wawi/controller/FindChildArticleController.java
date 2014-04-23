@@ -10,10 +10,14 @@ import de.pelango.wawi.model.Color;
 import de.pelango.wawi.model.Sizes;
 import de.pelango.wawi.services.ArticleService;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Conversation;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -21,11 +25,18 @@ import javax.inject.Named;
  * @author goesta
  */
 @Named
-@RequestScoped
+@SessionScoped
 public class FindChildArticleController implements Serializable {
 
     @EJB
     private ArticleService service;
+
+    @Inject
+    private Conversation conv;
+
+    private ChildArticle ca;
+
+    private BigInteger ean;
 
     private String brand;
 
@@ -35,12 +46,20 @@ public class FindChildArticleController implements Serializable {
 
     private List<ChildArticle> searchResult;
 
-    public ArticleService getService() {
-        return service;
+    public ChildArticle getCa() {
+        return ca;
     }
 
-    public void setService(ArticleService service) {
-        this.service = service;
+    public void setCa(ChildArticle ca) {
+        this.ca = ca;
+    }
+
+    public BigInteger getEan() {
+        return ean;
+    }
+
+    public void setEan(BigInteger ean) {
+        this.ean = ean;
     }
 
     public String getBrand() {
@@ -76,8 +95,17 @@ public class FindChildArticleController implements Serializable {
     }
 
     public void findChildArticle(ActionEvent event) {
-        System.out.println("hersteller = " + this.brand);
+
         searchResult = service.findChildArticle(this.getBrand(), this.getColor(), this.getSize());
+    }
+
+    public String doUpdateArticle(ChildArticle ca, BigInteger ean) {
+        if (ean != null) {
+            ca.setEan(ean.longValue());
+            service.update(ca);
+        }
+        return "inbound?faces-redirect=true";
+
     }
 
 }

@@ -11,6 +11,8 @@
         <div style="width:25%">
             <h:form id = "form">
                 <h:panelGrid columns="2" styleClass="table table-striped table-condensed" >
+                    <h:outputLabel value="EAN" style="font-weight:bold" />
+                    <h:outputLabel id = "ean" value="#{findChildArticleController.ean}" />
                     <h:outputLabel value="Marke" style="font-weight:bold" />
                     <h:inputText id = "brand" class = "form-control" value="#{findChildArticleController.brand}" />
 
@@ -51,7 +53,10 @@
                         <f:facet name="header">EAN</f:facet>
                         <h:outputText value="#{item.ean}"/>
                     </h:column>
-                    
+                    <h:column>
+                        <h:commandButton rendered = "#{findChildArticleController.ean !=null}" class = "btn btn-default" onclick="if (!confirm('Bist du dir sicher?'))
+                                    return false" value = "Diese EAN aktualisieren" action="#{findChildArticleController.doUpdateArticle(item, findChildArticleController.ean)}"/>
+                    </h:column>
                 </h:dataTable>
 
 

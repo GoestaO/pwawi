@@ -35,6 +35,9 @@
                     <h:outputText value="Artikel unbekannt" rendered = "#{!inboundBean.checkInput(ean)}"></h:outputText>
                     <h:outputText value="Artikel erkannt" rendered = "#{inboundBean.checkInput(ean)}"></h:outputText>
                 </h:column>
+                <h:column>
+                    <h:commandButton class = "btn btn-default" value="Unterartikel suchen" action ="#{inboundBean.doSearch(ean)}" rendered = "#{!inboundBean.checkInput(ean)}"/>
+                </h:column>
             </h:dataTable> 
         </h:form>
         <h:form>
