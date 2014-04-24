@@ -82,6 +82,13 @@ public class FindParentArticleController implements Serializable {
         this.searchResult = service.findParentArticle(brand, color, material);
     }
     
+    public void clear(){
+        this.setBrand(null);
+        this.setColor(null);
+        this.setMaterial(null);
+        this.getSearchResult().clear();
+    }
+    
     private String addChildArticle(ParentArticle pa){
         
         return "";

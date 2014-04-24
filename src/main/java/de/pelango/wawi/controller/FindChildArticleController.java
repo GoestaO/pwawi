@@ -111,6 +111,7 @@ public class FindChildArticleController implements Serializable {
         this.setBrand(null);
         this.setColor(null);
         this.setSize(null);
+        this.getSearchResult().clear();
     }
     
     public String findParent() {
