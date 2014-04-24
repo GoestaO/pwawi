@@ -107,6 +107,12 @@ public class FindChildArticleController implements Serializable {
         return "inbound?faces-redirect=true";
     }
     
+    public void reset(){
+        this.setBrand(null);
+        this.setColor(null);
+        this.setSize(null);
+    }
+    
     public String findParent() {
         findParentArticleController.setEan(this.getEan());
         return "findParentArticle?faces-redirect=true";
