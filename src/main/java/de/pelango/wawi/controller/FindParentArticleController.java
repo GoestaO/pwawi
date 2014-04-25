@@ -15,6 +15,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.event.ActionEvent;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -27,6 +28,9 @@ public class FindParentArticleController implements Serializable {
 
     @EJB
     private ArticleService service;
+
+    @Inject
+    private ParentArticleEditController parentArticleEditController;
 
     private BigInteger ean;
 
@@ -81,17 +85,17 @@ public class FindParentArticleController implements Serializable {
     public void findParentArticle(ActionEvent event) {
         this.searchResult = service.findParentArticle(brand, color, material);
     }
-    
-    public void clear(){
+
+    public void clear() {
         this.setBrand(null);
         this.setColor(null);
         this.setMaterial(null);
         this.getSearchResult().clear();
     }
-    
-    private String addChildArticle(ParentArticle pa){
-        
-        return "";
+
+    private String addChildArticle(ParentArticle pa) {
+        parentArticleEditController.setPa(pa);
+        return "parentArticleEdit?faces-redirect=true";
     }
 
 }
