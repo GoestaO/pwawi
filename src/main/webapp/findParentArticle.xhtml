@@ -35,7 +35,7 @@
                     <f:ajax execute = "form:brand form:color form:sizes" render="form:searchResults"/>
                 </h:commandButton>
 
-                <h:commandButton class = "btn btn-default" value="Filter zurücksetzen" action="#{findParentArticleController.clear()}" />
+                <h:commandButton class = "btn btn-default" value="Zurücksetzen" action="#{findParentArticleController.clear()}" />
 
                 <h:dataTable class="table table-striped" id = "searchResults" value="#{findParentArticleController.searchResult}" var="item">
                     <h:column>

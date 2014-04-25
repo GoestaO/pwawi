@@ -9,7 +9,7 @@
 
     <ui:define name="content">
         <h3> Oberartikel bearbeiten </h3>
-        <h:form>
+        <h:form id="form">
             <div style="width:50%">
                 <h:panelGrid columns="5" styleClass="table" >
 
@@ -83,17 +83,20 @@
                     <h:outputLabel value="" style="font-weight:bold" />
 
                     <h:outputLabel value="Material" style="font-weight:bold" />                    
-                    <h:selectManyListbox class = "form-control" value="#{parentArticleEditController.pa.material}">
+                    <h:selectManyListbox id ="containsMaterial"  class = "form-control" value="#{parentArticleEditController.selectedLeft}">
                         <f:converter converterId="materialConverter" />
-                        <f:selectItems value="#{parentArticleEditController.pa.material}" var = "material" itemValue = "#{material.name}" itemLabel="#{material.name}"/>                   
+                        <f:selectItems value="#{parentArticleEditController.pa.material}" var = "item" itemValue = "#{item.name}" itemLabel="#{item.name}"/>                   
                     </h:selectManyListbox>
-                    <h:commandButton styleClass = "btn btn-default" value="Entfernen" action = "#{parentArticleEditController.doSave(pa)}"/>
-                    <h:commandButton styleClass = "btn btn-default" value="Hinzufügen" action = "#{parentArticleEditController.doSave(pa)}"/>
-                    <h:selectManyListbox class = "form-control" value="#{parentArticleEditController.pa.material}">
+                    <h:commandButton styleClass = "btn btn-default" value="&rarr;" actionListener = "#{parentArticleEditController.removeMaterial}">
+                        <f:ajax execute="@this form:containsMaterial" render="form:containsMaterial form:materialLeftover"/>
+                    </h:commandButton>
+                    <h:commandButton styleClass = "btn btn-default" value="&larr;" actionListener = "#{parentArticleEditController.addMaterial}">
+                        <f:ajax execute="@this form:materialLeftover" render="form:containsMaterial form:materialLeftover"/>
+                    </h:commandButton>
+                    <h:selectManyListbox id ="materialLeftover" class = "form-control" value="#{parentArticleEditController.selectedRight}">
                         <f:converter converterId="materialConverter" />
-                        <f:selectItems value="#{selectManyMaterialBean.materialList}" var = "material" itemValue = "#{material.name}" itemLabel="#{material.name}"/>                   
+                        <f:selectItems value="#{selectManyMaterialBean.materialList}" var = "item2" itemValue = "#{item2.name}" itemLabel="#{item2.name}"/>                   
                     </h:selectManyListbox>
-
 
                     <h:outputLabel value="Produkttyp" style="font-weight:bold" />
                     <h:selectManyListbox class = "form-control" value = "#{parentArticleEditController.pa.productTypes}">
