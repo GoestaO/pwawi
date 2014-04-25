@@ -72,14 +72,16 @@ public class ParentArticleEditController implements Serializable {
     }
 
     public void addMaterial(ActionEvent event) {
-
-      
-        System.out.println("hinzugefügt: " + selectedRight.toString());
+        for (Material m : selectedRight) {
+            System.out.println("hinzugefügt = " + m.getName());
+        }
 
     }
 
     public void removeMaterial(ActionEvent event) {
-
+for (Material m : selectedLeft) {
+            System.out.println("hinzugefügt = " + m.getName());
+        }
         System.out.println("material = " + selectedLeft.toString());
 
     }
