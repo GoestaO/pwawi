@@ -102,12 +102,13 @@ public class FindChildArticleController implements Serializable {
     public String doUpdateArticle(ChildArticle ca, BigInteger ean) {
         if (ean != null) {
             ca.setEan(ean.longValue());
+            this.setEan(null);
             service.update(ca);
         }
         return "inbound?faces-redirect=true";
     }
     
-    public void reset(){
+    public void reset() {
         this.setBrand(null);
         this.setColor(null);
         this.setSize(null);

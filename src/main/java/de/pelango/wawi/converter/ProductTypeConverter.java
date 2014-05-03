@@ -25,11 +25,15 @@ public class ProductTypeConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        Long id = service.getProductTypeId(value);
-        ProductType pt = new ProductType();
-        pt.setId(id);
-        pt.setName(value);
-        return pt;
+        if (value != null) {
+            Long id = service.getProductTypeId(value);
+            ProductType pt = new ProductType();
+            pt.setId(id);
+            pt.setName(value);
+            return pt;
+        } else {
+            return null;
+        }
     }
 
     @Override

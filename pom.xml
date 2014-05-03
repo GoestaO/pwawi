@@ -4,7 +4,7 @@
 
     <groupId>com.pelango</groupId>
     <artifactId>Wawi</artifactId>
-    <version>1.1</version>
+    <version>1.15</version>
     <packaging>war</packaging>
 
     <name>Wawi</name>

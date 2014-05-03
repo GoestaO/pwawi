@@ -38,7 +38,4 @@ public class ChildArticleEditController implements Serializable {
         service.update(childArticle);
         return "childArticleOverview?faces-redirect=true";
     }
-    
-    
-
 }
