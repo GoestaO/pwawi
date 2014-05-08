@@ -18,27 +18,33 @@
                 </h:commandButton>
             </h:panelGrid>
 
+            <h:panelGroup id = "eanList" >
+                <h:dataTable binding="#{table}" id = "inboundTable" class = "table table-bordered" value="#{inboundBean.eanList}" var="ean">
+                    <h:column>
+                        <f:facet name="header">Nr.</f:facet>
+                        <h:outputText value="#{table.rowIndex + 1}"></h:outputText>
+                    </h:column>
 
-            <h:dataTable binding="#{table}" id = "inboundTable" class = "table table-bordered" value="#{inboundBean.eanList}" var="ean">
-                <h:column>
-                    <f:facet name="header">Nr.</f:facet>
-                    <h:outputText value="#{table.rowIndex + 1}"></h:outputText>
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">EAN</f:facet>
-                    <h:outputText value="#{ean}"></h:outputText>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Kommentar</f:facet>
-                    <!--<h:commandButton class = "btn btn-default" value="Artikel anlegen" action ="#{childArticleOverviewController.doEdit(article)}"/>-->                   
-                    <h:outputText value="Artikel unbekannt" rendered = "#{!inboundBean.checkInput(ean)}"></h:outputText>
-                    <h:outputText value="Artikel erkannt" rendered = "#{inboundBean.checkInput(ean)}"></h:outputText>
-                </h:column>
-                <h:column>
-                    <h:commandButton class = "btn btn-default" value="Unterartikel suchen" action ="#{inboundBean.doSearch(ean)}" rendered = "#{!inboundBean.checkInput(ean)}"/>
-                </h:column>
-            </h:dataTable> 
+                    <h:column>
+                        <f:facet name="header">EAN</f:facet>
+                        <h:outputText value="#{ean}"></h:outputText>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Kommentar</f:facet>
+                        <!--<h:commandButton class = "btn btn-default" value="Artikel anlegen" action ="#{childArticleOverviewController.doEdit(article)}"/>-->                   
+                        <h:outputText value="Artikel unbekannt" rendered = "#{!inboundBean.checkInput(ean)}"></h:outputText>
+                        <h:outputText value="Artikel erkannt" rendered = "#{inboundBean.checkInput(ean)}"></h:outputText>
+                    </h:column>
+                    <h:column>
+                        <h:commandButton class = "btn btn-default" value="Unterartikel suchen" action ="#{inboundBean.doSearch(ean)}" rendered = "#{!inboundBean.checkInput(ean)}"/>
+                    </h:column>
+                    <h:column>
+                        <h:commandButton id ="deleteButton" class="btn-default" value ="x" action = "#{inboundBean.removeEAN(ean)}">
+                            <f:ajax execute="@this" render =":form:eanList"/>
+                        </h:commandButton>                    
+                    </h:column>
+                </h:dataTable>
+            </h:panelGroup>
         </h:form>
         <h:form>
             <h:commandButton id ="processInbound" actionListener="#{inboundBean.processInbound}" value="Einbuchen"/>
@@ -57,6 +63,18 @@
                 $('#form\\:ean').focus();
             });
 
+
+            $('#j_idt31\\:processInbound').click(function() {
+                alert($('tr.success').length);
+////                var rowCount = $('#form\\:inboundTable tr').length - 1;
+//                if (confirm($('.success').length + " Artikel einbuchen?")) {
+//                    alert('Artikel eingebucht');
+//                } else {
+//                    alert('Abbruch');
+//                }
+
+            });
+
             setInterval(function() {
                 $("td").filter(function() {
                     return $.trim($(this).text()) == 'Artikel unbekannt';
@@ -66,37 +84,39 @@
                 }).addClass("success");
             }, 5);
 
+
+//            alert(rowCount);
             setInterval(function() {
                 $('#form\\:ean').focus();
             }, 0);
 
-//            // Tabelle mit Datatables zeichnen
-//            var asInitVals = new Array();
-//            var oTable;
-//            $(document).ready(function() {
-//
-//                oTable = $('#form\\:inboundTable').dataTable({
-//                    "bFilter": true,
-//                    "bStateSave": true,
-//                    "iDisplayLength": 25,
-//                    "oLanguage": {
-//                        "sSearch": "Filter:",
-//                        "sLengthMenu": "Anzeige von _MENU_ Artikeln pro Seite",
-//                        "sZeroRecords": "Leider keine Artikel gefunden",
-//                        "sInfo": "Zeige _START_ bis _END_ von _TOTAL_ Artikeln",
-//                        "sInfoEmpty": "Zeige 0 bis 0 von 0 Artikeln",
-//                        "sInfoFiltered": "(Gefiltert von gesamt _MAX_ Artikeln)",
-//                        "oPaginate": {
-//                            "sNext": "Weiter",
-//                            "sPrevious": "Zurück"
-//                        }
-//                    }
-//
-//
-//                }
-//
-//                );
-//            });
+            //            // Tabelle mit Datatables zeichnen
+            //            var asInitVals = new Array();
+            //            var oTable;
+            //            $(document).ready(function() {
+            //
+            //                oTable = $('#form\\:inboundTable').dataTable({
+            //                    "bFilter": true,
+            //                    "bStateSave": true,
+            //                    "iDisplayLength": 25,
+            //                    "oLanguage": {
+            //                        "sSearch": "Filter:",
+            //                        "sLengthMenu": "Anzeige von _MENU_ Artikeln pro Seite",
+            //                        "sZeroRecords": "Leider keine Artikel gefunden",
+            //                        "sInfo": "Zeige _START_ bis _END_ von _TOTAL_ Artikeln",
+            //                        "sInfoEmpty": "Zeige 0 bis 0 von 0 Artikeln",
+            //                        "sInfoFiltered": "(Gefiltert von gesamt _MAX_ Artikeln)",
+            //                        "oPaginate": {
+            //                            "sNext": "Weiter",
+            //                            "sPrevious": "Zurück"
+            //                        }
+            //                    }
+            //
+            //
+            //                }
+            //
+            //                );
+            //            });
         </script>
 
     </ui:define>                

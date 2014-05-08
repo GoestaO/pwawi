@@ -65,7 +65,6 @@ public class InboundBean implements Serializable {
 
     public void addEan(ActionEvent event) {
         if (ean != null) {
-            System.out.println("EAN bekannt: " + checkInput(ean));
             eanList.add(ean);
         }
     }
@@ -90,10 +89,26 @@ public class InboundBean implements Serializable {
         eanList.clear();
     }
 
+    /**
+     * Clears the current list of scanned eans
+     */
     public void clearList() {
         eanList.clear();
     }
 
+    /**
+     *
+     * @param ean
+     */
+    public void removeEAN(BigInteger ean) {
+        this.eanList.remove(ean);
+    }
+
+    /**
+     *
+     * @param ean
+     * @return
+     */
     public boolean checkInput(BigInteger ean) {
         try {
             ChildArticle ca = service.findChildArticleByEan(ean);
