@@ -15,6 +15,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -83,17 +84,30 @@ public class FindParentArticleController implements Serializable {
     }
 
     public void findParentArticle(ActionEvent event) {
-        this.searchResult = service.findParentArticle(brand, color, material);
+        this.searchResult = service.findParentArticle(this.getBrand(), this.getColor(), this.getMaterial());
     }
 
-    public void clear() {
+    public void listener(AjaxBehaviorEvent event) {
+       this.searchResult = service.findParentArticle(this.getBrand(), this.getColor(), this.getMaterial());
+    }
+
+    public void clearBrand() {
         this.setBrand(null);
-        this.setColor(null);
-        this.setMaterial(null);
-        this.getSearchResult().clear();
+        this.searchResult = service.findParentArticle(this.getBrand(), this.getColor(), this.getMaterial());
+
     }
 
-    private String addChildArticle(ParentArticle pa) {
+    public void clearMaterial() {
+        this.setMaterial(null);
+        this.searchResult = service.findParentArticle(this.getBrand(), this.getColor(), this.getMaterial());
+    }
+
+    public void clearColor() {
+        this.setColor(null);
+        this.searchResult = service.findParentArticle(this.getBrand(), this.getColor(), this.getMaterial());
+    }
+
+    public String addChildArticle(ParentArticle pa) {
         parentArticleEditController.setPa(pa);
         return "parentArticleEdit?faces-redirect=true";
     }

@@ -96,6 +96,27 @@
                         <f:converter converterId="sizeConverter" />
                         <f:selectItems value="#{selectManySizeBean.sizeList}" var = "size" itemValue = "#{size.name}" itemLabel="#{size.name}"/>    
                     </h:selectManyListbox>
+
+                    <h:outputLabel value="Einkaufspreis"></h:outputLabel>                   
+                    <h:inputText value ="#{articleCreateController.purchasePrice}">
+                        <f:convertNumber minFractionDigits="2" pattern="#,00" /> 
+                    </h:inputText>
+
+                    <h:outputLabel value="Shop-Preis"></h:outputLabel>
+                    <h:inputText value ="#{articleCreateController.shopPrice}">
+                        <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
+                    </h:inputText>
+
+                    <h:outputLabel value="Ebay-Preis"></h:outputLabel>
+                    <h:inputText value ="#{articleCreateController.ebayPrice}">
+                        <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
+                    </h:inputText>
+
+                    <h:outputLabel value="Amazon-Preis"></h:outputLabel>
+                    <h:inputText value ="#{articleCreateController.amazonPrice}">
+                        <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
+                    </h:inputText> 
+
                 </h:panelGrid>
             </div>
             <h:commandButton styleClass = "btn btn-default" value="Anlegen!" action = "#{articleCreateController.createArticle(articleCreateController.sku,articleCreateController.brand,articleCreateController.model,articleCreateController.misc ,articleCreateController.color, articleCreateController.attribute, articleCreateController.gender, articleCreateController.topProduct, articleCreateController.topProductMobile, articleCreateController.specialProduct, articleCreateController.material, articleCreateController.productType, articleCreateController.category,articleCreateController.numberOfPictures, articleCreateController.shortDescription, articleCreateController.longDescription, articleCreateController.sizes)}"/>

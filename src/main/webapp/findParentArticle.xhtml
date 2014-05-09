@@ -10,32 +10,46 @@
         <h3> Oberartikel suchen </h3>
         <div style="width:25%">
             <h:form id = "form">
-                <h:panelGrid columns="2" styleClass="table table-bordered table-striped table-condensed" >
+                <h:panelGrid columns="3" styleClass="table table-bordered table-striped table-condensed" >
                     <h:outputLabel value="EAN" style="font-weight:bold" />
                     <h:outputLabel id = "ean" value="#{findParentArticleController.ean}" />
+                    <h:outputLabel  value="" />
 
                     <h:outputLabel value="Marke" style="font-weight:bold" />
-                    <h:inputText id = "brand" class = "form-control" value="#{findParentArticleController.brand}" />
+                    <h:inputText id = "brand" class = "form-control" value="#{findParentArticleController.brand}">
+                        <f:ajax listener="#{findParentArticleController.listener}" render="form:searchResults" />
+                    </h:inputText>
+                    <h:commandButton id="btnClearBrand" value="x" action="#{findParentArticleController.clearBrand()}">
+                        <f:ajax execute="@this" render="brand"></f:ajax>
+                    </h:commandButton>
 
                     <h:outputLabel value="Farbe" style="font-weight:bold" />
                     <h:selectOneMenu id = "color" class = "form-control" value="#{findParentArticleController.color}" >
                         <f:selectItem itemLabel="" noSelectionOption="true" />
                         <f:selectItems value="#{colorListBean.colorList}" var = "color" itemValue = "#{color.name}" itemLabel="#{color.name}"/>
+                        <f:ajax listener="#{findParentArticleController.listener}" render="form:searchResults" />
                         <f:converter converterId="colorConverter" />
                     </h:selectOneMenu>
+                    <h:commandButton id="btnClearColor" value="x" action="#{findParentArticleController.clearColor()}">
+                        <f:ajax execute="@this" render="form:color form:searchResults"></f:ajax>
+                    </h:commandButton>
 
-                    <h:outputLabel id ="material" value="Material" style="font-weight:bold" />              
-                    <h:selectOneMenu class = "form-control" id = "sizes" value="#{findParentArticleController.material}">
+                    <h:outputLabel value="Material" style="font-weight:bold" />              
+                    <h:selectOneMenu class = "form-control" id = "material" value="#{findParentArticleController.material}">
                         <f:selectItem itemLabel="" noSelectionOption="true" />
                         <f:converter converterId="materialConverter" />
-                        <f:selectItems value="#{selectManyMaterialBean.materialList}" var = "material" itemValue = "#{material.name}" itemLabel="#{material.name}"/>                   
+                        <f:selectItems value="#{selectManyMaterialBean.materialList}" var = "material" itemValue = "#{material.name}" itemLabel="#{material.name}"/>
+                        <f:ajax listener="#{findParentArticleController.listener}" render="form:searchResults" />
                     </h:selectOneMenu>
+                    <h:commandButton id="btnClearMaterial" value="x" action="#{findParentArticleController.clearMaterial()}">
+                        <f:ajax execute="@this" render="form:material form:searchResults"></f:ajax>
+                    </h:commandButton>
                 </h:panelGrid>
                 <h:commandButton id = "searchButton" class = "btn btn-default" value = "Suchen" actionListener="#{findParentArticleController.findParentArticle}">
-                    <f:ajax execute = "form:brand form:color form:sizes" render="form:searchResults"/>
+                    <f:ajax execute = "form:brand form:color form:material" render="form:searchResults"/>
                 </h:commandButton>
 
-                <h:commandButton class = "btn btn-default" value="Zurücksetzen" action="#{findParentArticleController.clear()}" />
+
 
                 <h:dataTable class="table table-striped" id = "searchResults" value="#{findParentArticleController.searchResult}" var="item">
                     <h:column>

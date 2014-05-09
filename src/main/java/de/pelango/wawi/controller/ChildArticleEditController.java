@@ -6,7 +6,6 @@
 package de.pelango.wawi.controller;
 
 import de.pelango.wawi.model.ChildArticle;
-import de.pelango.wawi.model.ParentArticle;
 import de.pelango.wawi.services.ArticleService;
 import java.io.Serializable;
 import javax.ejb.EJB;

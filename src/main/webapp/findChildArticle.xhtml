@@ -10,33 +10,50 @@
         <h3> Unterartikel suchen </h3>
         <div style="width:25%">
             <h:form id = "form">
-                <h:panelGrid columns="2" styleClass="table table-bordered table-striped table-condensed" >
+                <h:panelGrid columns="3" styleClass="table table-bordered table-striped table-condensed" >
                     <h:outputLabel value="EAN" style="font-weight:bold" />
                     <h:outputLabel id = "ean" value="#{findChildArticleController.ean}" />
+                    <h:outputLabel value="" />
+
                     <h:outputLabel value="Marke" style="font-weight:bold" />
-                    <h:inputText id = "brand" class = "form-control" value="#{findChildArticleController.brand}" />
+                    <h:inputText id = "brand" class = "form-control" value="#{findChildArticleController.brand}" >
+                    </h:inputText>
+                    <h:commandButton id="btnClearBrand" class = "btn btn-default" value="x" action="#{findChildArticleController.clearBrand()}">
+                        <f:ajax execute="@this" render="form:brand"></f:ajax>
+                    </h:commandButton>
 
                     <h:outputLabel value="Farbe" style="font-weight:bold" />
                     <h:selectOneMenu id = "color" class = "form-control" value="#{findChildArticleController.color}" >
                         <f:selectItem itemLabel="" noSelectionOption="true" />
                         <f:selectItems value="#{colorListBean.colorList}" var = "color" itemValue = "#{color.name}" itemLabel="#{color.name}"/>
                         <f:converter converterId="colorConverter" />
-                    </h:selectOneMenu>
 
-                    <h:outputLabel id ="sizePicker" value="Größe" style="font-weight:bold" />              
+                    </h:selectOneMenu>
+                    <h:commandButton id="btnClearColor" class = "btn btn-default" value="x" action="#{findChildArticleController.clearColor()}">
+                        <f:ajax execute="@this" render="form:color"></f:ajax>
+                    </h:commandButton>
+
+                    <h:outputLabel value="Größe" style="font-weight:bold" />              
                     <h:selectOneMenu class = "form-control" id = "sizes" value="#{findChildArticleController.size}">
                         <f:selectItem itemLabel="" noSelectionOption="true" />
                         <f:converter converterId="sizeConverter" />
-                        <f:selectItems value="#{selectManySizeBean.allSizesList}" var = "size" itemValue = "#{size.name}" itemLabel="#{size.name}"/>                   
-                    </h:selectOneMenu>
-                </h:panelGrid>
-                <h:commandButton id = "searchButton" class = "btn btn-default" value = "Suchen" actionListener="#{findChildArticleController.findChildArticle}">
-                    <f:ajax execute = "form:brand form:color form:sizes" render="form:searchResults"/>
-                </h:commandButton>
+                        <f:selectItems value="#{selectManySizeBean.allSizesList}" var = "size" itemValue = "#{size.name}" itemLabel="#{size.name}"/> 
 
-                <h:commandButton class = "btn btn-default" value="Zurücksetzen" action='#{findChildArticleController.reset()}'>
-                    <f:ajax execute = "@this" render = "form:brand form:color form:sizes"/>
-                </h:commandButton>
+                    </h:selectOneMenu>
+                    <h:commandButton id="btnClearSize" class = "btn btn-default" value="x" action="#{findChildArticleController.clearSize()}">
+                        <f:ajax execute="@this" render="form:sizes"></f:ajax>
+                    </h:commandButton>
+
+
+                    <h:commandButton id = "searchButton" class = "btn btn-default" value = "Suchen" actionListener="#{findChildArticleController.findChildArticle}">
+                        <f:ajax execute = "form:brand form:color form:sizes" render="form:searchResults"/>
+                    </h:commandButton>
+                    <h:outputLabel value="" />
+                    <h:commandButton class = "btn btn-default" value="Alle Filter zurücksetzen" action='#{findChildArticleController.reset()}'>
+                        <f:ajax execute = "@this" render = "form:brand form:color form:sizes form:searchResults"/>
+                    </h:commandButton>
+
+                </h:panelGrid>
 
                 <h:dataTable class="table table-striped" id = "searchResults" value="#{findChildArticleController.searchResult}" var="item">
                     <h:column>
