@@ -88,7 +88,7 @@ public class FindParentArticleController implements Serializable {
     }
 
     public void listener(AjaxBehaviorEvent event) {
-       this.searchResult = service.findParentArticle(this.getBrand(), this.getColor(), this.getMaterial());
+        this.searchResult = service.findParentArticle(this.getBrand(), this.getColor(), this.getMaterial());
     }
 
     public void clearBrand() {
@@ -105,6 +105,13 @@ public class FindParentArticleController implements Serializable {
     public void clearColor() {
         this.setColor(null);
         this.searchResult = service.findParentArticle(this.getBrand(), this.getColor(), this.getMaterial());
+    }
+
+    public void reset() {
+        this.setBrand(null);
+        this.setMaterial(null);
+        this.setColor(null);
+        this.getSearchResult().clear();
     }
 
     public String addChildArticle(ParentArticle pa) {

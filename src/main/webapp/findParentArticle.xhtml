@@ -44,11 +44,15 @@
                     <h:commandButton id="btnClearMaterial" value="x" action="#{findParentArticleController.clearMaterial()}">
                         <f:ajax execute="@this" render="form:material form:searchResults"></f:ajax>
                     </h:commandButton>
-                </h:panelGrid>
-                <h:commandButton id = "searchButton" class = "btn btn-default" value = "Suchen" actionListener="#{findParentArticleController.findParentArticle}">
-                    <f:ajax execute = "form:brand form:color form:material" render="form:searchResults"/>
-                </h:commandButton>
 
+                    <h:commandButton id = "searchButton" class = "btn btn-default" value = "Suchen" actionListener="#{findParentArticleController.findParentArticle}">
+                        <f:ajax execute = "form:brand form:color form:material" render="form:searchResults"/>
+                    </h:commandButton>
+                    <h:outputLabel value="" />
+                    <h:commandButton class = "btn btn-default" value="Alle Filter zurücksetzen" action='#{findParentArticleController.reset()}'>
+                        <f:ajax execute = "@this" render = "form:brand form:color form:material form:searchResults"/>
+                    </h:commandButton>
+                </h:panelGrid>
 
 
                 <h:dataTable class="table table-striped" id = "searchResults" value="#{findParentArticleController.searchResult}" var="item">
