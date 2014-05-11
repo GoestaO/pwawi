@@ -75,7 +75,7 @@
                                     return false" value = "Neuen Unterartikel zuordnen" action="#{findParentArticleController.addChildArticle(item)}"/>
                     </h:column>
                 </h:dataTable>
-                <h:commandButton class = "btn btn-default" value ="Parent suchen" action="#{findChildArticleController.findParent()}"/>
+                <h:commandButton class = "btn btn-default" value ="Neuen Parent erstellen" action="#{findParentArticleController.createParentArticle(ean)}"/>
 
             </h:form>
 

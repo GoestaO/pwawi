@@ -114,8 +114,10 @@ public class FindParentArticleController implements Serializable {
         this.getSearchResult().clear();
     }
 
-    public String addChildArticle(ParentArticle pa) {
+    public String addChildArticle(ParentArticle pa) {        
+        parentArticleEditController.start();
         parentArticleEditController.setPa(pa);
+        parentArticleEditController.setEan(this.getEan());
         return "parentArticleEdit?faces-redirect=true";
     }
 

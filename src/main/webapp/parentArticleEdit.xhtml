@@ -13,6 +13,13 @@
             <div style="width:50%">
                 <h:panelGrid columns="5" styleClass="table" >
 
+
+                    <h:outputLabel value="EAN" style="font-weight:bold" rendered="#{parentArticleEditController.ean != null}"/>
+                    <h:outputLabel id = "ean" value="#{parentArticleEditController.ean}" rendered="#{parentArticleEditController.ean != null}"/>
+                    <h:outputLabel value="" style="font-weight:bold" rendered="#{parentArticleEditController.ean != null}"/>
+                    <h:outputLabel value="" style="font-weight:bold" rendered="#{parentArticleEditController.ean != null}"/>
+                    <h:outputLabel value="" style="font-weight:bold" rendered="#{parentArticleEditController.ean != null}"/>                    
+
                     <h:outputLabel value="SKU" style="font-weight:bold" />
                     <h:inputText class = "form-control" value="#{parentArticleEditController.pa.sku}" />
                     <h:outputLabel value="" style="font-weight:bold" />

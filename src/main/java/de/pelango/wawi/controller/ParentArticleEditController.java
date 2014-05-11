@@ -14,6 +14,7 @@ import de.pelango.wawi.util.SelectManyGenderBean;
 import de.pelango.wawi.util.SelectManyMaterialBean;
 import de.pelango.wawi.util.SelectManyProductTypeBean;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -37,15 +38,6 @@ public class ParentArticleEditController implements Serializable {
 
     @Inject
     private Conversation conversation;
-
-    // Control start and end of conversation
-    public void start() {
-        conversation.begin();
-    }
-
-    public void end() {
-        conversation.end();
-    }
 
     @Inject
     private SelectManyMaterialBean selectManyMaterialBean;
@@ -75,6 +67,8 @@ public class ParentArticleEditController implements Serializable {
     private List<ProductType> selectedProductTypesLeft;
 
     private List<ProductType> selectedProductTypesRight;
+
+    private BigInteger ean;
 
     public ParentArticle getPa() {
         return pa;
@@ -165,6 +159,14 @@ public class ParentArticleEditController implements Serializable {
         this.selectedProductTypesRight = selectedProductTypesRight;
     }
 
+    public BigInteger getEan() {
+        return ean;
+    }
+
+    public void setEan(BigInteger ean) {
+        this.ean = ean;
+    }
+
     public void addMaterial(ActionEvent event) {
         List<Material> materialToBeMoved = new ArrayList<>();
         materialToBeMoved.addAll(selectedMaterialRight);
@@ -193,6 +195,15 @@ public class ParentArticleEditController implements Serializable {
 
     public void removeProductType(ActionEvent event) {
         this.pa.getProductTypes().removeAll(selectedProductTypesLeft);
+    }
+
+    // Control start and end of conversation
+    public void start() {
+        conversation.begin();
+    }
+
+    public void end() {
+        conversation.end();
     }
 
     public String doSave() {

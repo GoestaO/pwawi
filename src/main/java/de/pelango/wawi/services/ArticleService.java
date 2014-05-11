@@ -141,34 +141,34 @@ public class ArticleService {
         String queryString = "";
         try {
             if (!brand.isEmpty() && color != null && material != null) {
-                queryString = "select c from ParentArticle c where c.brand = :brand and c.color =:color and c.material = :material";
+                queryString = "select c from ParentArticle c where TYPE(c) = ParentArticle and c.brand = :brand and c.color =:color and c.material = :material";
             }
 
             if (!brand.isEmpty() && color != null && material == null) {
-                queryString = "select c from ParentArticle c where c.brand = :brand and c.color =:color";
+                queryString = "select c from ParentArticle c where TYPE(c) = ParentArticle and c.brand = :brand and c.color =:color";
             }
 
             if (!brand.isEmpty() && color == null && material != null) {
-                queryString = "select c from ParentArticle c where c.brand = :brand and c.material = :material";
+                queryString = "select c from ParentArticle c where TYPE(c) = ParentArticle and c.brand = :brand and c.material = :material";
             }
 
             if (brand.isEmpty() && color != null && material != null) {
-                queryString = "select c from ParentArticle c where c.color =:color and c.material = :material";
+                queryString = "select c from ParentArticle c where TYPE(c) = ParentArticle and c.color =:color and c.material = :material";
             }
 
             if (!brand.isEmpty() && color == null && material == null) {
-                queryString = "select c from ParentArticle c where c.brand = :brand";
+                queryString = "select c from ParentArticle c where TYPE(c) = ParentArticle and c.brand = :brand";
             }
 
             if (brand.isEmpty() && color != null && material == null) {
-                queryString = "select c from ParentArticle c where c.color =:color";
+                queryString = "select c from ParentArticle c where TYPE(c) = ParentArticle and c.color =:color";
             }
 
             if (brand.isEmpty() && color == null && material != null) {
-                queryString = "select c from ParentArticle c where c.material = :material";
+                queryString = "select c from ParentArticle c where TYPE(c) = ParentArticle and c.material = :material";
             }
             if (brand.isEmpty() && color == null && material == null) {
-                queryString = "select c from ParentArticle c";
+                queryString = "select c from ParentArticle c where TYPE(c) = ParentArticle";
             }
 
             TypedQuery<ParentArticle> query = em.createQuery(queryString, ParentArticle.class);
