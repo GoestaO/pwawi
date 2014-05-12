@@ -9,6 +9,7 @@ import de.pelango.wawi.model.Gender;
 import de.pelango.wawi.model.Material;
 import de.pelango.wawi.model.ParentArticle;
 import de.pelango.wawi.model.ProductType;
+import de.pelango.wawi.model.Sizes;
 import de.pelango.wawi.services.ArticleService;
 import de.pelango.wawi.util.SelectManyGenderBean;
 import de.pelango.wawi.util.SelectManyMaterialBean;
@@ -70,6 +71,8 @@ public class ParentArticleEditController implements Serializable {
 
     private BigInteger ean;
 
+    private Sizes size;
+
     public ParentArticle getPa() {
         return pa;
     }
@@ -107,6 +110,7 @@ public class ParentArticleEditController implements Serializable {
 
     public List<Gender> getGenderListRight() {
         List<Gender> genderList = selectManyGenderBean.getGenderList();
+        System.out.println(genderList.size());
         genderList.removeAll(this.pa.getGender());
         genderListRight = genderList;
         return genderListRight;
@@ -165,6 +169,14 @@ public class ParentArticleEditController implements Serializable {
 
     public void setEan(BigInteger ean) {
         this.ean = ean;
+    }
+
+    public Sizes getSize() {
+        return size;
+    }
+
+    public void setSize(Sizes size) {
+        this.size = size;
     }
 
     public void addMaterial(ActionEvent event) {

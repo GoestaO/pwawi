@@ -6,160 +6,181 @@
                 xmlns:f ="http://java.sun.com/jsf/core"
                 xmlns:c = "http://xmlns.jcp.org/jsp/jstl/core">
 
-
+    <!--Diese Seite ist für die Bearbeitung eines Oberartikels oder für das Hinzufügen einer bisher 
+    unbekannten EAN zu einem bekannten Oberartikel gedacht. Bei letzterem können Oberartikeleigenschaften nicht bearbeitet werden.-->
     <ui:define name="content">
         <h3> Oberartikel bearbeiten </h3>
         <h:form id="form">
             <div style="width:50%">
-                <h:panelGrid columns="5" styleClass="table" >
+                <h:panelGrid columns="2" styleClass="table table-bordered" style="text-align:center" >
 
 
                     <h:outputLabel value="EAN" style="font-weight:bold" rendered="#{parentArticleEditController.ean != null}"/>
                     <h:outputLabel id = "ean" value="#{parentArticleEditController.ean}" rendered="#{parentArticleEditController.ean != null}"/>
-                    <h:outputLabel value="" style="font-weight:bold" rendered="#{parentArticleEditController.ean != null}"/>
-                    <h:outputLabel value="" style="font-weight:bold" rendered="#{parentArticleEditController.ean != null}"/>
-                    <h:outputLabel value="" style="font-weight:bold" rendered="#{parentArticleEditController.ean != null}"/>                    
 
-                    <h:outputLabel value="SKU" style="font-weight:bold" />
-                    <h:inputText class = "form-control" value="#{parentArticleEditController.pa.sku}" />
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
+                    <h:outputLabel value="SKU" style="font-weight:bold" />                    
+                    <h:inputText class = "form-control" value="#{parentArticleEditController.pa.sku}" rendered="#{parentArticleEditController.ean == null}"/>
+                    <h:outputText value="#{parentArticleEditController.pa.sku}" rendered="#{parentArticleEditController.ean != null}" />
 
                     <h:outputLabel value="Hersteller" style="font-weight:bold" />
-                    <h:inputText class = "form-control" value="#{parentArticleEditController.pa.brand}" />
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
+                    <h:inputText class = "form-control" value="#{parentArticleEditController.pa.brand}" rendered="#{parentArticleEditController.ean == null}"/>
+                    <h:outputText value="#{parentArticleEditController.pa.brand}" rendered="#{parentArticleEditController.ean != null}" />
+
 
                     <h:outputLabel value="Model" style="font-weight:bold" />
-                    <h:inputText class = "form-control" value="#{parentArticleEditController.pa.model}" />
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
+                    <h:inputText class = "form-control" value="#{parentArticleEditController.pa.model}" rendered="#{parentArticleEditController.ean == null}"/>
+                    <h:outputText value="#{parentArticleEditController.pa.model}" rendered="#{parentArticleEditController.ean != null}" />
+
 
                     <h:outputLabel value="Sonstiges" style="font-weight:bold" />
-                    <h:inputText class = "form-control" value="#{parentArticleEditController.pa.misc}" />
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
+                    <h:inputText class = "form-control" value="#{parentArticleEditController.pa.misc}" rendered="#{parentArticleEditController.ean == null}"/>
+                    <h:outputText value="#{parentArticleEditController.pa.misc}" rendered="#{parentArticleEditController.ean != null}" />
+
 
                     <h:outputLabel value="Farbe" style="font-weight:bold" />
-                    <h:selectOneMenu class = "form-control" value="#{parentArticleEditController.pa.color}" >
+                    <h:selectOneMenu class = "form-control" value="#{parentArticleEditController.pa.color}" rendered="#{parentArticleEditController.ean == null}">
                         <f:selectItems value="#{colorListBean.colorList}" var = "color" itemValue = "#{color.name}" itemLabel="#{color.name}"/>
                         <f:converter converterId="colorConverter" />
                     </h:selectOneMenu>
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
+                    <h:outputText value="#{parentArticleEditController.pa.color.name}" rendered="#{parentArticleEditController.ean != null}" />
+
+
+                    <h:outputLabel value ="Attribut" style="font-weight: bold"/>
+                    <h:selectOneMenu class = "form-control" value="#{parentArticleEditController.pa.attribute}" valueChangeListener = "#{selectManySizeBean.attributeChanged}" rendered="#{parentArticleEditController.ean == null}">
+                        <f:selectItems value ="#{attributeBean.attribute}" var ="attribute" itemValue ="#{attribute.name}" itemLabel ="#{attribute.name}"/>
+                        <f:converter converterId="attributeConverter"/>
+                        <f:ajax render="sizes"/>                  
+                    </h:selectOneMenu>
+                    <h:outputText value="#{parentArticleEditController.pa.attribute.name}" rendered="#{parentArticleEditController.ean != null}" />
+
 
                     <h:outputLabel value="Geschlecht" style="font-weight:bold" />
-                    <h:selectManyListbox class = "form-control" id = "containsGender" value="#{parentArticleEditController.selectedGenderLeft}" >
-                        <f:converter converterId="genderConverter" />
-                        <f:selectItems value="#{parentArticleEditController.pa.gender}" var = "gender" itemValue = "#{gender.name}" itemLabel="#{gender.name}"/>                   
-                    </h:selectManyListbox>
-                    <h:commandButton styleClass = "btn btn-default" value="&rarr;" actionListener = "#{parentArticleEditController.removeGender}">
-                        <f:ajax execute="@this form:containsGender" render="form:containsGender form:genderAvailable"/>
-                    </h:commandButton>
-                    <h:commandButton styleClass = "btn btn-default" value="&larr;" actionListener = "#{parentArticleEditController.addGender}">
-                        <f:ajax execute="@this form:genderAvailable" render="form:containsGender form:genderAvailable"/>
-                    </h:commandButton>
-                    <h:selectManyListbox id ="genderAvailable" class = "form-control" value="#{parentArticleEditController.selectedGenderRight}">
-                        <f:converter converterId="genderConverter" />
-                        <f:selectItems value="#{parentArticleEditController.genderListRight}" var = "item2" itemValue = "#{item2.name}" itemLabel="#{item2.name}"/>                   
-                    </h:selectManyListbox>
+                    <h:panelGroup style="display:inline">
+                        <h:selectManyListbox class = "form-control" id = "containsGender" value="#{parentArticleEditController.selectedGenderLeft}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:converter converterId="genderConverter" />
+                            <f:selectItems value="#{parentArticleEditController.pa.gender}" var = "gender" itemValue = "#{gender.name}" itemLabel="#{gender.name}"/>                   
+                        </h:selectManyListbox>                        
+                        <h:commandButton styleClass = "btn btn-default" value="&darr;" actionListener = "#{parentArticleEditController.removeGender}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:ajax execute="@this form:containsGender" render="form:containsGender form:genderAvailable"/>
+                        </h:commandButton>
+                        <h:commandButton styleClass = "btn btn-default" value="&uarr;" actionListener = "#{parentArticleEditController.addGender}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:ajax execute="@this form:genderAvailable" render="form:containsGender form:genderAvailable"/>
+                        </h:commandButton>
+                        <h:selectManyListbox id ="genderAvailable" class = "form-control" value="#{parentArticleEditController.selectedGenderRight}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:converter converterId="genderConverter" />
+                            <f:selectItems value="#{parentArticleEditController.genderListRight}" var = "item2" itemValue = "#{item2.name}" itemLabel="#{item2.name}"/>                   
+                        </h:selectManyListbox>
+                        <ui:repeat value ="#{parentArticleEditController.pa.gender}" var = "gender" rendered="#{parentArticleEditController.ean != null}">
+                            #{gender.name}<br></br>                   
+                        </ui:repeat>
+                    </h:panelGroup>
+
+
 
                     <h:outputLabel value ="Top-Produkt"/>
-                    <h:selectOneRadio class = "form-control" id="topProduct" value ="#{parentArticleEditController.pa.topProduct}" >
+                    <h:selectOneRadio class = "form-control" id="topProduct" value ="#{parentArticleEditController.pa.topProduct}" rendered="#{parentArticleEditController.ean == null}">
                         <f:selectItem itemValue="#{false}" itemLabel="Nein" />
                         <f:selectItem itemValue="#{true}" itemLabel="Ja"/>                    
                     </h:selectOneRadio>
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
+                    <h:outputText value="#{parentArticleEditController.pa.topProduct}" rendered="#{parentArticleEditController.ean != null}" /> 
+
 
                     <h:outputLabel value ="Top-Produkt mobil"/>
-                    <h:selectOneRadio class = "form-control" id="topProductMobile" value ="#{parentArticleEditController.pa.topProductMobile}" >
+                    <h:selectOneRadio class = "form-control" id="topProductMobile" value ="#{parentArticleEditController.pa.topProductMobile}" rendered="#{parentArticleEditController.ean == null}">
                         <f:selectItem itemValue="#{false}" itemLabel="Nein" />
                         <f:selectItem itemValue="#{true}" itemLabel="Ja"/>                    
                     </h:selectOneRadio>
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
+                    <h:outputText value="#{parentArticleEditController.pa.topProductMobile}" rendered="#{parentArticleEditController.ean != null}" />
+
 
                     <h:outputLabel value ="Besonderes Produkt"/>
-                    <h:selectOneRadio class = "form-control" id="specialProduct" value ="#{parentArticleEditController.pa.specialProduct}" >
+                    <h:selectOneRadio class = "form-control" id="specialProduct" value ="#{parentArticleEditController.pa.specialProduct}" rendered="#{parentArticleEditController.ean == null}">
                         <f:selectItem itemValue="#{false}" itemLabel="Nein" />
                         <f:selectItem itemValue="#{true}" itemLabel="Ja"/>                 
                     </h:selectOneRadio>
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
+                    <h:outputText value="#{parentArticleEditController.pa.specialProduct}" rendered="#{parentArticleEditController.ean != null}" />
 
-                    <h:outputLabel value="Material" style="font-weight:bold" />                    
-                    <h:selectManyListbox id ="containsMaterial"  class = "form-control" value="#{parentArticleEditController.selectedMaterialLeft}">
-                        <f:converter converterId="materialConverter" />
-                        <f:selectItems value="#{parentArticleEditController.pa.material}" var = "item" itemValue = "#{item.name}" itemLabel="#{item.name}"/>                   
-                    </h:selectManyListbox>
-                    <h:commandButton styleClass = "btn btn-default" value="&rarr;" actionListener = "#{parentArticleEditController.removeMaterial}">
-                        <f:ajax execute="@this form:containsMaterial" render="form:containsMaterial form:materialLeftover"/>
-                    </h:commandButton>
-                    <h:commandButton styleClass = "btn btn-default" value="&larr;" actionListener = "#{parentArticleEditController.addMaterial}">
-                        <f:ajax execute="@this form:materialLeftover" render="form:containsMaterial form:materialLeftover"/>
-                    </h:commandButton>
-                    <h:selectManyListbox id ="materialLeftover" class = "form-control" value="#{parentArticleEditController.selectedMaterialRight}">
-                        <f:converter converterId="materialConverter" />
-                        <f:selectItems value="#{parentArticleEditController.materialListRight}" var = "item2" itemValue = "#{item2.name}" itemLabel="#{item2.name}"/>                   
-                    </h:selectManyListbox>
+                    <h:outputLabel value="Material" style="font-weight:bold" />
+                    <h:panelGroup style="display:block; text-align:center">
+                        <h:selectManyListbox id ="containsMaterial"  class = "form-control" value="#{parentArticleEditController.selectedMaterialLeft}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:converter converterId="materialConverter" />
+                            <f:selectItems value="#{parentArticleEditController.pa.material}" var = "item" itemValue = "#{item.name}" itemLabel="#{item.name}"/>                   
+                        </h:selectManyListbox>                        
+                        <h:commandButton styleClass = "btn btn-default" value="&darr;" actionListener = "#{parentArticleEditController.removeMaterial}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:ajax execute="@this form:containsMaterial" render="form:containsMaterial form:materialLeftover"/>
+                        </h:commandButton>
+                        <h:commandButton styleClass = "btn btn-default" value="&uarr;" actionListener = "#{parentArticleEditController.addMaterial}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:ajax execute="@this form:materialLeftover" render="form:containsMaterial form:materialLeftover"/>
+                        </h:commandButton>
+                        <h:selectManyListbox id ="materialLeftover" class = "form-control" value="#{parentArticleEditController.selectedMaterialRight}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:converter converterId="materialConverter" />
+                            <f:selectItems value="#{parentArticleEditController.materialListRight}" var = "item2" itemValue = "#{item2.name}" itemLabel="#{item2.name}"/>                   
+                        </h:selectManyListbox>
+                        <ui:repeat value ="#{parentArticleEditController.pa.material}" var = "material" rendered="#{parentArticleEditController.ean != null}">
+                            #{material.name}<br></br>                   
+                        </ui:repeat>
+                    </h:panelGroup>
+
+
 
                     <h:outputLabel value="Produkttyp" style="font-weight:bold" />
-                    <h:selectManyListbox class = "form-control" id = "containsProductTypes" value = "#{parentArticleEditController.selectedProductTypesLeft}">
-                        <f:converter converterId= "productTypeConverter"/>
-                        <f:selectItems value = "#{parentArticleEditController.pa.productTypes}" var ="productType" itemLabel="#{productType.name}" itemValue="#{productType.name}"/>
-                    </h:selectManyListbox>
-                    <h:commandButton styleClass = "btn btn-default" value="&rarr;" actionListener = "#{parentArticleEditController.removeProductType}">
-                        <f:ajax execute="@this form:containsProductTypes" render="form:containsProductTypes form:productTypesLeftover"/>
-                    </h:commandButton>
-                    <h:commandButton styleClass = "btn btn-default" value="&larr;" actionListener = "#{parentArticleEditController.addProductType}">
-                        <f:ajax execute="@this form:productTypesLeftover" render="form:containsProductTypes form:productTypesLeftover"/>
-                    </h:commandButton>
-                    <h:selectManyListbox id ="productTypesLeftover" class = "form-control" value="#{parentArticleEditController.selectedProductTypesRight}">
-                        <f:converter converterId="productTypeConverter" />
-                        <f:selectItems value="#{parentArticleEditController.productTypeListRight}" var = "item2" itemValue = "#{item2.name}" itemLabel="#{item2.name}"/>                   
-                    </h:selectManyListbox>
+                    <h:panelGroup style="display:block; text-align:center">
+                        <h:selectManyListbox class = "form-control" id = "containsProductTypes" value = "#{parentArticleEditController.selectedProductTypesLeft}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:converter converterId= "productTypeConverter"/>
+                            <f:selectItems value = "#{parentArticleEditController.pa.productTypes}" var ="productType" itemLabel="#{productType.name}" itemValue="#{productType.name}"/>
+                        </h:selectManyListbox>                       
+                        <h:commandButton styleClass = "btn btn-default" value="&darr;" actionListener = "#{parentArticleEditController.removeProductType}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:ajax execute="@this form:containsProductTypes" render="form:containsProductTypes form:productTypesLeftover"/>
+                        </h:commandButton>
+                        <h:commandButton styleClass = "btn btn-default" value="&uarr;" actionListener = "#{parentArticleEditController.addProductType}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:ajax execute="@this form:productTypesLeftover" render="form:containsProductTypes form:productTypesLeftover"/>
+                        </h:commandButton>
+                        <h:selectManyListbox id ="productTypesLeftover" class = "form-control" value="#{parentArticleEditController.selectedProductTypesRight}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:converter converterId="productTypeConverter" />
+                            <f:selectItems value="#{parentArticleEditController.productTypeListRight}" var = "item2" itemValue = "#{item2.name}" itemLabel="#{item2.name}"/>                   
+                        </h:selectManyListbox>
+                        <ui:repeat value ="#{parentArticleEditController.pa.productTypes}" var = "productType" rendered="#{parentArticleEditController.ean != null}">
+                            #{productType.name}<br></br>                   
+                        </ui:repeat>
+                    </h:panelGroup>
+
+
 
                     <h:outputLabel value="Kategorie" style="font-weight:bold" />
-                    <h:selectOneMenu class = "form-control" value="#{parentArticleEditController.pa.category}" >
+                    <h:selectOneMenu class = "form-control" value="#{parentArticleEditController.pa.category}" rendered="#{parentArticleEditController.ean == null}">
                         <f:selectItems value="#{selectCategoryBean.categoryList}" var = "category" itemValue = "#{category.name}" itemLabel="#{category.name}"/>
                         <f:converter converterId="categoryConverter" />
                     </h:selectOneMenu>
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
+                    <h:outputText value="#{parentArticleEditController.pa.category.name}" rendered="#{parentArticleEditController.ean != null}" />
+
 
                     <h:outputLabel value ="Anzahl Bilder" style="font-weight: bold"/>
-                    <h:selectOneMenu class = "form-control" value = "#{parentArticleEditController.pa.numberOfPictures}">
+                    <h:selectOneMenu class = "form-control" value = "#{parentArticleEditController.pa.numberOfPictures}" rendered="#{parentArticleEditController.ean == null}">
                         <f:selectItems value ="#{selectNumberOfPicturesBean.pictureList}" var = "numberOfPictures" itemValue="#{numberOfPictures}" itemLabel="#{numberOfPictures}" />
                     </h:selectOneMenu>
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
+                    <h:outputText value="#{parentArticleEditController.pa.numberOfPictures}" rendered="#{parentArticleEditController.ean != null}" />
+
 
                     <h:outputLabel value ="Beschreibung kurz" style ="font-weight: bold"/>
-                    <h:inputText class = "form-control" value ="#{parentArticleEditController.pa.shortDescription}"/>
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
+                    <h:inputText class = "form-control" value ="#{parentArticleEditController.pa.shortDescription}" rendered="#{parentArticleEditController.ean == null}"/>
+                    <h:outputText value="#{parentArticleEditController.pa.shortDescription}" rendered="#{parentArticleEditController.ean != null}" />
+
 
                     <h:outputLabel value ="Beschreibung lang" style ="font-weight: bold"/>
-                    <h:inputTextarea class = "form-control" value="#{parentArticleEditController.pa.longDescription}"/>
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
-                    <h:outputLabel value="" style="font-weight:bold" />
+                    <h:inputTextarea class = "form-control" value="#{parentArticleEditController.pa.longDescription}" rendered="#{parentArticleEditController.ean == null}"/>
+                    <h:outputText value="#{parentArticleEditController.pa.longDescription}" rendered="#{parentArticleEditController.ean != null}" />
+
+                    <h:outputLabel value="Größe" rendered="#{parentArticleEditController.ean !=null}"></h:outputLabel >
+                    <h:selectOneMenu class = "form-control" id = "sizes" value="#{parentArticleEditController.size}" rendered="#{parentArticleEditController.ean !=null}">     
+                        <f:selectItems value ="#{selectManySizeBean.getSizeListByType(parentArticleEditController.pa.attribute.name)}" var = "size" itemLabel="#{size.name}" itemValue="#{size.name}"/>
+                        <f:converter converterId="sizeConverter" />
+                    </h:selectOneMenu>
+                    <h:outputText value="#{parentArticleEditController.size}" rendered="#{parentArticleEditController.ean != null}" />
 
                 </h:panelGrid>
             </div>
-            <h:commandButton styleClass = "btn btn-default" value="Speichern" action = "#{parentArticleEditController.doSave()}"/>
+            <h:commandButton styleClass = "btn btn-default" value="Child zum Parent hinzufügen" action = "#{parentArticleEditController.doSave()}" rendered="#{parentArticleEditController.ean !=null}"/>
+            <h:commandButton styleClass = "btn btn-default" value="Speichern" action = "#{parentArticleEditController.doSave()}" rendered="#{parentArticleEditController.ean == null}"/>
         </h:form>
 
     </ui:define>

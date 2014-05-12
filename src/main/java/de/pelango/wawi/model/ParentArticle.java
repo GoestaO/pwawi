@@ -147,7 +147,7 @@ public class ParentArticle implements Serializable {
         this.parentArticleName = parentArticleName;
     }
 
-    public Attribute getAttributes() {
+    public Attribute getAttribute() {
         return attribute;
     }
 

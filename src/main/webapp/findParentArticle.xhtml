@@ -11,9 +11,9 @@
         <div style="width:25%">
             <h:form id = "form">
                 <h:panelGrid columns="3" styleClass="table table-bordered table-striped table-condensed" >
-                    <h:outputLabel value="EAN" style="font-weight:bold" />
-                    <h:outputLabel id = "ean" value="#{findParentArticleController.ean}" />
-                    <h:outputLabel  value="" />
+                    <h:outputLabel value="EAN" style="font-weight:bold" rendered="#{findParentArticleController.ean!=null}"/>
+                    <h:outputLabel id = "ean" value="#{findParentArticleController.ean}" rendered="#{findParentArticleController.ean!=null}"/>
+                    <h:outputLabel  value="" rendered="#{findParentArticleController.ean!=null}"/>
 
                     <h:outputLabel value="Marke" style="font-weight:bold" />
                     <h:inputText id = "brand" class = "form-control" value="#{findParentArticleController.brand}">
