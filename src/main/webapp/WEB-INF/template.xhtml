@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:p="http://primefaces.org/ui"  >
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -10,7 +11,6 @@
         <h:outputStylesheet name="./css/jquery.dataTables.css"/>
         <h:outputScript name="./js/jquery.js"/>
         <h:outputScript name="./js/bootstrap.js"/>
-        <!--<h:outputScript library="js" name="jquery.dataTables.js" />-->
         <h:outputScript name="./js/jquery.dataTables.js"/>
 
 
@@ -20,94 +20,80 @@
 
 
     <h:body>
-        <div>
 
-            <!--		<div id="bs-example-navbar-collapse-1" class=" navbar-no-padding ">
-                                    <ul class="nav nav-justified" style="margin-left: 20px; margin-top: 7px;">
-                                            <div class="btn-group" style="margin-right: 5px;">
-                                                    <a class="btn btn-default" href="?view=home">Home</a>
-                                            </div>
-                                            <div class="btn-group" style="margin-right: 5px;">
-                                                    <a class="btn btn-default" href="?view=logistik">Logistik</a>
-                                                    <button class="btn btn-default dropdown-toggle" style="height: 34px;" data-toggle="dropdown" type="button">
-                                                            <span class="caret"></span> <span class="sr-only">Toggle
-                                                                    Dropdown</span>
-                                                    </button>
-                                                    <ul class="dropdown-menu" role="menu">
-                                                            <li><a href="?view=logistik_salesOrderScan">Wareneingang</a>
-                                                            </li>
-                                                            <li><a href="?view=logistik_sort">Sortierung</a></li>
-                                                            <li><a href="?view=logistik_warenausgang">Warenausgang</a></li>
-                                                            <li><a href="?view=logistik_buchungsverwaltung">Buchungsverwaltung</a>
-                                                            </li>
-                                                    </ul>
-                                            </div>
-                                            <div class="btn-group" style="margin-right: 5px;">
-                                                    <a class="btn btn-default" href="?view=island">Insel</a>
-                                                    <button class="btn btn-default dropdown-toggle" style="height: 34px;" data-toggle="dropdown" type="button">
-                                                            <span class="caret"></span> <span class="sr-only">Toggle
-                                                                    Dropdown</span>
-                                                    </button>
-                                                    <ul class="dropdown-menu" role="menu">
-                                                            <li><a href="?view=island">Produktion</a></li>
-                                                            <li><a href="?view=island_qa">Insel QA</a></li>
-                                                            <li><a href="?view=island_buchungsverwaltung">Artikel
-                                                                            Info</a></li>
-                                                    </ul>
-                                            </div>
-                                            <div class="btn-group" style="margin-right: 5px;">
-                                                    <a class="btn btn-default" href="?view=styling_styles">Styling</a>
-                                                    <button class="btn btn-default dropdown-toggle" style="height: 34px;" data-toggle="dropdown" type="button">
-                                                            <span class="caret"></span> <span class="sr-only">Toggle
-                                                                    Dropdown</span>
-                                                    </button>
-                                                    <ul class="dropdown-menu" role="menu">
-                                                            <li><a href="?view=styling_styles">Styling</a></li>
-                                                    </ul>
-                                            </div>
-                                            <div class="btn-group" style="margin-right: 5px;">
-                                                    <a class="btn btn-default" href="?view=shopmanagement">Shopmanagement</a>
-                                                    <button class="btn btn-default dropdown-toggle" style="height: 34px;" data-toggle="dropdown" type="button">
-                                                            <span class="caret"></span> <span class="sr-only">Toggle
-                                                                    Dropdown</span>
-                                                    </button>
-                                                    <ul class="dropdown-menu" role="menu">
-                                                            <li><a href="?view=shopmanagement_klaerfall">Klärfall</a></li>
-                                                    </ul>
-                                            </div>
-                                    </ul>
-                            </div>-->
 
-            <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <!--		<div id="bs-example-navbar-collapse-1" class=" navbar-no-padding ">
+                                <ul class="nav nav-justified" style="margin-left: 20px; margin-top: 7px;">
+                                        <div class="btn-group" style="margin-right: 5px;">
+                                                <a class="btn btn-default" href="?view=home">Home</a>
+                                        </div>
+                                        <div class="btn-group" style="margin-right: 5px;">
+                                                <a class="btn btn-default" href="?view=logistik">Logistik</a>
+                                                <button class="btn btn-default dropdown-toggle" style="height: 34px;" data-toggle="dropdown" type="button">
+                                                        <span class="caret"></span> <span class="sr-only">Toggle
+                                                                Dropdown</span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="?view=logistik_salesOrderScan">Wareneingang</a>
+                                                        </li>
+                                                        <li><a href="?view=logistik_sort">Sortierung</a></li>
+                                                        <li><a href="?view=logistik_warenausgang">Warenausgang</a></li>
+                                                        <li><a href="?view=logistik_buchungsverwaltung">Buchungsverwaltung</a>
+                                                        </li>
+                                                </ul>
+                                        </div>
+                                        <div class="btn-group" style="margin-right: 5px;">
+                                                <a class="btn btn-default" href="?view=island">Insel</a>
+                                                <button class="btn btn-default dropdown-toggle" style="height: 34px;" data-toggle="dropdown" type="button">
+                                                        <span class="caret"></span> <span class="sr-only">Toggle
+                                                                Dropdown</span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="?view=island">Produktion</a></li>
+                                                        <li><a href="?view=island_qa">Insel QA</a></li>
+                                                        <li><a href="?view=island_buchungsverwaltung">Artikel
+                                                                        Info</a></li>
+                                                </ul>
+                                        </div>
+                                        <div class="btn-group" style="margin-right: 5px;">
+                                                <a class="btn btn-default" href="?view=styling_styles">Styling</a>
+                                                <button class="btn btn-default dropdown-toggle" style="height: 34px;" data-toggle="dropdown" type="button">
+                                                        <span class="caret"></span> <span class="sr-only">Toggle
+                                                                Dropdown</span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="?view=styling_styles">Styling</a></li>
+                                                </ul>
+                                        </div>
+                                        <div class="btn-group" style="margin-right: 5px;">
+                                                <a class="btn btn-default" href="?view=shopmanagement">Shopmanagement</a>
+                                                <button class="btn btn-default dropdown-toggle" style="height: 34px;" data-toggle="dropdown" type="button">
+                                                        <span class="caret"></span> <span class="sr-only">Toggle
+                                                                Dropdown</span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="?view=shopmanagement_klaerfall">Klärfall</a></li>
+                                                </ul>
+                                        </div>
+                                </ul>
+                        </div>-->
+        <h:form>
+            <p:tabMenu activeIndex="0">
+                <p:menuitem value="Oberartikelanlage" url="createParentArticle.jsf" icon="ui-icon-star"/>
+                <p:menuitem value="Oberartikelübersicht" url="parentArticleOverview.jsf" icon="ui-icon-search" />
+                <p:menuitem value="Unterartikelübersicht" url="childArticleOverview.jsf" icon="ui-icon-document"/>
+                <p:menuitem value="Oberartikelsuche" url="findParentArticle.jsf" icon="ui-icon-wrench"/>
+                <p:menuitem value="Unterartikelsuche" url="findChildArticle.jsf" icon="ui-icon-person" />
+                <p:menuitem value="Wareneingang" url="inbound.jsf" icon="ui-icon-person" />
+            </p:tabMenu>
+        </h:form>
 
-                <div class="collapse navbar-collapse"
-                     id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li><form action="#">
-                                <input type="submit" value="Logout"
-                                       class="btn btn-default navbar-btn"/>
-                            </form></li>
-                        <li><a href="http://www.pelango.de">Shop</a></li>
-                        <li><a href="createParentArticle.jsf">Oberartikelpflege</a></li>
-                        <li><a href="parentArticleOverview.jsf">Übersicht Oberartikel</a></li>
-                        <li><a href="childArticleOverview.jsf">Übersicht Unterartikel</a></li>
-                        <li><a href="inbound.jsf">Wareneingang</a></li>
-                        <li><a href="findParentArticle.jsf">Oberartikelsuche</a></li>
-                        <li><a href="findChildArticle.jsf">Unterartikelsuche</a></li>
-
-                    </ul>
-                    <!--                    <div class="navbar-inner pull-right padding-top">
-                                            <h:graphicImage style="padding-right: 20px; padding-top: 10px" name="./img/pelango-logo_edit.jpg"></h:graphicImage> 
-                                        </div>-->
-
-                </div>
-            </nav>
-        </div>
-        <div class="jumbotron">
+        <div class = "jumbotron">
             <ui:insert name="content">
                 Content here               
             </ui:insert>
         </div>
+
     </h:body>
 
 </html>

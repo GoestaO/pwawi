@@ -3,103 +3,91 @@
 <ui:composition template = "WEB-INF/template.xhtml" xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:f ="http://java.sun.com/jsf/core">
+                xmlns:f ="http://java.sun.com/jsf/core"
+                xmlns:p ="http://primefaces.org/ui">
 
 
     <ui:define name="content">
-        <h3> Unterartikelübersicht </h3>
-
+        <h3> Unterartikel-Übersicht</h3>
         <h:form>
-            <h:dataTable value="#{childArticleOverviewController.articles}" id = "articleOverview" var="article" styleClass="table table-striped table-bordered table-condensed">
-                <h:column>
-                    <f:facet name="header">Artikelname</f:facet>
+            <p:dataTable value="#{childArticleOverviewController.articles}" id = "articleOverview" var="article">
+                <p:column filterBy="parentArticleName" sortBy="parentArticleName" headerText="Artikelname" filterMatchMode="contains" filterStyle="width: 100%">
                     <h:outputText value ="#{article.parentArticleName}"></h:outputText>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">EAN</f:facet>
+                </p:column>
+                <p:column  sortBy="ean" headerText="EAN" filterMatchMode="contains" filterBy="ean" filterStyle="width: 100%">                    
                     <h:outputText value ="#{article.ean}"></h:outputText>
-                </h:column>  
-                <h:column>
-                    <f:facet name="header">SKU</f:facet>
+                </p:column>  
+                <p:column sortBy="sku" headerText="SKU" filterMatchMode="contains" filterBy="ean" filterStyle="width: 100%">                  
                     <h:outputText value ="#{article.sku}"></h:outputText>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Hersteller-SKU</f:facet>
+                </p:column>
+                <p:column sortBy="manufacturerSKU" headerText="Hersteller-SKU" filterMatchMode="contains" filterBy="manufacturerSKU" filterStyle="width: 100%">
                     <h:outputText value ="#{article.manufacturerSKU}"></h:outputText>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Größe</f:facet>
+                </p:column>
+                <p:column sortBy="size.name" headerText="Größe" filterMatchMode="contains" filterBy="size.name" filterStyle="width: 100%">
                     <h:outputText value="#{article.size.name}"></h:outputText>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Bestand</f:facet>
+                </p:column>
+                <p:column  sortBy="quantity" headerText="Bestand" filterMatchMode="contains" filterBy="quantity" filterStyle="width: 100%">                  
                     <h:outputText value ="#{article.quantity}"/>
-
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Einkaufspreis</f:facet>
+                </p:column>
+                <p:column sortBy="purchasePrice" headerText="Einkaufspreis" filterMatchMode="contains" filterBy="purchasePrice" filterStyle="width: 100%">
                     <h:outputText value ="#{article.purchasePrice}">
                         <f:convertNumber type="currency" locale = "de_de" />
                     </h:outputText>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Shop-Preis</f:facet>
+                </p:column>
+                <p:column sortBy="shopPrice" headerText="Shop-Preis" filterMatchMode="contains" filterBy="shopPrice" filterStyle="width: 100%">
                     <h:outputText value ="#{article.shopPrice}">
                         <f:convertNumber type="currency" locale = "de_de" />
                     </h:outputText>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Ebay-Preis</f:facet>
+                </p:column>
+                <p:column sortBy="ebayPrice" headerText="Ebay-Preis" filterMatchMode="contains" filterBy="ebayPrice" filterStyle="width: 100%">
                     <h:outputText value ="#{article.ebayPrice}">
                         <f:convertNumber  type="currency" locale = "de_de"/>
                         <!--<f:convertNumber currencySymbol ="€" type="currency" locale = "de" maxFractionDigits="2" pattern="###,##0.00" />-->
                     </h:outputText>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Amazon-Preis</f:facet>
+                </p:column>
+                <p:column sortBy="amazonPrice" headerText="Amazon-Preis" filterMatchMode="contains" filterBy="amazonPrice" filterStyle="width: 100%">
                     <h:outputText value ="#{article.amazonPrice}">
                         <f:convertNumber type="currency" locale = "de_de" />
                     </h:outputText>
-                </h:column>
-                <h:column>
-                    
+                </p:column>
+                <p:column>
                     <h:commandButton class = "btn btn-default" value="Bearbeiten" action ="#{childArticleOverviewController.doEdit(article)}"/>
-                </h:column>
-            </h:dataTable>
+                </p:column>
+            </p:dataTable>
         </h:form>
-<!--        <script type="text/javascript">
-            $(document).ready(function() {
-                $('#j_idt16\\:articleOverview').dataTable();
-            });
-        </script>-->
-<script type="text/javascript">
-            var asInitVals = new Array();
-            var oTable;
-            $(document).ready(function() {
-
-                oTable = $('#j_idt16\\:articleOverview').dataTable({
-                    "bFilter": true,
-                    "bStateSave": true,
-                    "iDisplayLength": 25,
-                    "oLanguage": {
-                        "sSearch": "Filter:",
-                        "sLengthMenu": "Anzeige von _MENU_ Artikeln pro Seite",
-                        "sZeroRecords": "Leider keine Artikel gefunden",
-                        "sInfo": "Zeige _START_ bis _END_ von _TOTAL_ Artikeln",
-                        "sInfoEmpty": "Zeige 0 bis 0 von 0 Artikeln",
-                        "sInfoFiltered": "(Gefiltert von gesamt _MAX_ Artikeln)",
-                        "oPaginate": {
-                            "sNext": "Weiter",
-                            "sPrevious": "Zurück"
+        <!--        <script type="text/javascript">
+                    $(document).ready(function() {
+                        $('#j_idt16\\:articleOverview').dataTable();
+                    });
+                </script>-->
+        <!--<script type="text/javascript">
+                    var asInitVals = new Array();
+                    var oTable;
+                    $(document).ready(function() {
+        
+                        oTable = $('#j_idt16\\:articleOverview').dataTable({
+                            "bFilter": true,
+                            "bStateSave": true,
+                            "iDisplayLength": 25,
+                            "oLanguage": {
+                                "sSearch": "Filter:",
+                                "sLengthMenu": "Anzeige von _MENU_ Artikeln pro Seite",
+                                "sZeroRecords": "Leider keine Artikel gefunden",
+                                "sInfo": "Zeige _START_ bis _END_ von _TOTAL_ Artikeln",
+                                "sInfoEmpty": "Zeige 0 bis 0 von 0 Artikeln",
+                                "sInfoFiltered": "(Gefiltert von gesamt _MAX_ Artikeln)",
+                                "oPaginate": {
+                                    "sNext": "Weiter",
+                                    "sPrevious": "Zurück"
+                                }
+                            }
+        
+        
                         }
-                    }
-
-
-                }
-
-                );
-            });
-        </script>
+        
+                        );
+                    });
+                </script>-->
     </ui:define>
 </ui:composition>
 

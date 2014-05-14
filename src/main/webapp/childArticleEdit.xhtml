@@ -28,7 +28,7 @@
 
                 <h:outputLabel value="Größe"></h:outputLabel>
                 <h:selectOneMenu value="#{childArticleEditController.childArticle.size}">                    
-                    <f:selectItems value ="#{selectManySizeBean.getSizeListByType(childArticleEditController.childArticle.attributes.name)}" var = "size" itemLabel="#{size.name}" itemValue="#{size.name}"/>
+                    <f:selectItems value ="#{selectManySizeBean.getSizeListByType(childArticleEditController.childArticle.attribute.name)}" var = "size" itemLabel="#{size.name}" itemValue="#{size.name}"/>
                     <f:converter converterId="sizeConverter" />
                 </h:selectOneMenu>
 

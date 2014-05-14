@@ -3,121 +3,94 @@
 <ui:composition template = "WEB-INF/template.xhtml" xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:f ="http://java.sun.com/jsf/core">
+                xmlns:f ="http://java.sun.com/jsf/core"
+                xmlns:p ="http://primefaces.org/ui">
 
     <ui:define name="content">
         <h3> Oberartikelübersicht </h3>
 
 
-        <h:dataTable value="#{parentArticleOverviewController.articles}" id = "articleOverview" var="article" styleClass="table table-striped table-bordered table-condensed">
-            <h:column>
-                <f:facet name="header">Artikelname</f:facet>
+        <p:dataTable value="#{parentArticleOverviewController.articles}" id = "articleOverview" var="article" styleClass="table table-striped table-bordered table-condensed">
+            <p:column filterBy="parentArticleName" sortBy="parentArticleName" headerText="Artikelname" filterMatchMode="contains" filterStyle="width: 100%">
                 <h:outputText value ="#{article.parentArticleName}"></h:outputText>
-            </h:column>  
-            <h:column>
-                <f:facet name="header">SKU</f:facet>
+            </p:column>  
+            <p:column filterBy="sku" sortBy="sku" headerText="SKU" filterMatchMode="contains" filterStyle="width: 100%">                
                 <h:outputText value ="#{article.sku}"></h:outputText>
-            </h:column>    
-            <h:column>
-                <f:facet name="header">Marke</f:facet>
+            </p:column>    
+            <p:column filterBy="brand" sortBy="brand" headerText="Marke" filterMatchMode="contains" filterStyle="width: 100%">
                 <h:outputText value ="#{article.brand}"></h:outputText>
-            </h:column> 
-            <h:column>
-                <f:facet name ="header">Model</f:facet>
+            </p:column> 
+            <p:column filterBy="model" sortBy="model" headerText="Model" filterMatchMode="contains" filterStyle="width: 100%">
                 <h:outputText value ="#{article.model}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name ="header">Attributset</f:facet>
+            </p:column>
+            <p:column filterBy="attribute.name" sortBy="attribute.name" headerText="Attributset" filterMatchMode="contains" filterStyle="width: 100%">
                 <h:outputText value ="#{article.attribute.name}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name ="header">Sonstiges</f:facet>
-                <h:outputText value ="#{article.misc}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name ="header">Farbe</f:facet>
+            </p:column>
+            <!--            <p:column filterBy="attribute.name" sortBy="attribute.name" headerText="Sonstiges" filterMatchMode="contains" filterStyle="width: 100%">
+                            <h:outputText value ="#{article.misc}"></h:outputText>
+                        </p:column>-->
+            <p:column filterBy="color.name" sortBy="color.name" headerText="Farbe" filterMatchMode="contains" filterStyle="width: 100%">
                 <h:outputText value ="#{article.color.name}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name ="header">Geschlecht</f:facet>
+            </p:column>
+            <p:column filterBy="gender" sortBy="gender" headerText="Geschlecht" filterMatchMode="contains" filterStyle="width: 100%">
                 <ui:repeat value ="#{article.gender}" var = "gender">
                     #{gender.name}<br></br>                   
                 </ui:repeat>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Top-Produkt</f:facet>
-                <h:outputText value="#{article.topProduct==false? 'Nein' : 'Ja'}"/>                
-            </h:column>
-            <h:column>
-                <f:facet name="header">Top-Produkt mobil</f:facet>
-                <h:outputText value="#{article.topProductMobile==false? 'Nein' : 'Ja'}"/>                
-            </h:column>
-            <h:column>
-                <f:facet name="header">Besonderes Produkt</f:facet>
-                <h:outputText value="#{article.specialProduct==false? 'Nein' : 'Ja'}"/>                
-            </h:column>
-            <h:column>
-                <f:facet name ="header">Material</f:facet>
-                <ui:repeat value ="#{article.material}" var = "material">
-                    #{material.name} <br></br>
-                </ui:repeat>
-            </h:column>
-            <h:column>
-                <f:facet name ="header">Produkttyp</f:facet>
-                <ui:repeat value ="#{article.productTypes}" var = "productType">
-                    #{productType.name} <br></br>
-                </ui:repeat>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Kategorie</f:facet>
-                <h:outputText value = "#{article.category.name}"></h:outputText>                                
-            </h:column>
-            <h:column>
-                <f:facet name="header">Anzahl Bilder</f:facet>
-                <h:outputText value ="#{article.numberOfPictures}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Beschreibung kurz</f:facet>
-                <h:outputText value ="#{article.shortDescription}"/>                
-            </h:column>
-            <h:column>
-                <f:facet name="header">Beschreibung lang</f:facet>
-                <h:outputText value ="#{article.longDescription}"/>                
-            </h:column>
-            <h:column>
+            </p:column>
+            <!--            <p:column filterBy="topProduct" sortBy="topProduct" headerText="Top-Produkt" filterMatchMode="contains" filterStyle="width: 100%">
+                            <h:outputText value="#{article.topProduct==false? 'Nein' : 'Ja'}"/>                
+                        </p:column>
+                        <p:column filterBy="topProductMobile" sortBy="topProductMobile" headerText="Top-Produkt mobil" filterMatchMode="contains" filterStyle="width: 100%">
+                            <h:outputText value="#{article.topProductMobile==false? 'Nein' : 'Ja'}"/>                
+                        </p:column>
+                        <p:column filterBy="specialProduct" sortBy="specialProduct" headerText="Besonderes Produkt" filterMatchMode="contains" filterStyle="width: 100%">
+                            <h:outputText value="#{article.specialProduct==false? 'Nein' : 'Ja'}"/>                
+                        </p:column>
+                        <p:column filterBy="material" sortBy="material" headerText="Material" filterMatchMode="contains" filterStyle="width: 100%">
+                            <ui:repeat value ="#{article.material}" var = "material">
+            #{material.name} <br></br>
+        </ui:repeat>
+    </p:column>
+    <p:column filterBy="productTypes" sortBy="productTypes" headerText="Produkttyp" filterMatchMode="contains" filterStyle="width: 100%">
+        <ui:repeat value ="#{article.productTypes}" var = "productType">
+            #{productType.name} <br></br>
+        </ui:repeat>
+    </p:column>
+    <p:column filterBy="category.name" sortBy="category.name" headerText="Kategorie" filterMatchMode="contains" filterStyle="width: 100%">
+        <h:outputText value = "#{article.category.name}"></h:outputText>                                
+    </p:column>
+    <p:column filterBy="numberOfPictures" sortBy="numberOfPictures" headerText="Anzahl Bilder" filterMatchMode="contains" filterStyle="width: 100%">
+        <h:outputText value ="#{article.numberOfPictures}"/>
+    </p:column>
+    <p:column filterBy="shortDescription" sortBy="shortDescription" headerText="Beschreibung kurz" filterMatchMode="contains" filterStyle="width: 100%">
+        <h:outputText value ="#{article.shortDescription}"/>                
+    </p:column>
+    <p:column filterBy="longDescription" sortBy="longDescription" headerText="Beschreibung lang" filterMatchMode="contains" filterStyle="width: 100%">
+        <h:outputText value ="#{article.longDescription}"/>                
+    </p:column>-->
+            <p:column>
                 <h:form>
                     <f:facet name ="header">Bearbeiten</f:facet>
                     <h:commandButton class = "btn btn-default" value="Bearbeiten" action ="#{parentArticleOverviewController.edit(article)}"/>
                 </h:form>
-            </h:column>
-        </h:dataTable>
+            </p:column>
 
-        <script type="text/javascript">
-            var asInitVals = new Array();
-            var oTable;
-            $(document).ready(function() {
+        </p:dataTable>       
 
-                oTable = $('#articleOverview').dataTable({
-                    "bFilter": true,
-                    "bStateSave": true,
-                    "iDisplayLength": 25,
-                    "oLanguage": {
-                        "sSearch": "Filter:",
-                        "sLengthMenu": "Anzeige von _MENU_ Artikeln pro Seite",
-                        "sZeroRecords": "Leider keine Artikel gefunden",
-                        "sInfo": "Zeige _START_ bis _END_ von _TOTAL_ Artikeln",
-                        "sInfoEmpty": "Zeige 0 bis 0 von 0 Artikeln",
-                        "sInfoFiltered": "(Gefiltert von gesamt _MAX_ Artikeln)",
-                        "oPaginate": {
-                            "sNext": "Weiter",
-                            "sPrevious": "Zurück"
-                        }
-                    }
-                }
+        <h:form>
 
-                );
-            });
-        </script>
+            <p:growl id="messages" showDetail="true" />
+
+            <p:commandButton value="Destroy the World" actionListener="#{buttonBean.destroyWorld}" update="messages">
+                <p:confirm header="Bestätigung" message="Sicher?" icon="ui-icon-alert" />
+            </p:commandButton>
+
+            <p:confirmDialog global="true">
+                <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>    
+            </p:confirmDialog>
+
+        </h:form>
 
     </ui:define>
 </ui:composition>
