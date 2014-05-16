@@ -77,20 +77,6 @@
 
         </p:dataTable>       
 
-        <h:form>
-
-            <p:growl id="messages" showDetail="true" />
-
-            <p:commandButton value="Destroy the World" actionListener="#{buttonBean.destroyWorld}" update="messages">
-                <p:confirm header="Bestätigung" message="Sicher?" icon="ui-icon-alert" />
-            </p:commandButton>
-
-            <p:confirmDialog global="true">
-                <p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
-                <p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>    
-            </p:confirmDialog>
-
-        </h:form>
 
     </ui:define>
 </ui:composition>

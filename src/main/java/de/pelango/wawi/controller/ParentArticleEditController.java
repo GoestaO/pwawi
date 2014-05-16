@@ -5,6 +5,7 @@
  */
 package de.pelango.wawi.controller;
 
+import de.pelango.wawi.model.ChildArticle;
 import de.pelango.wawi.model.Gender;
 import de.pelango.wawi.model.Material;
 import de.pelango.wawi.model.ParentArticle;
@@ -219,12 +220,17 @@ public class ParentArticleEditController implements Serializable {
     }
 
     public String doSave() {
-        System.out.println("Material = " + this.pa.getMaterial());
-        System.out.println("ProduktTyp = " + this.pa.getProductTypes());
-        System.out.println("Geschlecht = " + this.pa.getGender());
         articleService.update(this.pa);
         this.end();
         return "parentArticleOverview?faces-redirect=true";
-
     }
+
+    public String addChildArticle() {
+        ChildArticle ca = new ChildArticle(this.getSize(), this.getPa().getSku(), this.getPa().getBrand(), this.getPa().getModel(), this.getPa().getMisc(), this.getPa().getColor(), this.getPa().getAttribute(), this.getPa().getGender(), this.getPa().isTopProduct(), this.getPa().isTopProductMobile(), this.getPa().isSpecialProduct(), this.getPa().getMaterial(), this.getPa().getProductTypes(), this.getPa().getCategory(), this.getPa().getNumberOfPictures(), this.getPa().getShortDescription(), this.getPa().getLongDescription());
+        ca.setEan(this.getEan().longValue());
+        articleService.create(ca);
+        this.end();
+        return "inbound?faces-redirect=true";
+    }
+
 }

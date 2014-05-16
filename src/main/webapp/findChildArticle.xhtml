@@ -49,7 +49,7 @@
                     <h:commandButton id = "searchButton" class = "btn btn-default" value = "Suchen" actionListener="#{findChildArticleController.findChildArticle}">
                         <f:ajax execute = "form:brand form:color form:sizes" render="form:searchResults"/>
                     </h:commandButton>
-                    <h:outputLabel value="" />
+                    <h:commandButton class = "btn btn-default" value ="Parent suchen" action="#{findChildArticleController.findParent()}"/>
                     <h:commandButton class = "btn btn-default" value="Alle Filter zurücksetzen" action='#{findChildArticleController.reset()}'>
                         <f:ajax execute = "@this" render = "form:brand form:color form:sizes form:searchResults"/>
                     </h:commandButton>
@@ -78,7 +78,7 @@
                                     return false" value = "Diese EAN aktualisieren" action="#{findChildArticleController.doUpdateArticle(item, findChildArticleController.ean)}"/>
                     </h:column>
                 </h:dataTable>
-                <h:commandButton class = "btn btn-default" value ="Parent suchen" action="#{findChildArticleController.findParent()}"/>
+
 
             </h:form>
 
