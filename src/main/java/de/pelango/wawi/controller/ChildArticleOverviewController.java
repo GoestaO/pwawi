@@ -4,7 +4,6 @@ import de.pelango.wawi.model.ChildArticle;
 import de.pelango.wawi.services.ArticleService;
 import java.io.Serializable;
 import java.util.List;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -13,8 +12,8 @@ import javax.inject.Named;
 
 /**
  * The controller for the childArticleOverview-Site
- *
- * @author goesta
+ * 
+* @author goesta
  */
 @RequestScoped
 @Named
@@ -31,16 +30,19 @@ public class ChildArticleOverviewController implements Serializable {
     @PostConstruct
     public void init() {
         articles = articleService.findAllChildArticles();
-
     }
 
     public List<ChildArticle> getArticles() {
         return articles;
     }
 
-    public String doEdit(ChildArticle childArticle) {
+    public void doEdit(ChildArticle childArticle) {
         childArticleEditController.setChildArticle(childArticle);
-        return "childArticleEdit?faces-redirect=true";
+//        return "childArticleEdit?faces-redirect=true";
+    }
+
+    public void test() {
+        System.out.println("Huhu");
     }
 
 }

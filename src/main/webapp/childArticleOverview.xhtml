@@ -10,7 +10,7 @@
     <ui:define name="content">
         <h3> Unterartikel-Übersicht</h3>
         <h:form>
-            <p:dataTable value="#{childArticleOverviewController.articles}" id = "articleOverview" var="article">
+            <p:dataTable value="#{childArticleOverviewController.articles}" id = "articleOverview" var="article" scrollable="true" scrollHeight="90%" scrollWidth="100%">
                 <p:column filterBy="parentArticleName" sortBy="parentArticleName" headerText="Artikelname" filterMatchMode="contains" filterStyle="width: 100%">
                     <h:outputText value ="#{article.parentArticleName}"></h:outputText>
                 </p:column>
@@ -51,43 +51,64 @@
                     </h:outputText>
                 </p:column>
                 <p:column>
-                    <h:commandButton class = "btn btn-default" value="Bearbeiten" action ="#{childArticleOverviewController.doEdit(article)}"/>
+                    <!--<p:commandButton value="Bearbeiten" action ="#{childArticleOverviewController.test()}" />-->
+                    <p:commandButton value="Bearbeiten" action ="#{childArticleOverviewController.doEdit(article)}" onclick="PF('caEditWidget').show();" />
                 </p:column>
             </p:dataTable>
-        </h:form>
-        <!--        <script type="text/javascript">
-                    $(document).ready(function() {
-                        $('#j_idt16\\:articleOverview').dataTable();
-                    });
-                </script>-->
-        <!--<script type="text/javascript">
-                    var asInitVals = new Array();
-                    var oTable;
-                    $(document).ready(function() {
-        
-                        oTable = $('#j_idt16\\:articleOverview').dataTable({
-                            "bFilter": true,
-                            "bStateSave": true,
-                            "iDisplayLength": 25,
-                            "oLanguage": {
-                                "sSearch": "Filter:",
-                                "sLengthMenu": "Anzeige von _MENU_ Artikeln pro Seite",
-                                "sZeroRecords": "Leider keine Artikel gefunden",
-                                "sInfo": "Zeige _START_ bis _END_ von _TOTAL_ Artikeln",
-                                "sInfoEmpty": "Zeige 0 bis 0 von 0 Artikeln",
-                                "sInfoFiltered": "(Gefiltert von gesamt _MAX_ Artikeln)",
-                                "oPaginate": {
-                                    "sNext": "Weiter",
-                                    "sPrevious": "Zurück"
-                                }
-                            }
-        
-        
-                        }
-        
-                        );
-                    });
-                </script>-->
+
+
+            <p:dialog id="caEdit" header="Unterartikel bearbeiten" widgetVar="caEditWidget" rendered="#{childArticleEditController.childArticle!=null}">
+
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Artikelname"></p:outputLabel>
+                    <h:outputText value ="#{childArticleEditController.childArticle.parentArticleName}"></h:outputText>
+
+                    <p:outputLabel value="EAN"></p:outputLabel>                   
+                    <p:inputText value ="#{childArticleEditController.childArticle.ean}">
+                        <f:validateLength minimum="13" maximum="13" />
+                    </p:inputText>                  
+
+                    <p:outputLabel value="SKU"></p:outputLabel>                    
+                    <h:outputText value ="#{childArticleEditController.childArticle.sku}"></h:outputText>                
+
+                    <p:outputLabel value="Hersteller-SKU"></p:outputLabel>                     
+                    <p:inputText value ="#{childArticleEditController.childArticle.manufacturerSKU}"></p:inputText>
+
+                    <p:outputLabel value="Größe"></p:outputLabel>
+                    <p:selectOneMenu value="#{childArticleEditController.childArticle.size}">                    
+                        <f:selectItems value ="#{selectManySizeBean.getSizeListByType(childArticleEditController.childArticle.attribute.name)}" var = "size" itemLabel="#{size.name}" itemValue="#{size.name}"/>
+                        <f:converter converterId="sizeConverter" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Bestand"></p:outputLabel>                    
+                    <h:outputText value ="#{childArticleEditController.childArticle.quantity}"> 
+                        <f:convertNumber minFractionDigits="0" /> 
+                    </h:outputText>
+
+                    <p:outputLabel value="Einkaufspreis"></p:outputLabel>                   
+                    <p:inputText value ="#{childArticleEditController.childArticle.purchasePrice}">
+                        <f:convertNumber minFractionDigits="2" pattern="#,00" /> 
+                    </p:inputText>
+
+                    <p:outputLabel value="Shop-Preis"></p:outputLabel>
+                    <p:inputText value ="#{childArticleEditController.childArticle.shopPrice}">
+                        <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
+                    </p:inputText>
+
+                    <p:outputLabel value="Ebay-Preis"></p:outputLabel>
+                    <p:inputText value ="#{childArticleEditController.childArticle.ebayPrice}">
+                        <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
+                    </p:inputText>
+
+                    <p:outputLabel value="Amazon-Preis"></p:outputLabel>
+                    <p:inputText value ="#{childArticleEditController.childArticle.amazonPrice}">
+                        <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
+                    </p:inputText> 
+                    <p:commandButton value="Speichern" action ="#{childArticleEditController.doSave(childArticleEditController.childArticle)}" onclick="PF('caEditWidget').close();"/>        
+                </p:panelGrid>
+
+            </p:dialog>
+        </h:form> 
     </ui:define>
 </ui:composition>
 

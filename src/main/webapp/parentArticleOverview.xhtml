@@ -10,7 +10,7 @@
         <h3> Oberartikelübersicht </h3>
 
 
-        <p:dataTable value="#{parentArticleOverviewController.articles}" id = "articleOverview" var="article" styleClass="table table-striped table-bordered table-condensed">
+        <p:dataTable value="#{parentArticleOverviewController.articles}" id = "articleOverview" var="article" scrollable="true" scrollHeight="90%" scrollWidth="90%" tableStyleClass="table table-striped">
             <p:column filterBy="parentArticleName" sortBy="parentArticleName" headerText="Artikelname" filterMatchMode="contains" filterStyle="width: 100%">
                 <h:outputText value ="#{article.parentArticleName}"></h:outputText>
             </p:column>  
