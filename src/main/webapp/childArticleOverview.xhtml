@@ -52,12 +52,12 @@
                 </p:column>
                 <p:column>
                     <!--<p:commandButton value="Bearbeiten" action ="#{childArticleOverviewController.test()}" />-->
-                    <p:commandButton value="Bearbeiten" action ="#{childArticleOverviewController.doEdit(article)}" onclick="PF('caEditWidget').show();" />
+                    <p:commandButton value="Bearbeiten" action ="#{childArticleOverviewController.doEdit(article)}"/>
                 </p:column>
             </p:dataTable>
 
 
-            <p:dialog id="caEdit" header="Unterartikel bearbeiten" widgetVar="caEditWidget" rendered="#{childArticleEditController.childArticle!=null}">
+<!--            <p:dialog id="caEdit" header="Unterartikel bearbeiten" widgetVar="caEditWidget" rendered="#{childArticleEditController.childArticle!=null}">
 
                 <p:panelGrid columns="2">
                     <p:outputLabel value="Artikelname"></p:outputLabel>
@@ -104,10 +104,13 @@
                     <p:inputText value ="#{childArticleEditController.childArticle.amazonPrice}">
                         <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
                     </p:inputText> 
-                    <p:commandButton value="Speichern" action ="#{childArticleEditController.doSave(childArticleEditController.childArticle)}" onclick="PF('caEditWidget').close();"/>        
+                    <p:commandButton value="Speichern" action ="#{childArticleEditController.test()}">
+                        <p:commandButton value="Speichern" action ="#{childArticleEditController.doSave(childArticleEditController.childArticle)}" onclick="PF('caEditWidget').close();">
+                        <p:ajax update="articleOverview"/>
+                    </p:commandButton>
                 </p:panelGrid>
 
-            </p:dialog>
+            </p:dialog>-->
         </h:form> 
     </ui:define>
 </ui:composition>

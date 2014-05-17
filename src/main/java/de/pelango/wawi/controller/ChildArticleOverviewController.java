@@ -36,13 +36,9 @@ public class ChildArticleOverviewController implements Serializable {
         return articles;
     }
 
-    public void doEdit(ChildArticle childArticle) {
+    public String doEdit(ChildArticle childArticle) {
         childArticleEditController.setChildArticle(childArticle);
-//        return "childArticleEdit?faces-redirect=true";
-    }
-
-    public void test() {
-        System.out.println("Huhu");
+        return "childArticleEdit?faces-redirect=true";
     }
 
 }

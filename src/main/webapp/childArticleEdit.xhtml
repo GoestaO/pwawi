@@ -13,53 +13,54 @@
 
 
         <h:form>
-            <h:panelGrid columns="2">
-                <h:outputLabel value="Artikelname"></h:outputLabel>
+            <p:panelGrid columns="2">
+                <p:outputLabel value="Artikelname"></p:outputLabel>
                 <h:outputText value ="#{childArticleEditController.childArticle.parentArticleName}"></h:outputText>
 
-                <h:outputLabel value="EAN"></h:outputLabel>                   
-                <h:inputText value ="#{childArticleEditController.childArticle.ean}">
-                    <f:validateLength minimum="13" maximum="13" />
-                </h:inputText>                  
+                <p:outputLabel value="EAN"></p:outputLabel>                   
+                <p:inputText value ="#{childArticleEditController.childArticle.ean}">
+                    <!--<f:validateLength minimum="13" maximum="13" />-->
+                </p:inputText>                  
 
-                <h:outputLabel value="SKU"></h:outputLabel>                    
+                <p:outputLabel value="SKU"></p:outputLabel>                    
                 <h:outputText value ="#{childArticleEditController.childArticle.sku}"></h:outputText>                
 
-                <h:outputLabel value="Hersteller-SKU"></h:outputLabel>                     
-                <h:inputText value ="#{childArticleEditController.childArticle.manufacturerSKU}"></h:inputText>
+                <p:outputLabel value="Hersteller-SKU"></p:outputLabel>                     
+                <p:inputText value ="#{childArticleEditController.childArticle.manufacturerSKU}"></p:inputText>
 
-                <h:outputLabel value="Größe"></h:outputLabel>
-                <h:selectOneMenu value="#{childArticleEditController.childArticle.size}">                    
+                <p:outputLabel value="Größe"></p:outputLabel>
+                <p:selectOneMenu value="#{childArticleEditController.childArticle.size}">                    
                     <f:selectItems value ="#{selectManySizeBean.getSizeListByType(childArticleEditController.childArticle.attribute.name)}" var = "size" itemLabel="#{size.name}" itemValue="#{size.name}"/>
                     <f:converter converterId="sizeConverter" />
-                </h:selectOneMenu>
+                </p:selectOneMenu>
 
-                <h:outputLabel value="Bestand"></h:outputLabel>                    
+                <p:outputLabel value="Bestand"></p:outputLabel>                    
                 <h:outputText value ="#{childArticleEditController.childArticle.quantity}"> 
                     <f:convertNumber minFractionDigits="0" /> 
                 </h:outputText>
 
-                <h:outputLabel value="Einkaufspreis"></h:outputLabel>                   
-                <h:inputText value ="#{childArticleEditController.childArticle.purchasePrice}">
+                <p:outputLabel value="Einkaufspreis"></p:outputLabel>                   
+                <p:inputText value ="#{childArticleEditController.childArticle.purchasePrice}">
                     <f:convertNumber minFractionDigits="2" pattern="#,00" /> 
-                </h:inputText>
+                </p:inputText>
 
-                <h:outputLabel value="Shop-Preis"></h:outputLabel>
-                <h:inputText value ="#{childArticleEditController.childArticle.shopPrice}">
+                <p:outputLabel value="Shop-Preis"></p:outputLabel>
+                <p:inputText value ="#{childArticleEditController.childArticle.shopPrice}">
                     <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
-                </h:inputText>
+                </p:inputText>
 
-                <h:outputLabel value="Ebay-Preis"></h:outputLabel>
-                <h:inputText value ="#{childArticleEditController.childArticle.ebayPrice}">
+                <p:outputLabel value="Ebay-Preis"></p:outputLabel>
+                <p:inputText value ="#{childArticleEditController.childArticle.ebayPrice}">
                     <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
-                </h:inputText>
+                </p:inputText>
 
-                <h:outputLabel value="Amazon-Preis"></h:outputLabel>
-                <h:inputText value ="#{childArticleEditController.childArticle.amazonPrice}">
+                <p:outputLabel value="Amazon-Preis"></p:outputLabel>
+                <p:inputText value ="#{childArticleEditController.childArticle.amazonPrice}">
                     <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
-                </h:inputText> 
-                <h:commandButton value="Speichern" action ="#{childArticleEditController.doSave(childArticleEditController.childArticle)}"/>        
-            </h:panelGrid>
+                </p:inputText> 
+                <p:commandButton value="Speichern" ajax = "false" action="#{childArticleEditController.doSave(childArticleEditController.childArticle)}" />
+                <!--<p:commandButton value="Speichern" action ="#{childArticleEditController.doSave(childArticleEditController.childArticle)}"/>-->
+            </p:panelGrid>
         </h:form>       
     </ui:define>
 </ui:composition>

@@ -33,8 +33,13 @@ public class ChildArticleEditController implements Serializable {
         this.childArticle = childArticle;
     }
 
-    public void doSave(ChildArticle childArticle) {
+    public String doSave(ChildArticle childArticle) {
+        System.out.println("Hallo");
         service.update(childArticle);
-//        return "childArticleOverview?faces-redirect=true";
+        return "childArticleOverview?faces-redirect=true";
+    }
+    
+    public void doTest(){
+        System.out.println("TEST");
     }
 }
