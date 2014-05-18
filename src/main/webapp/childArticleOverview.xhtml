@@ -51,14 +51,15 @@
                     </h:outputText>
                 </p:column>
                 <p:column>
-                    <!--<p:commandButton value="Bearbeiten" action ="#{childArticleOverviewController.test()}" />-->
-                    <p:commandButton value="Bearbeiten" action ="#{childArticleOverviewController.doEdit(article)}"/>
+                    <p:commandButton value="Bearbeiten"  oncomplete ="caEditWidget.show();" update=":caEdit" >
+                        <f:setPropertyActionListener target="#{childArticleEditController.childArticle}" value="#{article}"  />
+                    </p:commandButton>
                 </p:column>
             </p:dataTable>
+        </h:form>
 
-
-<!--            <p:dialog id="caEdit" header="Unterartikel bearbeiten" widgetVar="caEditWidget" rendered="#{childArticleEditController.childArticle!=null}">
-
+        <p:dialog id="caEdit" header="Unterartikel bearbeiten" widgetVar="caEditWidget">
+            <h:form>
                 <p:panelGrid columns="2">
                     <p:outputLabel value="Artikelname"></p:outputLabel>
                     <h:outputText value ="#{childArticleEditController.childArticle.parentArticleName}"></h:outputText>
@@ -104,14 +105,14 @@
                     <p:inputText value ="#{childArticleEditController.childArticle.amazonPrice}">
                         <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
                     </p:inputText> 
-                    <p:commandButton value="Speichern" action ="#{childArticleEditController.test()}">
-                        <p:commandButton value="Speichern" action ="#{childArticleEditController.doSave(childArticleEditController.childArticle)}" onclick="PF('caEditWidget').close();">
-                        <p:ajax update="articleOverview"/>
+                    <p:commandButton value="Speichern" action ="#{childArticleEditController.doSave()}" oncomplete="caEditWidget.hide();">
+                        <p:ajax update=":j_idt21:articleOverview"/>
+                        <f:setPropertyActionListener target="#{childArticleEditController.newChildArticle}" value="#{childArticleEditController.newChildArticle}"/>
                     </p:commandButton>
                 </p:panelGrid>
+            </h:form> 
+        </p:dialog>
 
-            </p:dialog>-->
-        </h:form> 
     </ui:define>
 </ui:composition>
 

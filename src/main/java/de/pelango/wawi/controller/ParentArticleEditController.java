@@ -111,7 +111,6 @@ public class ParentArticleEditController implements Serializable {
 
     public List<Gender> getGenderListRight() {
         List<Gender> genderList = selectManyGenderBean.getGenderList();
-        System.out.println(genderList.size());
         genderList.removeAll(this.pa.getGender());
         genderListRight = genderList;
         return genderListRight;

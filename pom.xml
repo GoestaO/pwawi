@@ -31,14 +31,14 @@
             <systemPath>${glassfish.embedded-static-shell.jar}</systemPath>
         </dependency>-->
         <dependency>
-            <groupId>org.primefaces</groupId>
-            <artifactId>primefaces</artifactId>
-            <version>4.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.primefaces.extensions</groupId>
             <artifactId>all-themes</artifactId>
             <version>1.0.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces</artifactId>
+            <version>4.0</version>
         </dependency>
         <dependency>
             <groupId>javax</groupId>
