@@ -54,6 +54,7 @@
                     <p:commandButton value="Bearbeiten"  oncomplete ="caEditWidget.show();" update=":caEdit" >
                         <f:setPropertyActionListener target="#{childArticleEditController.childArticle}" value="#{article}"  />
                     </p:commandButton>
+                    <!--<h:commandButton class="btn btn-default" value = "Bearbeiten" action="#{childArticleOverviewController.doEdit(article)}"/>-->
                 </p:column>
             </p:dataTable>
         </h:form>
@@ -66,7 +67,8 @@
 
                     <p:outputLabel value="EAN"></p:outputLabel>                   
                     <p:inputText value ="#{childArticleEditController.childArticle.ean}">
-                        <f:validateLength minimum="13" maximum="13" />
+                        <!--<p:ajax listener="#{childArticleEditController.eanChanged}" update=":caEdit" process="@this"/>-->
+                        <!--<f:validateLength minimum="13" maximum="13" />-->
                     </p:inputText>                  
 
                     <p:outputLabel value="SKU"></p:outputLabel>                    
@@ -105,9 +107,8 @@
                     <p:inputText value ="#{childArticleEditController.childArticle.amazonPrice}">
                         <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
                     </p:inputText> 
-                    <p:commandButton value="Speichern" action ="#{childArticleEditController.doSave()}" oncomplete="caEditWidget.hide();">
-                        <p:ajax update=":j_idt21:articleOverview"/>
-                        <f:setPropertyActionListener target="#{childArticleEditController.newChildArticle}" value="#{childArticleEditController.newChildArticle}"/>
+                    <p:commandButton value="Speichern" action ="#{childArticleEditController.doSave(childArticleEditController.childArticle)}" oncomplete ="caEditWidget.hide();" update=":j_idt21:articleOverview">
+                        <!--<f:ajax render=":j_idt21:articleOverview"/>-->                        
                     </p:commandButton>
                 </p:panelGrid>
             </h:form> 

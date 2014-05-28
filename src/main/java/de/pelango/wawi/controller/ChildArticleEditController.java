@@ -9,7 +9,7 @@ import de.pelango.wawi.model.ChildArticle;
 import de.pelango.wawi.services.ArticleService;
 import java.io.Serializable;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 /**
@@ -17,15 +17,13 @@ import javax.inject.Named;
  * @author goesta
  */
 @Named
-@RequestScoped
+@SessionScoped
 public class ChildArticleEditController implements Serializable {
 
     @EJB
     private ArticleService service;
 
     private ChildArticle childArticle;
-
-    private ChildArticle newChildArticle;
 
     public ChildArticle getChildArticle() {
         return childArticle;
@@ -35,18 +33,10 @@ public class ChildArticleEditController implements Serializable {
         this.childArticle = childArticle;
     }
 
-    public ChildArticle getNewChildArticle() {
-        return newChildArticle;
-    }
-
-    public void setNewChildArticle(ChildArticle newChildArticle) {
-        this.newChildArticle = newChildArticle;
-    }
-
-    public String doSave() {
-        System.out.println("Hallo");
-//        service.update(childArticle);
-        return "childArticleOverview?faces-redirect=true";
+    public void doSave(ChildArticle childArticle) {
+//        System.out.println("childArticle = " + childArticle.getEan());
+        service.update(childArticle);
+//        return "childArticleOverview?faces-redirect=true";
     }
 
 }

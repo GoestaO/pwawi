@@ -19,36 +19,37 @@ import javax.inject.Named;
 @RequestScoped
 @Named
 public class ChildArticleOverviewController implements Serializable {
-
+    
     @EJB
     private ArticleService articleService;
-
+    
     @Inject
     private ChildArticleEditController childArticleEditController;
-
+    
     private List<ChildArticle> articles;
-
+    
     private ChildArticle toBeEditedChildArticle;
-
+    
     public ChildArticle getToBeEditedChildArticle() {
         return toBeEditedChildArticle;
     }
-
+    
     public void setToBeEditedChildArticle(ChildArticle toBeEditedChildArticle) {
         this.toBeEditedChildArticle = toBeEditedChildArticle;
     }
-
+    
     @PostConstruct
     public void init() {
         articles = articleService.findAllChildArticles();
     }
-
+    
     public List<ChildArticle> getArticles() {
         return articles;
     }
-
-    public String doEdit() {
+    
+    public String doEdit(ChildArticle childArticle) {
+        childArticleEditController.setChildArticle(childArticle);
         return "childArticleEdit?faces-redirect=true";
     }
-
+    
 }
