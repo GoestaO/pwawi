@@ -9,75 +9,233 @@
     <ui:define name="content">
         <h3> Oberartikelübersicht </h3>
 
-
-        <p:dataTable value="#{parentArticleOverviewController.articles}" id = "articleOverview" var="article" scrollable="true" scrollHeight="90%" scrollWidth="90%" tableStyleClass="table table-striped">
-            <p:column filterBy="parentArticleName" sortBy="parentArticleName" headerText="Artikelname" filterMatchMode="contains" filterStyle="width: 100%">
-                <h:outputText value ="#{article.parentArticleName}"></h:outputText>
-            </p:column>  
-            <p:column filterBy="sku" sortBy="sku" headerText="SKU" filterMatchMode="contains" filterStyle="width: 100%">                
-                <h:outputText value ="#{article.sku}"></h:outputText>
-            </p:column>    
-            <p:column filterBy="brand" sortBy="brand" headerText="Marke" filterMatchMode="contains" filterStyle="width: 100%">
-                <h:outputText value ="#{article.brand}"></h:outputText>
-            </p:column> 
-            <p:column filterBy="model" sortBy="model" headerText="Model" filterMatchMode="contains" filterStyle="width: 100%">
-                <h:outputText value ="#{article.model}"></h:outputText>
-            </p:column>
-            <p:column filterBy="attribute.name" sortBy="attribute.name" headerText="Attributset" filterMatchMode="contains" filterStyle="width: 100%">
-                <h:outputText value ="#{article.attribute.name}"></h:outputText>
-            </p:column>
-            <!--            <p:column filterBy="attribute.name" sortBy="attribute.name" headerText="Sonstiges" filterMatchMode="contains" filterStyle="width: 100%">
-                            <h:outputText value ="#{article.misc}"></h:outputText>
-                        </p:column>-->
-            <p:column filterBy="color.name" sortBy="color.name" headerText="Farbe" filterMatchMode="contains" filterStyle="width: 100%">
-                <h:outputText value ="#{article.color.name}"></h:outputText>
-            </p:column>
-            <p:column filterBy="gender" sortBy="gender" headerText="Geschlecht" filterMatchMode="contains" filterStyle="width: 100%">
-                <ui:repeat value ="#{article.gender}" var = "gender">
-                    #{gender.name}<br></br>                   
+        <p:scrollPanel mode="native" style="width:95%;height:95%">
+            <h:form>
+                <p:dataTable value="#{parentArticleOverviewController.articles}" id = "table" var="article" tableStyleClass="table table-striped">
+                    <p:column filterBy="parentArticleName" sortBy="parentArticleName" headerText="Artikelname" filterMatchMode="contains" filterStyle="width: 100%">
+                        <h:outputText value ="#{article.parentArticleName}"></h:outputText>
+                    </p:column>  
+                    <p:column filterBy="sku" sortBy="sku" headerText="SKU" filterMatchMode="contains" filterStyle="width: 100%">                
+                        <h:outputText value ="#{article.sku}"></h:outputText>
+                    </p:column>    
+                    <p:column filterBy="brand" sortBy="brand" headerText="Marke" filterMatchMode="contains" filterStyle="width: 100%">
+                        <h:outputText value ="#{article.brand}"></h:outputText>
+                    </p:column> 
+                    <p:column filterBy="model" sortBy="model" headerText="Model" filterMatchMode="contains" filterStyle="width: 100%">
+                        <h:outputText value ="#{article.model}"></h:outputText>
+                    </p:column>
+                    <p:column filterBy="attribute.name" sortBy="attribute.name" headerText="Attributset" filterMatchMode="contains" filterStyle="width: 100%">
+                        <h:outputText value ="#{article.attribute.name}"></h:outputText>
+                    </p:column>
+                    <!--            <p:column filterBy="attribute.name" sortBy="attribute.name" headerText="Sonstiges" filterMatchMode="contains" filterStyle="width: 100%">
+                                    <h:outputText value ="#{article.misc}"></h:outputText>
+                                </p:column>-->
+                    <p:column filterBy="color.name" sortBy="color.name" headerText="Farbe" filterMatchMode="contains" filterStyle="width: 100%">
+                        <h:outputText value ="#{article.color.name}"></h:outputText>
+                    </p:column>
+                    <p:column filterBy="gender" sortBy="gender" headerText="Geschlecht" filterMatchMode="contains" filterStyle="width: 100%">
+                        <ui:repeat value ="#{article.gender}" var = "gender">
+                            #{gender.name}<br></br>                   
+                        </ui:repeat>
+                    </p:column>
+                    <!--            <p:column filterBy="topProduct" sortBy="topProduct" headerText="Top-Produkt" filterMatchMode="contains" filterStyle="width: 100%">
+                                    <h:outputText value="#{article.topProduct==false? 'Nein' : 'Ja'}"/>                
+                                </p:column>
+                                <p:column filterBy="topProductMobile" sortBy="topProductMobile" headerText="Top-Produkt mobil" filterMatchMode="contains" filterStyle="width: 100%">
+                                    <h:outputText value="#{article.topProductMobile==false? 'Nein' : 'Ja'}"/>                
+                                </p:column>
+                                <p:column filterBy="specialProduct" sortBy="specialProduct" headerText="Besonderes Produkt" filterMatchMode="contains" filterStyle="width: 100%">
+                                    <h:outputText value="#{article.specialProduct==false? 'Nein' : 'Ja'}"/>                
+                                </p:column>
+                                <p:column filterBy="material" sortBy="material" headerText="Material" filterMatchMode="contains" filterStyle="width: 100%">
+                                    <ui:repeat value ="#{article.material}" var = "material">
+                    #{material.name} <br></br>
                 </ui:repeat>
             </p:column>
-            <!--            <p:column filterBy="topProduct" sortBy="topProduct" headerText="Top-Produkt" filterMatchMode="contains" filterStyle="width: 100%">
-                            <h:outputText value="#{article.topProduct==false? 'Nein' : 'Ja'}"/>                
-                        </p:column>
-                        <p:column filterBy="topProductMobile" sortBy="topProductMobile" headerText="Top-Produkt mobil" filterMatchMode="contains" filterStyle="width: 100%">
-                            <h:outputText value="#{article.topProductMobile==false? 'Nein' : 'Ja'}"/>                
-                        </p:column>
-                        <p:column filterBy="specialProduct" sortBy="specialProduct" headerText="Besonderes Produkt" filterMatchMode="contains" filterStyle="width: 100%">
-                            <h:outputText value="#{article.specialProduct==false? 'Nein' : 'Ja'}"/>                
-                        </p:column>
-                        <p:column filterBy="material" sortBy="material" headerText="Material" filterMatchMode="contains" filterStyle="width: 100%">
-                            <ui:repeat value ="#{article.material}" var = "material">
-            #{material.name} <br></br>
-        </ui:repeat>
-    </p:column>
-    <p:column filterBy="productTypes" sortBy="productTypes" headerText="Produkttyp" filterMatchMode="contains" filterStyle="width: 100%">
-        <ui:repeat value ="#{article.productTypes}" var = "productType">
-            #{productType.name} <br></br>
-        </ui:repeat>
-    </p:column>
-    <p:column filterBy="category.name" sortBy="category.name" headerText="Kategorie" filterMatchMode="contains" filterStyle="width: 100%">
-        <h:outputText value = "#{article.category.name}"></h:outputText>                                
-    </p:column>
-    <p:column filterBy="numberOfPictures" sortBy="numberOfPictures" headerText="Anzahl Bilder" filterMatchMode="contains" filterStyle="width: 100%">
-        <h:outputText value ="#{article.numberOfPictures}"/>
-    </p:column>
-    <p:column filterBy="shortDescription" sortBy="shortDescription" headerText="Beschreibung kurz" filterMatchMode="contains" filterStyle="width: 100%">
-        <h:outputText value ="#{article.shortDescription}"/>                
-    </p:column>
-    <p:column filterBy="longDescription" sortBy="longDescription" headerText="Beschreibung lang" filterMatchMode="contains" filterStyle="width: 100%">
-        <h:outputText value ="#{article.longDescription}"/>                
-    </p:column>-->
-            <p:column>
-                <h:form>
-                    <f:facet name ="header">Bearbeiten</f:facet>
-                    <h:commandButton class = "btn btn-default" value="Bearbeiten" action ="#{parentArticleOverviewController.edit(article)}"/>
-                </h:form>
+            <p:column filterBy="productTypes" sortBy="productTypes" headerText="Produkttyp" filterMatchMode="contains" filterStyle="width: 100%">
+                <ui:repeat value ="#{article.productTypes}" var = "productType">
+                    #{productType.name} <br></br>
+                </ui:repeat>
             </p:column>
+            <p:column filterBy="category.name" sortBy="category.name" headerText="Kategorie" filterMatchMode="contains" filterStyle="width: 100%">
+                <h:outputText value = "#{article.category.name}"></h:outputText>                                
+            </p:column>
+            <p:column filterBy="numberOfPictures" sortBy="numberOfPictures" headerText="Anzahl Bilder" filterMatchMode="contains" filterStyle="width: 100%">
+                <h:outputText value ="#{article.numberOfPictures}"/>
+            </p:column>
+            <p:column filterBy="shortDescription" sortBy="shortDescription" headerText="Beschreibung kurz" filterMatchMode="contains" filterStyle="width: 100%">
+                <h:outputText value ="#{article.shortDescription}"/>                
+            </p:column>
+            <p:column filterBy="longDescription" sortBy="longDescription" headerText="Beschreibung lang" filterMatchMode="contains" filterStyle="width: 100%">
+                <h:outputText value ="#{article.longDescription}"/>                
+            </p:column>-->
+                    <p:column>
 
-        </p:dataTable>       
+                        <p:commandButton value="Bearbeiten"  oncomplete ="paEditWidget.show();" update=":paEditDialog" >
+                            <f:setPropertyActionListener target="#{parentArticleEditController.pa}" value="#{article}"  />
+                        </p:commandButton>                       
 
+                    </p:column>
 
+                </p:dataTable>     
+            </h:form>
+        </p:scrollPanel>
+
+        <p:dialog id="paEditDialog" widgetVar="paEditWidget" header="Oberartikel bearbeiten" modal="true">
+            <h:form id="form">
+
+                <h:panelGrid columns="4" styleClass="table table-bordered table-striped" style="text-align:center">
+
+                    <h:panelGroup>
+                        <h:outputLabel value="SKU" style="font-weight:bold" />                    
+                        <h:inputText class = "form-control" value="#{parentArticleEditController.pa.sku}" rendered="#{parentArticleEditController.ean == null}"/>
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputLabel value="Hersteller" style="font-weight:bold" />
+                        <h:inputText class = "form-control" value="#{parentArticleEditController.pa.brand}" rendered="#{parentArticleEditController.ean == null}"/>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value="Model" style="font-weight:bold" />
+                        <h:inputText class = "form-control" value="#{parentArticleEditController.pa.model}" rendered="#{parentArticleEditController.ean == null}"/>
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputLabel value="Sonstiges" style="font-weight:bold" />
+                        <h:inputText class = "form-control" value="#{parentArticleEditController.pa.misc}" rendered="#{parentArticleEditController.ean == null}"/>
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputLabel value="Farbe" style="font-weight:bold" />
+                        <h:selectOneMenu class = "form-control" value="#{parentArticleEditController.pa.color}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:selectItems value="#{colorListBean.colorList}" var = "color" itemValue = "#{color.name}" itemLabel="#{color.name}"/>
+                            <f:converter converterId="colorConverter" />
+                        </h:selectOneMenu>
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputLabel value ="Attribut" style="font-weight: bold"/>
+                        <h:selectOneMenu class = "form-control" value="#{parentArticleEditController.pa.attribute}" valueChangeListener = "#{selectManySizeBean.attributeChanged}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:selectItems value ="#{attributeBean.attribute}" var ="attribute" itemValue ="#{attribute.name}" itemLabel ="#{attribute.name}"/>
+                            <f:converter converterId="attributeConverter"/>
+                        </h:selectOneMenu>
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputLabel value="Geschlecht" style="font-weight:bold" />
+                        <h:panelGroup style="display:inline">
+                            <h:selectManyListbox class = "form-control" id = "containsGender" value="#{parentArticleEditController.selectedGenderLeft}" rendered="#{parentArticleEditController.ean == null}">
+                                <f:converter converterId="genderConverter" />
+                                <f:selectItems value="#{parentArticleEditController.pa.gender}" var = "gender" itemValue = "#{gender.name}" itemLabel="#{gender.name}"/>                   
+                            </h:selectManyListbox>                        
+                            <h:commandButton styleClass = "btn btn-default" value="&darr;" actionListener = "#{parentArticleEditController.removeGender}" rendered="#{parentArticleEditController.ean == null}">
+                                <f:ajax execute="@this form:containsGender" render="form:containsGender form:genderAvailable"/>
+                            </h:commandButton>
+                            <h:commandButton styleClass = "btn btn-default" value="&uarr;" actionListener = "#{parentArticleEditController.addGender}" rendered="#{parentArticleEditController.ean == null}">
+                                <f:ajax execute="@this form:genderAvailable" render="form:containsGender form:genderAvailable"/>
+                            </h:commandButton>
+                            <h:selectManyListbox id ="genderAvailable" class = "form-control" value="#{parentArticleEditController.selectedGenderRight}" rendered="#{parentArticleEditController.ean == null}">
+                                <f:converter converterId="genderConverter" />
+                                <f:selectItems value="#{parentArticleEditController.genderListRight}" var = "item2" itemValue = "#{item2.name}" itemLabel="#{item2.name}"/>                   
+                            </h:selectManyListbox>                           
+                        </h:panelGroup>
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputLabel value ="Top-Produkt"/>
+                        <h:selectOneRadio class = "form-control" id="topProduct" value ="#{parentArticleEditController.pa.topProduct}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:selectItem itemValue="#{false}" itemLabel="Nein" />
+                            <f:selectItem itemValue="#{true}" itemLabel="Ja"/>                    
+                        </h:selectOneRadio>
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputLabel value ="Top-Produkt mobil"/>
+                        <h:selectOneRadio class = "form-control" id="topProductMobile" value ="#{parentArticleEditController.pa.topProductMobile}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:selectItem itemValue="#{false}" itemLabel="Nein" />
+                            <f:selectItem itemValue="#{true}" itemLabel="Ja"/>                    
+                        </h:selectOneRadio>
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputLabel value ="Besonderes Produkt"/>
+                        <h:selectOneRadio class = "form-control" id="specialProduct" value ="#{parentArticleEditController.pa.specialProduct}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:selectItem itemValue="#{false}" itemLabel="Nein" />
+                            <f:selectItem itemValue="#{true}" itemLabel="Ja"/>                 
+                        </h:selectOneRadio>
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputLabel value="Material" style="font-weight:bold" />
+                        <h:panelGroup style="display:block; text-align:center">
+                            <h:selectManyListbox id ="containsMaterial"  class = "form-control" value="#{parentArticleEditController.selectedMaterialLeft}" rendered="#{parentArticleEditController.ean == null}">
+                                <f:converter converterId="materialConverter" />
+                                <f:selectItems value="#{parentArticleEditController.pa.material}" var = "item" itemValue = "#{item.name}" itemLabel="#{item.name}"/>                   
+                            </h:selectManyListbox>                        
+                            <h:commandButton styleClass = "btn btn-default" value="&darr;" actionListener = "#{parentArticleEditController.removeMaterial}" rendered="#{parentArticleEditController.ean == null}">
+                                <f:ajax execute="@this form:containsMaterial" render="form:containsMaterial form:materialLeftover"/>
+                            </h:commandButton>
+                            <h:commandButton styleClass = "btn btn-default" value="&uarr;" actionListener = "#{parentArticleEditController.addMaterial}" rendered="#{parentArticleEditController.ean == null}">
+                                <f:ajax execute="@this form:materialLeftover" render="form:containsMaterial form:materialLeftover"/>
+                            </h:commandButton>
+                            <h:selectManyListbox id ="materialLeftover" class = "form-control" value="#{parentArticleEditController.selectedMaterialRight}" rendered="#{parentArticleEditController.ean == null}">
+                                <f:converter converterId="materialConverter" />
+                                <f:selectItems value="#{parentArticleEditController.materialListRight}" var = "item2" itemValue = "#{item2.name}" itemLabel="#{item2.name}"/>                   
+                            </h:selectManyListbox>
+                        </h:panelGroup>
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputLabel value="Produkttyp" style="font-weight:bold" />
+                        <h:panelGroup style="display:block; text-align:center">
+                            <h:selectManyListbox class = "form-control" id = "containsProductTypes" value = "#{parentArticleEditController.selectedProductTypesLeft}" rendered="#{parentArticleEditController.ean == null}">
+                                <f:converter converterId= "productTypeConverter"/>
+                                <f:selectItems value = "#{parentArticleEditController.pa.productTypes}" var ="productType" itemLabel="#{productType.name}" itemValue="#{productType.name}"/>
+                            </h:selectManyListbox>                       
+                            <h:commandButton styleClass = "btn btn-default" value="&darr;" actionListener = "#{parentArticleEditController.removeProductType}" rendered="#{parentArticleEditController.ean == null}">
+                                <f:ajax execute="@this form:containsProductTypes" render="form:containsProductTypes form:productTypesLeftover"/>
+                            </h:commandButton>
+                            <h:commandButton styleClass = "btn btn-default" value="&uarr;" actionListener = "#{parentArticleEditController.addProductType}" rendered="#{parentArticleEditController.ean == null}">
+                                <f:ajax execute="@this form:productTypesLeftover" render="form:containsProductTypes form:productTypesLeftover"/>
+                            </h:commandButton>
+                            <h:selectManyListbox id ="productTypesLeftover" class = "form-control" value="#{parentArticleEditController.selectedProductTypesRight}" rendered="#{parentArticleEditController.ean == null}">
+                                <f:converter converterId="productTypeConverter" />
+                                <f:selectItems value="#{parentArticleEditController.productTypeListRight}" var = "item2" itemValue = "#{item2.name}" itemLabel="#{item2.name}"/>                   
+                            </h:selectManyListbox>
+                        </h:panelGroup>
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputLabel value="Kategorie" style="font-weight:bold" />
+                        <h:selectOneMenu class = "form-control" value="#{parentArticleEditController.pa.category}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:selectItems value="#{selectCategoryBean.categoryList}" var = "category" itemValue = "#{category.name}" itemLabel="#{category.name}"/>
+                            <f:converter converterId="categoryConverter" />
+                        </h:selectOneMenu>                        
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputLabel value ="Anzahl Bilder" style="font-weight: bold"/>
+                        <h:selectOneMenu class = "form-control" value = "#{parentArticleEditController.pa.numberOfPictures}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:selectItems value ="#{selectNumberOfPicturesBean.pictureList}" var = "numberOfPictures" itemValue="#{numberOfPictures}" itemLabel="#{numberOfPictures}" />
+                        </h:selectOneMenu>                        
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputLabel value ="Beschreibung kurz" style ="font-weight: bold"/>
+                        <h:inputText class = "form-control" value ="#{parentArticleEditController.pa.shortDescription}" rendered="#{parentArticleEditController.ean == null}"/>                       
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputLabel value ="Beschreibung lang" style ="font-weight: bold"/>
+                        <h:inputTextarea class = "form-control" value="#{parentArticleEditController.pa.longDescription}" rendered="#{parentArticleEditController.ean == null}"/>
+                    </h:panelGroup>
+
+                </h:panelGrid>
+
+                <p:commandButton styleClass = "btn btn-default" value="Speichern" action = "#{parentArticleEditController.doSave(parentArticleEditController.pa)}" oncomplete ="paEditWidget.hide();" update=":j_idt135:table"/>
+
+            </h:form>
+        </p:dialog>     
     </ui:define>
 </ui:composition>
 

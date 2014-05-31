@@ -9,9 +9,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <h:outputStylesheet name="./css/bootstrap.css"/>
         <h:outputStylesheet name="./css/jquery.dataTables.css"/>
-<!--        <h:outputScript name="./js/jquery.js"/>
-        <h:outputScript name="./js/bootstrap.js"/>
-        <h:outputScript name="./js/jquery.dataTables.js"/>-->
+        <!--        <h:outputScript name="./js/jquery.js"/>
+                <h:outputScript name="./js/bootstrap.js"/>
+                <h:outputScript name="./js/jquery.dataTables.js"/>-->
 
 
         <title>Pelango Warenwirtschaft</title>
@@ -23,23 +23,25 @@
 
         <h:form>
             <p:menubar>
-                <p:submenu label="Artikelmanagement">
-                    <p:menuitem value="Oberartikelanlage" url="createParentArticle.jsf" icon="ui-icon-wrench"/>
-                    <p:menuitem value="Oberartikelübersicht" url="parentArticleOverview.jsf" icon="ui-icon-document" />
-                    <p:menuitem value="Unterartikelübersicht" url="childArticleOverview.jsf" icon="ui-icon-document"/>
-                    <p:menuitem value="Oberartikelsuche" url="findParentArticle.jsf" icon="ui-icon-search"/>
-                    <p:menuitem value="Unterartikelsuche" url="findChildArticle.jsf" icon="ui-icon-search" />
-                </p:submenu>
-                <p:submenu label="Logistik">
-                    <p:menuitem value="Wareneingang" url="inbound.jsf" icon="ui-icon-person" />
-                    <p:menuitem value="Warenausgang" url="outbound.jsf" icon="ui-icon-cart" />
-                </p:submenu>
+                <!--                <p:submenu label="Artikelmanagement">-->
+                <p:menuitem value="Oberartikelanlage" url="createParentArticle.jsf" icon="ui-icon-wrench"/>
+                <p:menuitem value="Oberartikelübersicht" url="parentArticleOverview.jsf" icon="ui-icon-document" />
+                <p:menuitem value="Unterartikelübersicht" url="childArticleOverview.jsf" icon="ui-icon-document"/>
+                <p:menuitem value="Oberartikelsuche" url="findParentArticle.jsf" icon="ui-icon-search"/>
+                <p:menuitem value="Unterartikelsuche" url="findChildArticle.jsf" icon="ui-icon-search" />
+                <!--</p:submenu>-->
+                <!--<p:submenu label="Logistik">-->
+                <p:menuitem value="Wareneingang" url="inbound.jsf" icon="ui-icon-person" />
+                <p:menuitem value="Warenausgang" url="outbound.jsf" icon="ui-icon-cart" />
+                <!--</p:submenu>-->
             </p:menubar>
         </h:form>
 
         <div class = "jumbotron">
             <ui:insert name="content">
-                Content here               
+
+                Content here
+
             </ui:insert>
         </div>
 

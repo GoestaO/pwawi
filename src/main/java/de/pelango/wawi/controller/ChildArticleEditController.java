@@ -34,9 +34,7 @@ public class ChildArticleEditController implements Serializable {
     }
 
     public void doSave(ChildArticle childArticle) {
-//        System.out.println("childArticle = " + childArticle.getEan());
         service.update(childArticle);
-//        return "childArticleOverview?faces-redirect=true";
     }
 
 }

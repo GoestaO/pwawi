@@ -17,10 +17,18 @@ public class ParentArticleOverviewController implements Serializable {
     @EJB
     private ArticleService articleService;
 
+    private List<ParentArticle> articles;
+
     @Inject
     private ParentArticleEditController parentArticleEditController;
 
-    private List<ParentArticle> articles;
+    public ParentArticleEditController getParentArticleEditController() {
+        return parentArticleEditController;
+    }
+
+    public void setParentArticleEditController(ParentArticleEditController parentArticleEditController) {
+        this.parentArticleEditController = parentArticleEditController;
+    }
 
     @PostConstruct
     public void init() {

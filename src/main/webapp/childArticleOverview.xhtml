@@ -10,7 +10,7 @@
     <ui:define name="content">
         <h3> Unterartikel-Übersicht</h3>
         <h:form>
-            <p:dataTable value="#{childArticleOverviewController.articles}" id = "articleOverview" var="article" scrollable="true" scrollHeight="90%" scrollWidth="100%">
+            <p:dataTable value="#{childArticleOverviewController.articles}" id = "table" var="article" scrollable="true" scrollHeight="90%" scrollWidth="100%">
                 <p:column filterBy="parentArticleName" sortBy="parentArticleName" headerText="Artikelname" filterMatchMode="contains" filterStyle="width: 100%">
                     <h:outputText value ="#{article.parentArticleName}"></h:outputText>
                 </p:column>
@@ -54,12 +54,11 @@
                     <p:commandButton value="Bearbeiten"  oncomplete ="caEditWidget.show();" update=":caEdit" >
                         <f:setPropertyActionListener target="#{childArticleEditController.childArticle}" value="#{article}"  />
                     </p:commandButton>
-                    <!--<h:commandButton class="btn btn-default" value = "Bearbeiten" action="#{childArticleOverviewController.doEdit(article)}"/>-->
                 </p:column>
             </p:dataTable>
         </h:form>
 
-        <p:dialog id="caEdit" header="Unterartikel bearbeiten" widgetVar="caEditWidget">
+        <p:dialog id="caEdit" header="Unterartikel bearbeiten" modal="true" widgetVar="caEditWidget">
             <h:form>
                 <p:panelGrid columns="2">
                     <p:outputLabel value="Artikelname"></p:outputLabel>
@@ -67,8 +66,6 @@
 
                     <p:outputLabel value="EAN"></p:outputLabel>                   
                     <p:inputText value ="#{childArticleEditController.childArticle.ean}">
-                        <!--<p:ajax listener="#{childArticleEditController.eanChanged}" update=":caEdit" process="@this"/>-->
-                        <!--<f:validateLength minimum="13" maximum="13" />-->
                     </p:inputText>                  
 
                     <p:outputLabel value="SKU"></p:outputLabel>                    
@@ -107,9 +104,8 @@
                     <p:inputText value ="#{childArticleEditController.childArticle.amazonPrice}">
                         <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
                     </p:inputText> 
-                    <p:commandButton value="Speichern" action ="#{childArticleEditController.doSave(childArticleEditController.childArticle)}" oncomplete ="caEditWidget.hide();" update=":j_idt21:articleOverview">
-                        <!--<f:ajax render=":j_idt21:articleOverview"/>-->                        
-                    </p:commandButton>
+                    <p:commandButton value="Speichern" action ="#{childArticleEditController.doSave(childArticleEditController.childArticle)}" oncomplete ="caEditWidget.hide();" update=":j_idt19:table"/>
+
                 </p:panelGrid>
             </h:form> 
         </p:dialog>

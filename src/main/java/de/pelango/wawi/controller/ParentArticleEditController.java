@@ -19,9 +19,10 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.Conversation;
-import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -32,7 +33,7 @@ import javax.inject.Named;
  * @author goesta
  */
 @Named
-@ConversationScoped
+@SessionScoped
 public class ParentArticleEditController implements Serializable {
 
     @EJB
@@ -84,7 +85,9 @@ public class ParentArticleEditController implements Serializable {
 
     public List<Material> getMaterialListRight() {
         List<Material> materialAvailable = selectManyMaterialBean.getMaterialList();
-        materialAvailable.removeAll(this.pa.getMaterial());
+        if (pa != null) {
+            materialAvailable.removeAll(pa.getMaterial());
+        }
         materialListRight = materialAvailable;
         return materialListRight;
     }
@@ -111,7 +114,9 @@ public class ParentArticleEditController implements Serializable {
 
     public List<Gender> getGenderListRight() {
         List<Gender> genderList = selectManyGenderBean.getGenderList();
-        genderList.removeAll(this.pa.getGender());
+        if (pa != null) {
+            genderList.removeAll(pa.getGender());
+        }
         genderListRight = genderList;
         return genderListRight;
     }
@@ -138,7 +143,9 @@ public class ParentArticleEditController implements Serializable {
 
     public List<ProductType> getProductTypeListRight() {
         List<ProductType> productTypeList = selectManyProductTypeBean.getProductTypeList();
-        productTypeList.removeAll(this.pa.getProductTypes());
+        if (pa != null) {
+            productTypeList.removeAll(pa.getProductTypes());
+        }
         productTypeListRight = productTypeList;
         return productTypeListRight;
     }
@@ -218,10 +225,8 @@ public class ParentArticleEditController implements Serializable {
         conversation.end();
     }
 
-    public String doSave() {
-        articleService.update(this.pa);
-        this.end();
-        return "parentArticleOverview?faces-redirect=true";
+    public void doSave(ParentArticle pa) {
+        articleService.update(pa);
     }
 
     public String addChildArticle() {
