@@ -19,7 +19,7 @@
                     <h:inputText id = "brand" class = "form-control" value="#{findParentArticleController.brand}">
                         <f:ajax listener="#{findParentArticleController.listener}" render="form:searchResults" />
                     </h:inputText>
-                    <h:commandButton id="btnClearBrand" value="x" action="#{findParentArticleController.clearBrand()}">
+                    <h:commandButton id="btnClearBrand" value="x" class = "btn btn-default" action="#{findParentArticleController.clearBrand()}">
                         <f:ajax execute="@this" render="brand"></f:ajax>
                     </h:commandButton>
 
@@ -30,7 +30,7 @@
                         <f:ajax listener="#{findParentArticleController.listener}" render="form:searchResults" />
                         <f:converter converterId="colorConverter" />
                     </h:selectOneMenu>
-                    <h:commandButton id="btnClearColor" value="x" action="#{findParentArticleController.clearColor()}">
+                    <h:commandButton id="btnClearColor" value="x" class = "btn btn-default" action="#{findParentArticleController.clearColor()}">
                         <f:ajax execute="@this" render="form:color form:searchResults"></f:ajax>
                     </h:commandButton>
 
@@ -41,7 +41,7 @@
                         <f:selectItems value="#{selectManyMaterialBean.materialList}" var = "material" itemValue = "#{material.name}" itemLabel="#{material.name}"/>
                         <f:ajax listener="#{findParentArticleController.listener}" render="form:searchResults" />
                     </h:selectOneMenu>
-                    <h:commandButton id="btnClearMaterial" value="x" action="#{findParentArticleController.clearMaterial()}">
+                    <h:commandButton id="btnClearMaterial" value="x" class = "btn btn-default" action="#{findParentArticleController.clearMaterial()}">
                         <f:ajax execute="@this" render="form:material form:searchResults"></f:ajax>
                     </h:commandButton>
 
