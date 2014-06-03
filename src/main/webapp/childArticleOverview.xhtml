@@ -10,7 +10,12 @@
     <ui:define name="content">
         <h3> Unterartikel-Übersicht</h3>
         <h:form>
-            <p:dataTable value="#{childArticleOverviewController.articles}" id = "table" var="article" scrollable="true" scrollHeight="90%" scrollWidth="100%">
+            <p:dataTable rows="25"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} von {totalRecords}"
+                         rowsPerPageTemplate="25,50,100" value="#{childArticleOverviewController.articles}" id = "table" var="article" scrollable="true" scrollHeight="90%" scrollWidth="100%">
+                
                 <p:column filterBy="parentArticleName" sortBy="parentArticleName" headerText="Artikelname" filterMatchMode="contains" filterStyle="width: 100%">
                     <h:outputText value ="#{article.parentArticleName}"></h:outputText>
                 </p:column>
