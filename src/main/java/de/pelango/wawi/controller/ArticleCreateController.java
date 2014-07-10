@@ -81,7 +81,7 @@ public class ArticleCreateController implements Serializable {
     }
 
     public void setNumber(Long number) {
-        this.number = this.getNumber();
+        this.number = number;
     }
 
     public String getSku() {
