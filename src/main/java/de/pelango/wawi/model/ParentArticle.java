@@ -1,6 +1,7 @@
 package de.pelango.wawi.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.*;
 
@@ -21,6 +22,8 @@ public class ParentArticle implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
+    private BigInteger skuPrefix;
 
     private String sku;
 
@@ -93,6 +96,14 @@ public class ParentArticle implements Serializable {
 
     public ParentArticle() {
         super();
+    }
+
+    public BigInteger getSkuPrefix() {
+        return skuPrefix;
+    }
+
+    public void setSkuPrefix(BigInteger skuPrefix) {
+        this.skuPrefix = skuPrefix;
     }
 
     public String getSku() {

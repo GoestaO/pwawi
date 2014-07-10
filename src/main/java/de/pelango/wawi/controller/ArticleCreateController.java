@@ -11,11 +11,13 @@ import de.pelango.wawi.model.ProductType;
 import de.pelango.wawi.model.Sizes;
 import de.pelango.wawi.services.ArticleService;
 import de.pelango.wawi.services.SizeService;
+import generators.SKUGenerator;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,9 +25,10 @@ import javax.persistence.PersistenceContext;
 @Named
 @RequestScoped
 public class ArticleCreateController implements Serializable {
-    
+
     private String brand;
     private String model;
+    private Long number;
     private String sku;
     private String misc;
     private Color color;
@@ -45,179 +48,190 @@ public class ArticleCreateController implements Serializable {
     private BigDecimal amazonPrice;
     private BigDecimal ebayPrice;
     private BigDecimal shopPrice;
-    
+
     @PersistenceContext
     private EntityManager em;
-    
+
     @EJB
     private ArticleService service;
     @EJB
     private SizeService sizeService;
     
+    @Inject
+    private SKUGenerator skuGenerator;
+
     public String getBrand() {
         return brand;
     }
-    
+
     public void setBrand(String brand) {
         this.brand = brand;
     }
-    
+
     public String getModel() {
         return model;
     }
-    
+
     public void setModel(String model) {
         this.model = model;
     }
-    
+
+    public Long getNumber() {
+        return skuGenerator.generateNumber();
+    }
+
+    public void setNumber(Long number) {
+        this.number = this.getNumber();
+    }
+
     public String getSku() {
         return sku;
     }
-    
+
     public void setSku(String sku) {
         this.sku = sku;
     }
-    
+
     public String getMisc() {
         return misc;
     }
-    
+
     public void setMisc(String misc) {
         this.misc = misc;
     }
-    
+
     public Color getColor() {
         return color;
     }
-    
+
     public void setColor(Color color) {
         this.color = color;
     }
-    
+
     public Attribute getAttribute() {
         return attribute;
     }
-    
+
     public void setAttribute(Attribute attribute) {
         this.attribute = attribute;
     }
-    
+
     public List<Gender> getGender() {
         return gender;
     }
-    
+
     public void setGender(List<Gender> gender) {
         this.gender = gender;
     }
-    
+
     public boolean isTopProduct() {
         return topProduct;
     }
-    
+
     public void setTopProduct(boolean topProduct) {
         this.topProduct = topProduct;
     }
-    
+
     public boolean isTopProductMobile() {
         return topProductMobile;
     }
-    
+
     public void setTopProductMobile(boolean topProductMobile) {
         this.topProductMobile = topProductMobile;
     }
-    
+
     public boolean isSpecialProduct() {
         return specialProduct;
     }
-    
+
     public void setSpecialProduct(boolean specialProduct) {
         this.specialProduct = specialProduct;
     }
-    
+
     public List<Material> getMaterial() {
         return material;
     }
-    
+
     public void setMaterial(List<Material> material) {
         this.material = material;
     }
-    
+
     public List<ProductType> getProductType() {
         return productType;
     }
-    
+
     public void setProductType(List<ProductType> productType) {
         this.productType = productType;
     }
-    
+
     public Category getCategory() {
         return category;
     }
-    
+
     public void setCategory(Category category) {
         this.category = category;
     }
-    
+
     public int getNumberOfPictures() {
         return numberOfPictures;
     }
-    
+
     public void setNumberOfPictures(int numberOfPictures) {
         this.numberOfPictures = numberOfPictures;
     }
-    
+
     public String getShortDescription() {
         return shortDescription;
     }
-    
+
     public void setShortDescription(String shortDescription) {
         this.shortDescription = shortDescription;
     }
-    
+
     public String getLongDescription() {
         return longDescription;
     }
-    
+
     public void setLongDescription(String longDescription) {
         this.longDescription = longDescription;
     }
-    
+
     public List<Sizes> getSizes() {
         return sizes;
     }
-    
+
     public void setSizes(List<Sizes> sizes) {
         this.sizes = sizes;
     }
-    
+
     public BigDecimal getPurchasePrice() {
         return purchasePrice;
     }
-    
+
     public void setPurchasePrice(BigDecimal purchasePrice) {
         this.purchasePrice = purchasePrice;
     }
-    
+
     public BigDecimal getAmazonPrice() {
         return amazonPrice;
     }
-    
+
     public void setAmazonPrice(BigDecimal amazonPrice) {
         this.amazonPrice = amazonPrice;
     }
-    
+
     public BigDecimal getEbayPrice() {
         return ebayPrice;
     }
-    
+
     public void setEbayPrice(BigDecimal ebayPrice) {
         this.ebayPrice = ebayPrice;
     }
-    
+
     public BigDecimal getShopPrice() {
         return shopPrice;
     }
-    
+
     public void setShopPrice(BigDecimal shopPrice) {
         this.shopPrice = shopPrice;
     }
@@ -225,7 +239,7 @@ public class ArticleCreateController implements Serializable {
     // Konstruktor
     public String createArticle(String sku, String brand, String model, String misc, Color color, Attribute attribute, List<Gender> gender, boolean topProduct, boolean topProductMobile, boolean specialProduct, List<Material> material, List<ProductType> productType, Category category, int numberOfPictures, String shortDescription, String longDescription, List<Sizes> size) {
         ParentArticle pa = new ParentArticle(sku, brand, model, misc, color, attribute, gender, topProduct, topProductMobile, specialProduct, material, productType, category, numberOfPictures, shortDescription, longDescription);
-        
+
         for (Sizes s : sizes) {
             ChildArticle ca = new ChildArticle(s, sku, brand, model, misc, color, attribute, gender, topProduct, topProductMobile, specialProduct, material, productType, category, numberOfPictures, shortDescription, longDescription);
             ca.setPurchasePrice(purchasePrice);
@@ -234,10 +248,10 @@ public class ArticleCreateController implements Serializable {
             ca.setShopPrice(shopPrice);
             service.create(ca);
         }
-        
+
         service.create(pa);
-        
+
         return "parentArticleOverview?faces-redirect=true";
     }
-    
+
 }
