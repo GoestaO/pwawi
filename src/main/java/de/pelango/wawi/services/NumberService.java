@@ -5,6 +5,7 @@
  */
 package de.pelango.wawi.services;
 
+import de.pelango.wawi.model.PrefixNumber;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,4 +26,18 @@ public class NumberService {
         Long result = query.getSingleResult();
         return result;
     }
+
+    public void create(Long number) {
+        PrefixNumber newNumber = new PrefixNumber();
+        newNumber.setNumber(number);
+        em.persist(newNumber);
+    }
+
+    public boolean exists(Long number) {
+        TypedQuery<Long> query = em.createQuery("select count(p.number) from PrefixNumber p where p.number = :number", Long.class);
+        query.setParameter("number", number);
+        Long result = query.getSingleResult();
+        return result > 0;
+    }
+
 }

@@ -10,11 +10,13 @@ import de.pelango.wawi.model.ParentArticle;
 import de.pelango.wawi.model.ProductType;
 import de.pelango.wawi.model.Sizes;
 import de.pelango.wawi.services.ArticleService;
-import de.pelango.wawi.services.SizeService;
+import de.pelango.wawi.services.NumberService;
 import generators.SKUGenerator;
+import generators.qualifier.SevenDigits;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -29,7 +31,6 @@ public class ArticleCreateController implements Serializable {
     private String brand;
     private String model;
     private Long number;
-    private String sku;
     private String misc;
     private Color color;
     private Attribute attribute;
@@ -49,15 +50,24 @@ public class ArticleCreateController implements Serializable {
     private BigDecimal ebayPrice;
     private BigDecimal shopPrice;
 
-    @PersistenceContext
-    private EntityManager em;
+    @PostConstruct
+    public void init(){
+        this.setNumber(skuGenerator.generateNumber());
+    }
+//    @PersistenceContext
+//    private EntityManager em;
 
     @EJB
     private ArticleService service;
-    @EJB
-    private SizeService sizeService;
     
+//    @EJB
+//    private SizeService sizeService;
+
+    @EJB
+    private NumberService numberService;
+
     @Inject
+    @SevenDigits
     private SKUGenerator skuGenerator;
 
     public String getBrand() {
@@ -77,20 +87,20 @@ public class ArticleCreateController implements Serializable {
     }
 
     public Long getNumber() {
-        return skuGenerator.generateNumber();
+        return number;
     }
 
     public void setNumber(Long number) {
-        this.number = this.getNumber();
+        this.number = number;
     }
 
-    public String getSku() {
-        return sku;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
+//    public String getSku() {
+//        return sku;
+//    }
+//
+//    public void setSku(String sku) {
+//        this.sku = this.number + "-" + this.color.getName();
+//    }
 
     public String getMisc() {
         return misc;
@@ -236,10 +246,11 @@ public class ArticleCreateController implements Serializable {
         this.shopPrice = shopPrice;
     }
 
-    // Konstruktor
-    public String createArticle(String sku, String brand, String model, String misc, Color color, Attribute attribute, List<Gender> gender, boolean topProduct, boolean topProductMobile, boolean specialProduct, List<Material> material, List<ProductType> productType, Category category, int numberOfPictures, String shortDescription, String longDescription, List<Sizes> size) {
-        ParentArticle pa = new ParentArticle(sku, brand, model, misc, color, attribute, gender, topProduct, topProductMobile, specialProduct, material, productType, category, numberOfPictures, shortDescription, longDescription);
-
+    
+    public String createArticle(Long number, String brand, String model, String misc, Color color, Attribute attribute, List<Gender> gender, boolean topProduct, boolean topProductMobile, boolean specialProduct, List<Material> material, List<ProductType> productType, Category category, int numberOfPictures, String shortDescription, String longDescription, List<Sizes> size) {
+        String sku = number + "-" + color.getName();
+        ParentArticle pa = new ParentArticle(sku, brand, model, misc, color, attribute, gender, topProduct, topProductMobile, specialProduct, material, productType, category, numberOfPictures, shortDescription, longDescription);          
+        numberService.create(number);
         for (Sizes s : sizes) {
             ChildArticle ca = new ChildArticle(s, sku, brand, model, misc, color, attribute, gender, topProduct, topProductMobile, specialProduct, material, productType, category, numberOfPictures, shortDescription, longDescription);
             ca.setPurchasePrice(purchasePrice);
@@ -248,9 +259,7 @@ public class ArticleCreateController implements Serializable {
             ca.setShopPrice(shopPrice);
             service.create(ca);
         }
-
-        service.create(pa);
-
+        service.create(pa);        
         return "parentArticleOverview?faces-redirect=true";
     }
 
