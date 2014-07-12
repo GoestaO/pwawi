@@ -17,8 +17,7 @@
                 <h:panelGroup>
                     <h:outputLabel value="Nummernpräfix" style="font-weight:bold" />
                     <h:inputText class = "form-control" id = "number" value="#{articleCreateController.number}" valueChangeListener = "#{sKUGenerator.numberChanged}">
-                        <!--<f:validateRegex pattern="\d{7}"/>-->
-                        <p:ajax/>
+                        <p:ajax/>                           
                     </h:inputText>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />  
                 </h:panelGroup>

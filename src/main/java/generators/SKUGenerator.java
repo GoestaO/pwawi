@@ -41,9 +41,9 @@ public class SKUGenerator implements NumberGenerator, Serializable {
         if (alreadyExists) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Fehler!", "Präfix existiert bereits."));
         }
-        String pattern = "^[0-9]{7}$";
+        String pattern = "[0-9]{7}$";
         if(!newValue.toString().matches(pattern)){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Fehler!", "Präfix hat entweder weniger als 7 Ziffern oder enthält Buchstaben."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Fehler!", "Präfix hat entweder keine 7 Ziffern oder enthält Buchstaben."));
         }
     }
 
