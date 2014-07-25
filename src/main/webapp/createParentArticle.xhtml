@@ -13,7 +13,6 @@
         <h:form>            
             <h:panelGrid columns="6" styleClass="table table-striped table-condensed" >
 
-
                 <h:panelGroup>
                     <h:outputLabel value="Nummernpräfix" style="font-weight:bold" />
                     <h:inputText class = "form-control" id = "number" value="#{articleCreateController.number}" valueChangeListener = "#{sKUGenerator.numberChanged}">
@@ -67,7 +66,7 @@
                     <h:selectOneRadio class = "form-control" id="topProduct" value ="#{articleCreateController.topProduct}" >
                         <f:selectItem itemValue="#{false}" itemLabel="Nein" />
                         <f:selectItem itemValue="#{true}" itemLabel="Ja"/>                    
-                    </h:selectOneRadio>+
+                    </h:selectOneRadio>
                 </h:panelGroup>
 
                 <h:panelGroup>
@@ -128,11 +127,20 @@
                 </h:panelGroup>
 
                 <h:panelGroup>
-                    <h:outputLabel value="Größen" style="font-weight:bold" />               
-                    <h:selectManyListbox class = "form-control" id = "sizes" size="10" value="#{articleCreateController.sizes}">
-                        <f:converter converterId="sizeConverter" />
-                        <f:selectItems value="#{selectManySizeBean.sizeList}" var = "size" itemValue = "#{size.name}" itemLabel="#{size.name}"/>    
-                    </h:selectManyListbox>
+                    <h:panelGrid columns="3">
+                         <h:outputLabel for="sizes" value="Größen:" />
+                        <p:selectCheckboxMenu id="sizes" value="#{articleCreateController.sizes}" label="Größen"
+                                              filter="true" filterMatchMode="startsWith">
+                            <f:converter converterId="sizeConverter" />
+                            <f:selectItems value="#{selectManySizeBean.sizeList}" var = "size" itemValue = "#{size.name}" itemLabel="#{size.name}" />
+                        </p:selectCheckboxMenu>
+                        <p:commandButton value="OK" update="display" />
+                    </h:panelGrid>
+                    <p:outputPanel id="display">
+                        <p:dataList value="#{articleCreateController.sizes}" var="size" emptyMessage="Keine Größe ausgewählt">
+                            #{size.name}
+                        </p:dataList>
+                    </p:outputPanel>
                 </h:panelGroup>
 
                 <h:panelGroup>
@@ -168,6 +176,7 @@
             <h:commandButton styleClass = "btn btn-default" value="Anlegen!" action = "#{articleCreateController.createArticle(articleCreateController.number, articleCreateController.brand,articleCreateController.model,articleCreateController.misc ,articleCreateController.color, articleCreateController.attribute, articleCreateController.gender, articleCreateController.topProduct, articleCreateController.topProductMobile, articleCreateController.specialProduct, articleCreateController.material, articleCreateController.productType, articleCreateController.category,articleCreateController.numberOfPictures, articleCreateController.shortDescription, articleCreateController.longDescription, articleCreateController.sizes)}"/>
         </h:form>
 
+       
     </ui:define>
 </ui:composition>
 
