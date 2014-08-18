@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -16,7 +16,7 @@ import javax.inject.Named;
  * 
 * @author goesta
  */
-@RequestScoped
+@ViewScoped
 @Named
 public class ChildArticleOverviewController implements Serializable {
 
@@ -61,10 +61,12 @@ public class ChildArticleOverviewController implements Serializable {
             childArticle.setManufacturerSKU(manufacturerSKU);
             childArticle.setQuantity(quantity);
             childArticle.setPurchasePrice(purchasePrice);
+            childArticle.setShopPrice(shopPrice);
             childArticle.setEbayPrice(ebayPrice);
             childArticle.setAmazonPrice(amazonPrice);
             articleService.update(childArticle);
         }
+        System.out.println(articleList);
     }
 
 }

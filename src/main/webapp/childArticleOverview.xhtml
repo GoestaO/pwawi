@@ -96,7 +96,7 @@
 
                     <p:column>                     
                         <h:outputText value ="#{selectedChildArticle.sku}">
-                           
+
                         </h:outputText>                
                     </p:column>
 
@@ -109,7 +109,7 @@
                     <p:column>
                         <p:selectOneMenu value="#{selectedChildArticle.size}">
                             <f:selectItem itemLabel="#{selectedChildArticle.size.name}" itemValue ="#{selectedChildArticle.size.name}"/>
-                            <f:selectItems value ="#{selectManySizeBean.getSizeListByType(childArticleEditController.childArticle.attribute.name)}" var = "size" itemLabel="#{size.name}" itemValue="#{size.name}"/>
+                            <f:selectItems value ="#{selectManySizeBean.getSizeListByType(selectedChildArticle.attribute.name)}" var = "size" itemLabel="#{size.name}" itemValue="#{size.name}"/>
                             <f:converter converterId="sizeConverter" />
                             <p:ajax/>
                         </p:selectOneMenu>
@@ -123,31 +123,32 @@
 
                     <p:column>      
                         <p:inputText value ="#{selectedChildArticle.purchasePrice}">
-                            <f:convertNumber minFractionDigits="2" pattern="#,00" />
+                            <f:convertNumber minFractionDigits="2" type="currency" locale = "de_de" />
+
                             <p:ajax/>
                         </p:inputText>
                     </p:column>    
 
                     <p:column> 
                         <p:inputText value ="#{selectedChildArticle.shopPrice}">
-                            <f:convertNumber minFractionDigits="2" pattern="#,00"/>
+                            <f:convertNumber minFractionDigits="2" type="currency" locale = "de_de"/>
                             <p:ajax/>
                         </p:inputText>
                     </p:column>
 
                     <p:column>
                         <p:inputText value ="#{selectedChildArticle.ebayPrice}">
-                            <f:convertNumber minFractionDigits="2" pattern="#,00"/>
+                            <f:convertNumber minFractionDigits="2" type="currency" locale = "de_de"/>
                             <p:ajax/>
                         </p:inputText>
                     </p:column>
 
                     <p:column>
                         <p:inputText value ="#{selectedChildArticle.amazonPrice}">
-                            <f:convertNumber minFractionDigits="2" pattern="#,00"/>
+                            <f:convertNumber minFractionDigits="2" type="currency" locale = "de_de"/>
                             <p:ajax/>
                         </p:inputText> 
-                    </p:column>                   
+                    </p:column>              
 
                 </p:dataTable>
                 <p:commandButton value="Speichern" action ="#{childArticleOverviewController.update(childArticleOverviewController.selectedChildArticles)}" oncomplete ="caEditWidget.hide();" process = "@this" update="table"/>
