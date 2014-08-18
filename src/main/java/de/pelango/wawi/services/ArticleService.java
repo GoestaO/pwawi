@@ -37,10 +37,14 @@ public class ArticleService {
         em.remove(em.merge(entity));
     }
 
-    public void print() {
-        System.out.println("Hallo");
+    public ParentArticle findParentArticle(Long id){
+        return (ParentArticle) em.find(ParentArticle.class, id);
     }
-
+    
+    public ChildArticle findChildArticle(Long id){
+        return (ChildArticle) em.find(ChildArticle.class, id);
+    }
+    
     /**
      * Returns all Parentarticles
      *

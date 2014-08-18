@@ -9,12 +9,13 @@
 
     <ui:define name="content">
         <h3> Unterartikel-Übersicht</h3>
-        <h:form>
-            <p:dataTable rows="25"
+        <h:form id="form">
+            <p:hotkey bind="alt+n" handler="varEditButton.jq.click()" />
+            <p:dataTable rows="50"
                          paginator="true"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          currentPageReportTemplate="{startRecord}-{endRecord} von {totalRecords}"
-                         rowsPerPageTemplate="25,50,100" value="#{childArticleOverviewController.articles}" id = "table" var="article" scrollable="true" >
+                         rowsPerPageTemplate="25,50,100" value="#{childArticleOverviewController.articles}" id = "table" var="article" scrollable="true" selectionMode="multiple" selection="#{childArticleOverviewController.selectedChildArticles}" rowKey="#{article.id}">
 
                 <p:column filterBy="parentArticleName" sortBy="parentArticleName" headerText="Artikelname" filterMatchMode="contains" filterStyle="width: 100%">
                     <h:outputText value ="#{article.parentArticleName}"></h:outputText>
@@ -56,65 +57,102 @@
                     </h:outputText>
                 </p:column>
                 <p:column>
-                    <p:commandButton value="Bearbeiten"  oncomplete ="caEditWidget.show();" update=":caEdit" >
+                    <p:commandButton icon="ui-icon-wrench" oncomplete ="caEditWidget.show();" update=":form:caEdit" >
                         <f:setPropertyActionListener target="#{childArticleEditController.childArticle}" value="#{article}"  />
                     </p:commandButton>
                 </p:column>
+                <f:facet name="header">                    
+                    <p:commandButton id="editButton" widgetVar="varEditButton" process="table" update=":form:caEdit" icon="ui-icon-search"  oncomplete="PF('caEditWidget').show()" />
+                </f:facet>
             </p:dataTable>
-        </h:form>
 
-        <p:dialog id="caEdit" header="Unterartikel bearbeiten" modal="true" widgetVar="caEditWidget">
-            <h:form>
-                <p:panelGrid columns="2">
-                    <p:outputLabel value="Artikelname"></p:outputLabel>
-                    <h:outputText value ="#{childArticleEditController.childArticle.parentArticleName}"></h:outputText>
 
-                    <p:outputLabel value="EAN"></p:outputLabel>                   
-                    <p:inputText value ="#{childArticleEditController.childArticle.ean}">
-                    </p:inputText>                  
+            <p:dialog id="caEdit" header="Unterartikel bearbeiten" modal="true" widgetVar="caEditWidget">
+                <p:dataTable id ="editTable" value="#{childArticleOverviewController.selectedChildArticles}" var="selectedChildArticle" editable="true">
 
-                    <p:outputLabel value="SKU"></p:outputLabel>                    
-                    <h:outputText value ="#{childArticleEditController.childArticle.sku}"></h:outputText>                
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column headerText="Artikelname"/>
+                            <p:column headerText="EAN"/>
+                            <p:column headerText="SKU"/>
+                            <p:column headerText="Hersteller-SKU"/>
+                            <p:column headerText="Größe"/>
+                            <p:column headerText="Bestand"/>
+                            <p:column headerText="Einkaufspreis"/>
+                            <p:column headerText="Shop-Preis"/>
+                            <p:column headerText="Ebay-Preis"/>
+                            <p:column headerText="Amazon-Preis"/>
+                        </p:row>
+                    </p:columnGroup>
+                    <p:column>
+                        <h:outputText value ="#{selectedChildArticle.parentArticleName}"></h:outputText>
+                    </p:column>                    
 
-                    <p:outputLabel value="Hersteller-SKU"></p:outputLabel>                     
-                    <p:inputText value ="#{childArticleEditController.childArticle.manufacturerSKU}"></p:inputText>
+                    <p:column>                   
+                        <p:inputText value ="#{selectedChildArticle.ean}">
+                            <p:ajax/>
+                        </p:inputText>                  
+                    </p:column>
 
-                    <p:outputLabel value="Größe"></p:outputLabel>
-                    <p:selectOneMenu value="#{childArticleEditController.childArticle.size}">                    
-                        <f:selectItems value ="#{selectManySizeBean.getSizeListByType(childArticleEditController.childArticle.attribute.name)}" var = "size" itemLabel="#{size.name}" itemValue="#{size.name}"/>
-                        <f:converter converterId="sizeConverter" />
-                    </p:selectOneMenu>
+                    <p:column>                     
+                        <h:outputText value ="#{selectedChildArticle.sku}">
+                           
+                        </h:outputText>                
+                    </p:column>
 
-                    <p:outputLabel value="Bestand"></p:outputLabel>                    
-                    <h:outputText value ="#{childArticleEditController.childArticle.quantity}"> 
-                        <f:convertNumber minFractionDigits="0" /> 
-                    </h:outputText>
+                    <p:column>
+                        <p:inputText value ="#{selectedChildArticle.manufacturerSKU}">
+                            <p:ajax/>
+                        </p:inputText>
+                    </p:column>
 
-                    <p:outputLabel value="Einkaufspreis"></p:outputLabel>                   
-                    <p:inputText value ="#{childArticleEditController.childArticle.purchasePrice}">
-                        <f:convertNumber minFractionDigits="2" pattern="#,00" /> 
-                    </p:inputText>
+                    <p:column>
+                        <p:selectOneMenu value="#{selectedChildArticle.size}">
+                            <f:selectItem itemLabel="#{selectedChildArticle.size.name}" itemValue ="#{selectedChildArticle.size.name}"/>
+                            <f:selectItems value ="#{selectManySizeBean.getSizeListByType(childArticleEditController.childArticle.attribute.name)}" var = "size" itemLabel="#{size.name}" itemValue="#{size.name}"/>
+                            <f:converter converterId="sizeConverter" />
+                            <p:ajax/>
+                        </p:selectOneMenu>
+                    </p:column>
 
-                    <p:outputLabel value="Shop-Preis"></p:outputLabel>
-                    <p:inputText value ="#{childArticleEditController.childArticle.shopPrice}">
-                        <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
-                    </p:inputText>
+                    <p:column>                   
+                        <h:outputText value ="#{selectedChildArticle.quantity}"> 
+                            <f:convertNumber minFractionDigits="0" /> 
+                        </h:outputText>
+                    </p:column>
 
-                    <p:outputLabel value="Ebay-Preis"></p:outputLabel>
-                    <p:inputText value ="#{childArticleEditController.childArticle.ebayPrice}">
-                        <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
-                    </p:inputText>
+                    <p:column>      
+                        <p:inputText value ="#{selectedChildArticle.purchasePrice}">
+                            <f:convertNumber minFractionDigits="2" pattern="#,00" />
+                            <p:ajax/>
+                        </p:inputText>
+                    </p:column>    
 
-                    <p:outputLabel value="Amazon-Preis"></p:outputLabel>
-                    <p:inputText value ="#{childArticleEditController.childArticle.amazonPrice}">
-                        <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
-                    </p:inputText> 
-                    <p:commandButton value="Speichern" action ="#{childArticleEditController.doSave(childArticleEditController.childArticle)}" oncomplete ="caEditWidget.hide();" update=":j_idt19:table"/>
+                    <p:column> 
+                        <p:inputText value ="#{selectedChildArticle.shopPrice}">
+                            <f:convertNumber minFractionDigits="2" pattern="#,00"/>
+                            <p:ajax/>
+                        </p:inputText>
+                    </p:column>
 
-                </p:panelGrid>
-            </h:form> 
-        </p:dialog>
+                    <p:column>
+                        <p:inputText value ="#{selectedChildArticle.ebayPrice}">
+                            <f:convertNumber minFractionDigits="2" pattern="#,00"/>
+                            <p:ajax/>
+                        </p:inputText>
+                    </p:column>
 
+                    <p:column>
+                        <p:inputText value ="#{selectedChildArticle.amazonPrice}">
+                            <f:convertNumber minFractionDigits="2" pattern="#,00"/>
+                            <p:ajax/>
+                        </p:inputText> 
+                    </p:column>                   
+
+                </p:dataTable>
+                <p:commandButton value="Speichern" action ="#{childArticleOverviewController.update(childArticleOverviewController.selectedChildArticles)}" oncomplete ="caEditWidget.hide();" process = "@this" update="table"/>
+            </p:dialog>
+        </h:form> 
     </ui:define>
 </ui:composition>
 
