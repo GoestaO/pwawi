@@ -8,6 +8,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -49,6 +50,7 @@ public class ChildArticleOverviewController implements Serializable {
 
     public void update(List<ChildArticle> articleList) {
         for (ChildArticle ca : articleList) {
+            Long id = ca.getId();
             Long ean = ca.getEan();
             String manufacturerSKU = ca.getManufacturerSKU();
             int quantity = ca.getQuantity();
@@ -56,17 +58,17 @@ public class ChildArticleOverviewController implements Serializable {
             BigDecimal shopPrice = ca.getShopPrice();
             BigDecimal ebayPrice = ca.getEbayPrice();
             BigDecimal amazonPrice = ca.getAmazonPrice();
-            ChildArticle childArticle = articleService.findChildArticle(ca.getId());
+            ChildArticle childArticle = articleService.findChildArticle(id);
             childArticle.setEan(ean);
             childArticle.setManufacturerSKU(manufacturerSKU);
             childArticle.setQuantity(quantity);
             childArticle.setPurchasePrice(purchasePrice);
             childArticle.setShopPrice(shopPrice);
             childArticle.setEbayPrice(ebayPrice);
-            childArticle.setAmazonPrice(amazonPrice);
+            childArticle.setAmazonPrice(amazonPrice);            
             articleService.update(childArticle);
         }
-        System.out.println(articleList);
+
     }
 
 }

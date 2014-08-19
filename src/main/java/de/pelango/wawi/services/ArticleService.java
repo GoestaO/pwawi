@@ -32,7 +32,7 @@ public class ArticleService {
     public void update(ParentArticle entity) {
         em.merge(entity);
     }
-
+ 
     public void remove(ParentArticle entity) {
         em.remove(em.merge(entity));
     }

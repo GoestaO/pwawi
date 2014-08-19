@@ -17,6 +17,11 @@
                          currentPageReportTemplate="{startRecord}-{endRecord} von {totalRecords}"
                          rowsPerPageTemplate="25,50,100" value="#{childArticleOverviewController.articles}" id = "table" var="article" scrollable="true" selectionMode="multiple" selection="#{childArticleOverviewController.selectedChildArticles}" rowKey="#{article.id}">
 
+                <f:facet name="header">
+                    <p:commandButton id="toggler" type="button" value="Spalten" style="float:right" icon="ui-icon-calculator" />
+                    <p:columnToggler datasource="table" trigger="toggler" />
+                </f:facet>
+
                 <p:column filterBy="parentArticleName" sortBy="parentArticleName" headerText="Artikelname" filterMatchMode="contains" filterStyle="width: 100%">
                     <h:outputText value ="#{article.parentArticleName}"></h:outputText>
                 </p:column>
@@ -67,8 +72,8 @@
             </p:dataTable>
 
 
-            <p:dialog id="caEdit" header="Unterartikel bearbeiten" modal="true" widgetVar="caEditWidget">
-                <p:dataTable id ="editTable" value="#{childArticleOverviewController.selectedChildArticles}" var="selectedChildArticle" editable="true">
+            <p:dialog id="caEdit" header="Unterartikel bearbeiten" modal="true" widgetVar="caEditWidget" width="95%">
+                <p:dataTable id ="editTable" tableStyle="width:auto" value="#{childArticleOverviewController.selectedChildArticles}" var="selectedChildArticle" editable="true">
 
                     <p:columnGroup type="header">
                         <p:row>
@@ -123,35 +128,33 @@
 
                     <p:column>      
                         <p:inputText value ="#{selectedChildArticle.purchasePrice}">
-                            <f:convertNumber minFractionDigits="2" type="currency" locale = "de_de" />
-
                             <p:ajax/>
+                            <f:convertNumber minFractionDigits="2"/>                            
                         </p:inputText>
                     </p:column>    
 
                     <p:column> 
                         <p:inputText value ="#{selectedChildArticle.shopPrice}">
-                            <f:convertNumber minFractionDigits="2" type="currency" locale = "de_de"/>
+                            <f:convertNumber minFractionDigits="2" />
                             <p:ajax/>
                         </p:inputText>
                     </p:column>
 
                     <p:column>
                         <p:inputText value ="#{selectedChildArticle.ebayPrice}">
-                            <f:convertNumber minFractionDigits="2" type="currency" locale = "de_de"/>
+                            <f:convertNumber minFractionDigits="2"/>
                             <p:ajax/>
                         </p:inputText>
                     </p:column>
 
                     <p:column>
                         <p:inputText value ="#{selectedChildArticle.amazonPrice}">
-                            <f:convertNumber minFractionDigits="2" type="currency" locale = "de_de"/>
+                            <f:convertNumber minFractionDigits="2" />
                             <p:ajax/>
                         </p:inputText> 
-                    </p:column>              
-
+                    </p:column>  
                 </p:dataTable>
-                <p:commandButton value="Speichern" action ="#{childArticleOverviewController.update(childArticleOverviewController.selectedChildArticles)}" oncomplete ="caEditWidget.hide();" process = "@this" update="table"/>
+                <p:commandButton styleClass="dialogbutton" value="Speichern" action ="#{childArticleOverviewController.update(childArticleOverviewController.selectedChildArticles)}" oncomplete ="caEditWidget.hide();" process = "@this" update="table"/>
             </p:dialog>
         </h:form> 
     </ui:define>
