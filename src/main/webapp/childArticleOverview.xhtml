@@ -62,7 +62,7 @@
                     </h:outputText>
                 </p:column>
                 <p:column>
-                    <p:commandButton icon="ui-icon-wrench" oncomplete ="caEditWidget.show();" update=":form:caEdit" >
+                    <p:commandButton icon="ui-icon-wrench" oncomplete ="PF('caEditWidget').show();" update=":form:caEdit" >
                         <f:setPropertyActionListener target="#{childArticleEditController.childArticle}" value="#{article}"  />
                     </p:commandButton>
                 </p:column>

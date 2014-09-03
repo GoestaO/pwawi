@@ -10,7 +10,7 @@
         <h3> Oberartikelübersicht </h3>
 
         <p:scrollPanel mode="native" style="width:95%;height:95%">
-            <h:form>
+            <h:form id="overviewForm">
                 <p:dataTable value="#{parentArticleOverviewController.articles}" id = "table" var="article" tableStyleClass="table table-striped">
                     <p:column filterBy="parentArticleName" sortBy="parentArticleName" headerText="Artikelname" filterMatchMode="contains" filterStyle="width: 100%">
                         <h:outputText value ="#{article.parentArticleName}"></h:outputText>
@@ -71,7 +71,7 @@
             </p:column>-->
                     <p:column>
 
-                        <p:commandButton value="Bearbeiten"  oncomplete ="paEditWidget.show();" update=":paEditDialog" >
+                        <p:commandButton value="Bearbeiten"  oncomplete ="PF('paEditWidget').show();" update=":paEditDialog" >
                             <f:setPropertyActionListener target="#{parentArticleEditController.pa}" value="#{article}"  />
                         </p:commandButton>                       
 
@@ -232,7 +232,7 @@
 
                 </h:panelGrid>
 
-                <p:commandButton styleClass = "btn btn-default" value="Speichern" action = "#{parentArticleEditController.doSave(parentArticleEditController.pa)}" oncomplete ="paEditWidget.hide();" update=":j_idt20:table"/>
+                <p:commandButton styleClass = "btn btn-default" value="Speichern" action = "#{parentArticleEditController.doSave(parentArticleEditController.pa)}" oncomplete ="paEditWidget.hide();" update=":overviewForm:table"/>
 
             </h:form>
         </p:dialog>     
