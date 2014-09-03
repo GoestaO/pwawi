@@ -28,8 +28,8 @@ import javax.persistence.Table;
 public class ChildArticle extends ParentArticle implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @OneToOne(cascade = CascadeType.REMOVE)
@@ -56,10 +56,12 @@ public class ChildArticle extends ParentArticle implements Serializable {
 
     private String dimensions;
 
+//    @Override
     public Long getId() {
         return id;
     }
 
+//    @Override
     public void setId(Long id) {
         this.id = id;
     }
