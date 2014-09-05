@@ -10,7 +10,10 @@
 
     <ui:define name="content">
         <h3> Artikelanlage </h3>
-        <h:form>            
+        <h:form>
+            <style type="text/css">
+                .selectCheckboxMenu { display: inline-block; vertical-align: top; }
+            </style>
             <h:panelGrid columns="6" styleClass="table table-striped table-condensed" >
 
                 <h:panelGroup>
@@ -127,9 +130,9 @@
                 </h:panelGroup>
 
                 <h:panelGroup>
-                    <h:panelGrid columns="3">
-                         <h:outputLabel for="sizes" value="Größen:" />
-                        <p:selectCheckboxMenu id="sizes" value="#{articleCreateController.sizes}" label="Größen"
+                    <h:panelGrid columns="2">
+                        <!--<h:outputLabel for="sizes" value="Größen:" />-->
+                        <p:selectCheckboxMenu styleClass = "selectCheckboxMenu" id="sizes" value="#{articleCreateController.sizes}" label="Größen"
                                               filter="true" filterMatchMode="startsWith">
                             <f:converter converterId="sizeConverter" />
                             <f:selectItems value="#{selectManySizeBean.sizeList}" var = "size" itemValue = "#{size.name}" itemLabel="#{size.name}" />
@@ -176,7 +179,7 @@
             <h:commandButton styleClass = "btn btn-default" value="Anlegen!" action = "#{articleCreateController.createArticle(articleCreateController.number, articleCreateController.brand,articleCreateController.model,articleCreateController.misc ,articleCreateController.color, articleCreateController.attribute, articleCreateController.gender, articleCreateController.topProduct, articleCreateController.topProductMobile, articleCreateController.specialProduct, articleCreateController.material, articleCreateController.productType, articleCreateController.category,articleCreateController.numberOfPictures, articleCreateController.shortDescription, articleCreateController.longDescription, articleCreateController.sizes)}"/>
         </h:form>
 
-       
+
     </ui:define>
 </ui:composition>
 
