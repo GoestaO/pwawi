@@ -15,9 +15,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -53,6 +53,9 @@ public class UploadController implements Serializable {
      * @param event Das FileUpload-Event
      */
     public void handleFileUpload(FileUploadEvent event) {
+        
+        Map<String, String> columnMap = new HashMap();
+        
         list = new ArrayList();
 
         // Die hochzuladende Datei auf den Server laden und in backlog.csv abspeichern
@@ -93,7 +96,14 @@ public class UploadController implements Serializable {
         FacesContext.getCurrentInstance()
                 .addMessage(null, message);
         for (String[] s : list) {
-            System.out.println(Arrays.toString(s));
+//            System.out.print("0: "+ s[0]);
+//            System.out.print("1: "+ s[1]);
+//            System.out.print("2: "+ s[2]);
+//            System.out.print("3: "+ s[3]);
+//            System.out.println("4: "+ s[4]);
+            int count = s[4].length() - s[4].replace("-", "").length();
+            System.out.println("count = " + count);
+//            System.out.println(Arrays.toString(s));
         }
     }
 

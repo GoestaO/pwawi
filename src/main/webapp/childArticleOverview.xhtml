@@ -22,41 +22,41 @@
                     <p:columnToggler datasource="table" trigger="toggler" />
                 </f:facet>
 
-                <p:column filterBy="parentArticleName" sortBy="parentArticleName" headerText="Artikelname" filterMatchMode="contains" filterStyle="width: 100%">
+                <p:column filterBy="#{article.parentArticleName}" sortBy="#{article.parentArticleName}" headerText="Artikelname" filterMatchMode="contains" filterStyle="width: 100%">
                     <h:outputText value ="#{article.parentArticleName}"></h:outputText>
                 </p:column>
-                <p:column  sortBy="ean" headerText="EAN" filterMatchMode="contains" filterBy="ean" filterStyle="width: 100%">                    
+                <p:column  sortBy="#{article.ean}" headerText="EAN" filterMatchMode="contains" filterBy="#{article.ean}" filterStyle="width: 100%">                    
                     <h:outputText value ="#{article.ean}"></h:outputText>
                 </p:column>  
-                <p:column sortBy="sku" headerText="SKU" filterMatchMode="contains" filterBy="ean" filterStyle="width: 100%">                  
+                <p:column sortBy="#{article.sku}" headerText="SKU" filterMatchMode="contains" filterBy="#{article.sku}" filterStyle="width: 100%">                  
                     <h:outputText value ="#{article.sku}"></h:outputText>
                 </p:column>
-                <p:column sortBy="manufacturerSKU" headerText="Hersteller-SKU" filterMatchMode="contains" filterBy="manufacturerSKU" filterStyle="width: 100%">
+                <p:column sortBy="#{article.manufacturerSKU}" headerText="Hersteller-SKU" filterMatchMode="contains" filterBy="#{article.manufacturerSKU}" filterStyle="width: 100%">
                     <h:outputText value ="#{article.manufacturerSKU}"></h:outputText>
                 </p:column>
-                <p:column sortBy="size.name" headerText="Größe" filterMatchMode="contains" filterBy="size.name" filterStyle="width: 100%">
+                <p:column sortBy="#{article.size.name}" headerText="Größe" filterMatchMode="contains" filterBy="#{article.size.name}" filterStyle="width: 100%">
                     <h:outputText value="#{article.size.name}"></h:outputText>
                 </p:column>
-                <p:column  sortBy="quantity" headerText="Bestand" filterMatchMode="contains" filterBy="quantity" filterStyle="width: 100%">                  
+                <p:column  sortBy="#{article.quantity}" headerText="Bestand" filterMatchMode="contains" filterBy="#{article.quantity}" filterStyle="width: 100%">                  
                     <h:outputText value ="#{article.quantity}"/>
                 </p:column>
-                <p:column sortBy="purchasePrice" headerText="Einkaufspreis" filterMatchMode="contains" filterBy="purchasePrice" filterStyle="width: 100%">
+                <p:column sortBy="#{article.purchasePrice}" headerText="Einkaufspreis" filterMatchMode="contains" filterBy="#{article.purchasePrice}" filterStyle="width: 100%">
                     <h:outputText value ="#{article.purchasePrice}">
                         <f:convertNumber type="currency" locale = "de_de" />
                     </h:outputText>
                 </p:column>
-                <p:column sortBy="shopPrice" headerText="Shop-Preis" filterMatchMode="contains" filterBy="shopPrice" filterStyle="width: 100%">
+                <p:column sortBy="#{article.shopPrice}" headerText="Shop-Preis" filterMatchMode="contains" filterBy="#{article.shopPrice}" filterStyle="width: 100%">
                     <h:outputText value ="#{article.shopPrice}">
                         <f:convertNumber type="currency" locale = "de_de" />
                     </h:outputText>
                 </p:column>
-                <p:column sortBy="ebayPrice" headerText="Ebay-Preis" filterMatchMode="contains" filterBy="ebayPrice" filterStyle="width: 100%">
+                <p:column sortBy="#{article.ebayPrice}" headerText="Ebay-Preis" filterMatchMode="contains" filterBy="#{article.ebayPrice}" filterStyle="width: 100%">
                     <h:outputText value ="#{article.ebayPrice}">
                         <f:convertNumber  type="currency" locale = "de_de"/>
                         <!--<f:convertNumber currencySymbol ="€" type="currency" locale = "de" maxFractionDigits="2" pattern="###,##0.00" />-->
                     </h:outputText>
                 </p:column>
-                <p:column sortBy="amazonPrice" headerText="Amazon-Preis" filterMatchMode="contains" filterBy="amazonPrice" filterStyle="width: 100%">
+                <p:column sortBy="#{article.amazonPrice}" headerText="Amazon-Preis" filterMatchMode="contains" filterBy="#{article.amazonPrice}" filterStyle="width: 100%">
                     <h:outputText value ="#{article.amazonPrice}">
                         <f:convertNumber type="currency" locale = "de_de" />
                     </h:outputText>

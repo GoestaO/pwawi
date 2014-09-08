@@ -12,28 +12,28 @@
         <p:scrollPanel mode="native" style="width:95%;height:95%">
             <h:form id="overviewForm">
                 <p:dataTable value="#{parentArticleOverviewController.articles}" id = "table" var="article" tableStyleClass="table table-striped">
-                    <p:column filterBy="parentArticleName" sortBy="parentArticleName" headerText="Artikelname" filterMatchMode="contains" filterStyle="width: 100%">
+                    <p:column filterBy="#{article.parentArticleName}" sortBy="#{article.parentArticleName}" headerText="Artikelname" filterMatchMode="contains" filterStyle="width: 100%">
                         <h:outputText value ="#{article.parentArticleName}"></h:outputText>
                     </p:column>  
-                    <p:column filterBy="sku" sortBy="sku" headerText="SKU" filterMatchMode="contains" filterStyle="width: 100%">                
+                    <p:column filterBy="#{article.sku}" sortBy="#{article.sku}" headerText="SKU" filterMatchMode="contains" filterStyle="width: 100%">                
                         <h:outputText value ="#{article.sku}"></h:outputText>
                     </p:column>    
-                    <p:column filterBy="brand" sortBy="brand" headerText="Marke" filterMatchMode="contains" filterStyle="width: 100%">
+                    <p:column filterBy="#{article.brand}" sortBy="#{article.brand}" headerText="Marke" filterMatchMode="contains" filterStyle="width: 100%">
                         <h:outputText value ="#{article.brand}"></h:outputText>
                     </p:column> 
-                    <p:column filterBy="model" sortBy="model" headerText="Model" filterMatchMode="contains" filterStyle="width: 100%">
+                    <p:column filterBy="#{article.model}" sortBy="#{article.model}" headerText="Model" filterMatchMode="contains" filterStyle="width: 100%">
                         <h:outputText value ="#{article.model}"></h:outputText>
                     </p:column>
-                    <p:column filterBy="attribute.name" sortBy="attribute.name" headerText="Attributset" filterMatchMode="contains" filterStyle="width: 100%">
+                    <p:column filterBy="#{article.attribute.name}" sortBy="#{article.attribute.name}" headerText="Attributset" filterMatchMode="contains" filterStyle="width: 100%">
                         <h:outputText value ="#{article.attribute.name}"></h:outputText>
                     </p:column>
                     <!--            <p:column filterBy="attribute.name" sortBy="attribute.name" headerText="Sonstiges" filterMatchMode="contains" filterStyle="width: 100%">
                                     <h:outputText value ="#{article.misc}"></h:outputText>
                                 </p:column>-->
-                    <p:column filterBy="color.name" sortBy="color.name" headerText="Farbe" filterMatchMode="contains" filterStyle="width: 100%">
+                    <p:column filterBy="#{article.color.name}" sortBy="#{article.color.name}" headerText="Farbe" filterMatchMode="contains" filterStyle="width: 100%">
                         <h:outputText value ="#{article.color.name}"></h:outputText>
                     </p:column>
-                    <p:column filterBy="gender" sortBy="gender" headerText="Geschlecht" filterMatchMode="contains" filterStyle="width: 100%">
+                    <p:column filterBy="#{article.gender}" sortBy="#{article.gender}" headerText="Geschlecht" filterMatchMode="contains" filterStyle="width: 100%">
                         <ui:repeat value ="#{article.gender}" var = "gender">
                             #{gender.name}<br></br>                   
                         </ui:repeat>
