@@ -199,12 +199,11 @@ public class ArticleService {
     }
 
     public List<String> getFields() {
-        ChildArticle ca = new ChildArticle();
-        Class c = ca.getClass();
+        Class c = ChildArticle.class;
         Field[] fields = c.getDeclaredFields();
         List<String> fieldList = new ArrayList<>();
         for (Field f : fields) {
-            fieldList.add(f.toString());
+            fieldList.add(f.getName());
         }
         return fieldList;
     }
