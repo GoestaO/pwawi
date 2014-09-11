@@ -200,11 +200,19 @@ public class ArticleService {
 
     public List<String> getFields() {
         Class c = ChildArticle.class;
+        Class p = ParentArticle.class;
         Field[] fields = c.getDeclaredFields();
+        Field[] fields2 = p.getDeclaredFields();
         List<String> fieldList = new ArrayList<>();
         for (Field f : fields) {
             fieldList.add(f.getName());
         }
+        for (Field f : fields2) {
+            if(!f.getName().contains("_")){
+                fieldList.add(f.getName());
+            }            
+        }
+        
         return fieldList;
     }
 

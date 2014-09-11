@@ -121,9 +121,11 @@ public class ImportController implements Serializable {
             FacesContext.getCurrentInstance()
                     .addMessage(null, message);
         }
-        FacesMessage message = new FacesMessage("Upload", list.size() + " Artikel erfolgreich hochgeladen.");
-        FacesContext.getCurrentInstance()
-                .addMessage(null, message);
+//        if (this.columnHeaders != null) {
+//            FacesMessage message = new FacesMessage("Upload", list.size() + " Artikel erfolgreich hochgeladen.");
+//            FacesContext.getCurrentInstance()
+//                    .addMessage(null, message);
+//        }
     }
 //        for (String[] s : list) {
 ////            System.out.print("0: "+ s[0]);
