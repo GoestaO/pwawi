@@ -5,6 +5,7 @@
  */
 package de.pelango.wawi.controller;
 
+import de.pelango.wawi.model.ChildArticle;
 import de.pelango.wawi.services.ArticleService;
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,6 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +35,7 @@ import org.primefaces.event.FileUploadEvent;
  */
 @Named
 @RequestScoped
-public class UploadController implements Serializable {
+public class ImportController implements Serializable {
 
     List<String[]> list;
     long ean;
@@ -53,9 +55,9 @@ public class UploadController implements Serializable {
      * @param event Das FileUpload-Event
      */
     public void handleFileUpload(FileUploadEvent event) {
-        
+
         Map<String, String> columnMap = new HashMap();
-        
+
         list = new ArrayList();
 
         // Die hochzuladende Datei auf den Server laden und in backlog.csv abspeichern
@@ -102,7 +104,7 @@ public class UploadController implements Serializable {
 //            System.out.print("3: "+ s[3]);
 //            System.out.println("4: "+ s[4]);
             int count = s[4].length() - s[4].replace("-", "").length();
-            System.out.println("count = " + count);
+//            System.out.println(Arrays.toString(ChildArticle.class.getFields()));
 //            System.out.println(Arrays.toString(s));
         }
     }

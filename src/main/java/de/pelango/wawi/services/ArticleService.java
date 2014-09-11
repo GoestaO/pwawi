@@ -1,6 +1,5 @@
 package de.pelango.wawi.services;
 
-import de.pelango.wawi.model.Attribute;
 import de.pelango.wawi.model.ChildArticle;
 import de.pelango.wawi.model.Color;
 import de.pelango.wawi.model.Material;
@@ -11,8 +10,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import de.pelango.wawi.model.ParentArticle;
 import de.pelango.wawi.model.Sizes;
+import java.lang.reflect.Field;
 import java.math.BigInteger;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 
 /**
  * The Databasehandler for all queries related to articles
@@ -32,19 +33,19 @@ public class ArticleService {
     public void update(ParentArticle entity) {
         em.merge(entity);
     }
- 
+
     public void remove(ParentArticle entity) {
         em.remove(em.merge(entity));
     }
 
-    public ParentArticle findParentArticle(Long id){
+    public ParentArticle findParentArticle(Long id) {
         return (ParentArticle) em.find(ParentArticle.class, id);
     }
-    
-    public ChildArticle findChildArticle(Long id){
+
+    public ChildArticle findChildArticle(Long id) {
         return (ChildArticle) em.find(ChildArticle.class, id);
     }
-    
+
     /**
      * Returns all Parentarticles
      *
@@ -195,6 +196,17 @@ public class ArticleService {
             result = null;
         }
         return result;
+    }
+
+    public List<String> getFields() {
+        ChildArticle ca = new ChildArticle();
+        Class c = ca.getClass();
+        Field[] fields = c.getDeclaredFields();
+        List<String> fieldList = new ArrayList<>();
+        for (Field f : fields) {
+            fieldList.add(f.toString());
+        }
+        return fieldList;
     }
 
 }
