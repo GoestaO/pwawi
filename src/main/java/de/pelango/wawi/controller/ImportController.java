@@ -83,7 +83,7 @@ public class ImportController implements Serializable {
      */
     public void handleFileUpload(FileUploadEvent event) {
         list = new ArrayList<>();
-        // Die hochzuladende Datei auf den Server laden und in backlog.csv abspeichern
+        // Die hochzuladende Datei auf den Server laden und in import.csv abspeichern
         try {
             File targetFile = new File("import.csv");
             InputStream inputStream = event.getFile().getInputstream();
