@@ -8,6 +8,7 @@ package de.pelango.wawi.controller;
 import de.pelango.wawi.services.ArticleService;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -70,19 +72,8 @@ public class ImportController implements Serializable {
         fieldList = service.getFields();
     }
 
-    /**
-     * Diese Methode sorgt dafür, dass eine gewählte Datei auf den Server
-     * geladen wird. Hierzu wird zunächst die hochgeladene CSV geparst und aus
-     * den entsprechenden Spalten ein Objekt erzeugt wird. Diese Objekte werden
-     * dann in einer Liste gespeichert. Anschließend wird die Objekte in der
-     * Liste mit der Datenbank abgeglichen, ob sie schon vorhanden sind oder
-     * nicht. Noch nicht vorhandene Objekte werden dann in der Datenbank
-     * abgespeichert.
-     *
-     * @param event Das FileUpload-Event
-     */
-    public void handleFileUpload(FileUploadEvent event) {
-        list = new ArrayList<>();
+    public void handleColumnImport(FileUploadEvent event) {
+//        list = new ArrayList<>();
         // Die hochzuladende Datei auf den Server laden und in import.csv abspeichern
         try {
             File targetFile = new File("import.csv");
@@ -101,32 +92,37 @@ public class ImportController implements Serializable {
             // Anschließend die gerade hochgeladene Datei einlesen und parsen
             FileReader reader = new FileReader(targetFile);
             BufferedReader br = new BufferedReader(reader);
-            if (this.columnHeaders == null) {
-                columnHeaders = br.readLine().split("\t", -1);
-                RequestContext.getCurrentInstance().update("headers");
-            } else {
-
-                String line = br.readLine();
-                while (line != null) {
-                    String[] data = line.split("\t", -1);
-                    list.add(data);
-                    line = br.readLine();
-                }
-                br.close();
-            }
-            // Die Liste an den DB-Handler übergeben, der jedes Objekt auf Vorhandensein überprüft und eventuell abspeichert
+            columnHeaders = br.readLine().split("\t", -1);
+            RequestContext.getCurrentInstance().update("headers");
+            br.close();
         } catch (IOException e) {
-//            Logger.getLogger(UploadController.class.getClass()).log(Logger.Level.FATAL, e);
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Upload fehlgeschlagen", e.getMessage());
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Import fehlgeschlagen", e.getMessage());
             FacesContext.getCurrentInstance()
                     .addMessage(null, message);
         }
-//        if (this.columnHeaders != null) {
-//            FacesMessage message = new FacesMessage("Upload", list.size() + " Artikel erfolgreich hochgeladen.");
-//            FacesContext.getCurrentInstance()
-//                    .addMessage(null, message);
-//        }
+
+        FacesMessage message = new FacesMessage("Import erfolgreich", "Spaltenköpfe importiert");
+        FacesContext.getCurrentInstance()
+                .addMessage(null, message);
     }
+
+    public void importArticles() {
+        try {
+            FileReader reader = new FileReader("import.csv");
+            BufferedReader br = new BufferedReader(reader);
+            String[] line = br.readLine().split("\t", -1);
+        } catch (FileNotFoundException fne) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Keine Datei nicht gefunden. Bitte erst eine Datei hochladen.", fne.getMessage());
+            FacesContext.getCurrentInstance()
+                    .addMessage(null, message);
+        } catch (IOException ie) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Ein- und Ausgabefehler.", ie.getMessage());
+            FacesContext.getCurrentInstance()
+                    .addMessage(null, message);
+        }
+    }
+
+}
 //        for (String[] s : list) {
 ////            System.out.print("0: "+ s[0]);
 ////            System.out.print("1: "+ s[1]);
@@ -136,5 +132,5 @@ public class ImportController implements Serializable {
 //            int count = s[4].length() - s[4].replace("-", "").length();
 ////            System.out.println(Arrays.toString(ChildArticle.class.getFields()));
 ////            System.out.println(Arrays.toString(s));
-//        }
-}
+////        }
+//}
