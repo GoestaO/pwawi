@@ -15,14 +15,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
@@ -34,13 +34,15 @@ import org.primefaces.event.FileUploadEvent;
  * @author Gösta Ostendorf (goesta.o@gmail.com)
  */
 @Named
-@ViewScoped
+@SessionScoped
 public class ImportController implements Serializable {
 
     List<String[]> list;
     long ean;
 
     private String[] columnHeaders;
+
+    Map<String, String> columnMap;
 
     private List<String> fieldList;
 
@@ -68,11 +70,21 @@ public class ImportController implements Serializable {
         this.fieldList = fieldList;
     }
 
+    public Map<String, String> getColumnMap() {
+        return columnMap;
+    }
+
+    public void setColumnMap(Map<String, String> columnMap) {
+        this.columnMap = columnMap;
+    }
+
     public void loadFields() {
         fieldList = service.getFields();
     }
 
     public void handleColumnImport(FileUploadEvent event) {
+
+        columnMap = new HashMap<>();
 //        list = new ArrayList<>();
         // Die hochzuladende Datei auf den Server laden und in import.csv abspeichern
         try {
@@ -90,13 +102,21 @@ public class ImportController implements Serializable {
             out.close();
 
             // Anschließend die gerade hochgeladene Datei einlesen und parsen
+//            File targetFile = new File(event.getFile().getFileName());
             FileReader reader = new FileReader(targetFile);
             BufferedReader br = new BufferedReader(reader);
             columnHeaders = br.readLine().split("\t", -1);
+            for (String entry : columnHeaders) {
+                columnMap.put(entry, null);
+            }
             RequestContext.getCurrentInstance().update("headers");
             br.close();
-        } catch (IOException e) {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Import fehlgeschlagen", e.getMessage());
+        } catch (FileNotFoundException f) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Datei nicht gefunden", f.getMessage());
+            FacesContext.getCurrentInstance()
+                    .addMessage(null, message);
+        } catch (IOException io) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Ein- und Ausgabefehler", io.getMessage());
             FacesContext.getCurrentInstance()
                     .addMessage(null, message);
         }
@@ -122,6 +142,9 @@ public class ImportController implements Serializable {
         }
     }
 
+    public void test() {
+        System.out.println(columnMap);
+    }
 }
 //        for (String[] s : list) {
 ////            System.out.print("0: "+ s[0]);
