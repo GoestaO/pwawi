@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -45,6 +45,8 @@ public class ImportController implements Serializable {
     Map<String, String> columnMap;
 
     private List<String> fieldList;
+
+    private File targetFile;
 
     @EJB
     private ArticleService service;
@@ -84,11 +86,11 @@ public class ImportController implements Serializable {
 
     public void handleColumnImport(FileUploadEvent event) {
 
-        columnMap = new HashMap<>();
+        columnMap = new LinkedHashMap<>();
 //        list = new ArrayList<>();
         // Die hochzuladende Datei auf den Server laden und in import.csv abspeichern
         try {
-            File targetFile = new File("import.csv");
+            targetFile = new File("import.csv");
             InputStream inputStream = event.getFile().getInputstream();
             OutputStream out = new FileOutputStream(new File(targetFile.getName()));
             int read = 0;
@@ -127,16 +129,29 @@ public class ImportController implements Serializable {
     }
 
     public void importArticles() {
-        try {
-            FileReader reader = new FileReader("import.csv");
-            BufferedReader br = new BufferedReader(reader);
-            String[] line = br.readLine().split("\t", -1);
-        } catch (FileNotFoundException fne) {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Keine Datei nicht gefunden. Bitte erst eine Datei hochladen.", fne.getMessage());
-            FacesContext.getCurrentInstance()
-                    .addMessage(null, message);
-        } catch (IOException ie) {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Ein- und Ausgabefehler.", ie.getMessage());
+        if (columnMap != null) {
+            try {
+//                File targetFile = new File("/home/goesta/glassfish-4.0/glassfish/domains/domain1/config/import.csv");
+                FileReader reader = new FileReader(targetFile);
+                BufferedReader br = new BufferedReader(reader);
+                br.readLine();
+                String line = br.readLine();
+                while (line != null) {
+                    String[] data = line.split("\t", -1);
+                    line = br.readLine();
+                }
+
+            } catch (FileNotFoundException fne) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Keine Datei nicht gefunden. Bitte erst eine Datei hochladen.", fne.getMessage());
+                FacesContext.getCurrentInstance()
+                        .addMessage(null, message);
+            } catch (IOException ie) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Ein- und Ausgabefehler.", ie.getMessage());
+                FacesContext.getCurrentInstance()
+                        .addMessage(null, message);
+            }
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Keine Spaltenzuweisung.", "Bitte zunächst eine Spaltenzuweisung durchführen.");
             FacesContext.getCurrentInstance()
                     .addMessage(null, message);
         }
