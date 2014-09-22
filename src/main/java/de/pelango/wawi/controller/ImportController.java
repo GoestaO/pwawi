@@ -160,6 +160,26 @@ public class ImportController implements Serializable {
     public void test() {
         System.out.println(columnMap);
     }
+
+    private static enum ColToSave {
+
+        SKU("Zalando SKU", "setSku"), Season("Season", "setSeason"), Brand("Brand", "setBrand"), ArticleName("Article Name", "setArticleName"), SupplierSKU("Supplier SKU", "setSupplierSku"), ArticleColorCode("Article color code", "setArticleColorCode"), ArticleColorName("Article color name", "setArticleColorName"), TextileOuterMaterial("Textile outer material", "setTextileOuterMaterial"), TextileInnerMaterial("Textile inner material", "setTextileInnerMaterial"), Textileinnerlining("Textile inner lining", "setTextileInnerLining"), Shoeinnermaterial("Shoe inner material", "setShoeInnerMaterial"), Shoeoutermaterial("Shoe outer material", "setShoeOuterMaterial"), Shoeoutsole("Shoe outsole", "setShoeOutsole"), Shoesole("Shoe sole", "setShoeSole"), outermaterial("outer material", "setOuterMaterial"), innermaterial("inner material", "setInnerMaterial"), PurchaseOrderNo("Purchase Order No.", "setOrderNr"), Size("Size", "setSize"), Length("Length", "setLength"), EAN("EAN / UPC", "setEanUpc"), animalOrigin("Non-textile parts of animal origin(yes/no)", "setAnimalOrigin"), Sizingrecommendation("Grössenflag / Sizing recommendation", "setSizingrecommendation"), Fitshape("Fit shape", "setFitshape"), Lengthofsleeve("Armellänge / Length of sleeve", "setLengthofsleeve"), LengthZlable("Länge / Length", "setLengthzLabels"), Samplesize("Sample size", "setSamplesize"), Gesamtlaenge("Gesamtlänge", "setGesamtlaenge"), Aermellaenge("Ärmellänge", "setAermellaenge"), Rueckenbreite("Rückenbreite", "setRueckenbreite"), Beinaussenlaenge("Beinaußenlänge", "setBeinaussenlaenge"), Beininnenlaenge("Beininnenlänge", "setBeininnenlaenge"), Rueckenlaenge("Rückenlänge", "setRueckenlaenge"), SohleHerausnehmbar("Sohle herausnehmbar? / Can we take away the sole?", "setSohleHerausnehmbar"), padded("gepolstert? / padded?", "setPadded"), Heelform("Absatzform / Heel form", "setHeelform"), Heelheight("Absatzhöhe / Heel height", "setHeelheight"), PlatformHeight("Plateauhöhe / Platform height", "setPlatformheight"), Bootswidth("Schaftweite / Boots width", "setBootswidth"), Bootsheight("Schafthöhe / Boots height", "setBoots_height"), Descriptionspecial("Description special", "setDescriptionspecial"), Additionalinstruction("Additional instruction", "setAdditionalinstruction");
+        private final String attribute;
+        private final String method;
+
+        private ColToSave(String attribute, String method) {
+            this.attribute = attribute;
+            this.method = method;
+        }
+        
+        public String getAttribute(){
+            return this.attribute;
+        }
+        
+        public String getMethod(){
+            return this.method;
+        }
+    }
 }
 //        for (String[] s : list) {
 ////            System.out.print("0: "+ s[0]);
