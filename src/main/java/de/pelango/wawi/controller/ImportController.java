@@ -113,6 +113,7 @@ public class ImportController implements Serializable {
             }
             RequestContext.getCurrentInstance().update("headers");
             br.close();
+            
         } catch (FileNotFoundException f) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Datei nicht gefunden", f.getMessage());
             FacesContext.getCurrentInstance()
@@ -158,7 +159,7 @@ public class ImportController implements Serializable {
     }
 
     public void test() {
-        System.out.println(columnMap);
+        System.out.println(columnMap.keySet());
     }
 }
 //        for (String[] s : list) {
