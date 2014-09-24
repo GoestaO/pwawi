@@ -213,7 +213,8 @@ public class ArticleService {
             if (!f.getName().contains("_") && !f.getName().contains("id")) {
                 fieldList.add(f.getName());
             }
-        }
+        }        
+       
         return fieldList;
     }
 
