@@ -32,7 +32,8 @@
                     </p:selectOneMenu>
                 </p:column>                
             </p:dataTable>
-            <p:commandButton rendered = "#{importController.columnMap!=null}" value="Importieren" update = "form2:headers" action="#{importController.importArticles()}"/>
+            <p:commandButton value="Importieren" update = "form2:headers" action="#{importController.importArticles()}"/>
+            <p:commandButton value ="Test" action="#{importController.test()}"/>
         </h:form>
     </ui:define>
 </ui:composition>
