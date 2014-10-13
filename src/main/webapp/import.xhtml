@@ -17,17 +17,22 @@
                           update=":form:messages :columns" fileLimit="3" allowTypes="/(\.|\/)(csv)$/" />
         </h:form>
 
-        <p:dataTable id = "columns" value="#{importController.columns}" var="column">
-            <f:facet name="header">
-                Gefundene Attribute
-            </f:facet> 
-            <p:column headerText="Spalte">
-                <h:outputLabel value="#{column}"/>
-            </p:column>
-            <p:column headerText="Attribut-Typ">
-                <f:selectItems
-            </p:column>
-        </p:dataTable>
+        <h:form id="form2">
+            <p:dataTable id = "headers" value="#{importController.columnMap.keySet()}" var="column" binding="#{table}">
+                <f:facet name="header">
+                    <p:outputLabel value="Spaltenzuordnung"/>
+                </f:facet>
+                <p:column headerText="Spaltenname">
+                    <p:outputLabel value="#{column}"/>
+                </p:column>
+                <p:column headerText="Kategorie">
+                    <p:selectOneMenu value="#{importController.columnMap[column]}">
+                        <f:selectItems value="#{importController.fieldList}" var="field" itemLabel="#{field}" itemValue="#{field}"/>
+                        <p:ajax/>
+                    </p:selectOneMenu>
+                </p:column>                
+            </p:dataTable>
+            <p:commandButton value="Speichern" update = "form2:headers" action="#{importController.test()}"/>
+        </h:form>
     </ui:define>
-
 </ui:composition>
