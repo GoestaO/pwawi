@@ -159,12 +159,13 @@ public class ImportController implements Serializable {
     }
 
     public void test() {
-        System.out.println(columnMap.keySet());
+        System.out.println(columnMap);
     }
 
     private static enum ColToSave {
 
         Size("size", "setSize"), PurchasePrice("purchasePrice", "setPurchasePrice"), AmazonPrice("amazonPrice", "setAmazonPrice"), EbayPrice("ebayPrice", "setEbayPrice"), ShopPrice("shopPrice", "setShopPrice"), Quantity("quantity", "setQuantity"), EAN("ean", "setEan"), ASIN("asin", "setAsin"), ManufacturerSKU("manufacturerSKU", "setManufacturerSKU"), Weight("weight", "setWeight"), Dimensions("dimensions", "setDimensions"), SKU("sku", "setSku"), Brand("brand", "setBrand"), Model("model", "setModel"), Misc("misc", "setMisc"), TaxClass("taxClass", "setTaxClass"), Color("color", "setColor"), ParentArticleName("parentArticleName", "setParentArticleName"), Attribute("attribute", "setAttribute"), Gender("gender", "setGender"), TopProduct("topProduct", "setTopProduct"), TopProductMobile("topProductMobile", "setTopProductMobile"), SpecialProduct("specialProduct", "setSpecialProduct"), Material("material", "setMaterial"), ProductTypes("productTypes", "setProductTypes"), Category("category", "setCategory"), NumberOfPictures("numberOfPictures", "setNumberOfPictures"), ShortDescription("shortDescription", "setShortDescription"), LongDescription("longDescription", "setLongDescription");
+        
         private final String attribute;
         private final String method;
 
