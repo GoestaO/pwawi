@@ -164,14 +164,18 @@ public class ImportController implements Serializable {
 
     private static enum ColToSave {
 
-        Size("size", "setSize"), PurchasePrice("purchasePrice", "setPurchasePrice"), AmazonPrice("amazonPrice", "setAmazonPrice"), EbayPrice("ebayPrice", "setEbayPrice"), ShopPrice("shopPrice", "setShopPrice"), Quantity("quantity", "setQuantity"), EAN("ean", "setEan"), ASIN("asin", "setAsin"), ManufacturerSKU("manufacturerSKU", "setManufacturerSKU"), Weight("weight", "setWeight"), Dimensions("dimensions", "setDimensions"), SKU("sku", "setSku"), Brand("brand", "setBrand"), Model("model", "setModel"), Misc("misc", "setMisc"), TaxClass("taxClass", "setTaxClass"), Color("color", "setColor"), ParentArticleName("parentArticleName", "setParentArticleName"), Attribute("attribute", "setAttribute"), Gender("gender", "setGender"), TopProduct("topProduct", "setTopProduct"), TopProductMobile("topProductMobile", "setTopProductMobile"), SpecialProduct("specialProduct", "setSpecialProduct"), Material("material", "setMaterial"), ProductTypes("productTypes", "setProductTypes"), Category("category", "setCategory"), NumberOfPictures("numberOfPictures", "setNumberOfPictures"), ShortDescription("shortDescription", "setShortDescription"), LongDescription("longDescription", "setLongDescription");
+        Size("size", "setSize", "Sizes", "ChildArticle"), PurchasePrice("purchasePrice", "setPurchasePrice", "BigDecimal", "ChildArticle"), AmazonPrice("amazonPrice", "setAmazonPrice", "BigDecimal", "ChildArticle"), EbayPrice("ebayPrice", "setEbayPrice", "BigDecimal", "ChildArticle"), ShopPrice("shopPrice", "setShopPrice", "BigDecimal", "ChildArticle"), Quantity("quantity", "setQuantity", "Integer", "ChildArticle"), EAN("ean", "setEan", "Long", "ChildArticle"), ASIN("asin", "setAsin", "Long", "ChildArticle"), ManufacturerSKU("manufacturerSKU", "setManufacturerSKU", "String", "ChildArticle"), Weight("weight", "setWeight"), Dimensions("dimensions", "setDimensions", "BigDecimal", "ChildArticle"), SKU("sku", "setSku", "Sring", "ParentArticle"), Brand("brand", "setBrand","Sring", "ParentArticle"), Model("model", "setModel"), Misc("misc", "setMisc"), TaxClass("taxClass", "setTaxClass"), Color("color", "setColor"), ParentArticleName("parentArticleName", "setParentArticleName"), Attribute("attribute", "setAttribute"), Gender("gender", "setGender"), TopProduct("topProduct", "setTopProduct"), TopProductMobile("topProductMobile", "setTopProductMobile"), SpecialProduct("specialProduct", "setSpecialProduct"), Material("material", "setMaterial"), ProductTypes("productTypes", "setProductTypes"), Category("category", "setCategory"), NumberOfPictures("numberOfPictures", "setNumberOfPictures"), ShortDescription("shortDescription", "setShortDescription"), LongDescription("longDescription", "setLongDescription");
         
         private final String attribute;
         private final String method;
+        private final String inputParameter;
+        private final String class;
 
-        private ColToSave(String attribute, String method) {
+        private ColToSave(String attribute, String method, String inputParameter, String class) {
             this.attribute = attribute;
             this.method = method;
+            this.inputParameter = inputParameter;
+            this.class = class;
         }
         
         public String getAttribute(){
