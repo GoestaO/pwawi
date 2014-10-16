@@ -84,6 +84,35 @@ public class ImportController implements Serializable {
         fieldList = service.getFields();
     }
 
+//    public void upload(FileUploadEvent event) {
+//        try {
+//            targetFile = new File("import.csv");
+//            
+//            InputStream inputStream = event.getFile().getInputstream();
+//            OutputStream out = new FileOutputStream(new File(targetFile.getName()));
+//            int read = 0;
+//            byte[] bytes = new byte[1024];
+//            while ((read = inputStream.read(bytes)) != -1) {
+//                out.write(bytes, 0, read);
+//            }
+//            inputStream.close();
+//            out.flush();
+//            out.close();
+//        } catch (FileNotFoundException f) {
+//            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Datei nicht gefunden", f.getMessage());
+//            FacesContext.getCurrentInstance()
+//                    .addMessage(null, message);
+//        } catch (IOException io) {
+//            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Ein- und Ausgabefehler", io.getMessage());
+//            FacesContext.getCurrentInstance()
+//                    .addMessage(null, message);
+//        }
+//
+//        FacesMessage message = new FacesMessage("Import erfolgreich", "Spaltenköpfe importiert");
+//        FacesContext.getCurrentInstance()
+//                .addMessage(null, message);
+//    }
+
     public void handleColumnImport(FileUploadEvent event) {
 
         columnMap = new LinkedHashMap<>();
@@ -113,7 +142,7 @@ public class ImportController implements Serializable {
             }
             RequestContext.getCurrentInstance().update("headers");
             br.close();
-            
+
         } catch (FileNotFoundException f) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Datei nicht gefunden", f.getMessage());
             FacesContext.getCurrentInstance()
@@ -162,30 +191,30 @@ public class ImportController implements Serializable {
         System.out.println(columnMap);
     }
 
-    private static enum ColToSave {
-
-        Size("size", "setSize", "Sizes", "ChildArticle"), PurchasePrice("purchasePrice", "setPurchasePrice", "BigDecimal", "ChildArticle"), AmazonPrice("amazonPrice", "setAmazonPrice", "BigDecimal", "ChildArticle"), EbayPrice("ebayPrice", "setEbayPrice", "BigDecimal", "ChildArticle"), ShopPrice("shopPrice", "setShopPrice", "BigDecimal", "ChildArticle"), Quantity("quantity", "setQuantity", "Integer", "ChildArticle"), EAN("ean", "setEan", "Long", "ChildArticle"), ASIN("asin", "setAsin", "Long", "ChildArticle"), ManufacturerSKU("manufacturerSKU", "setManufacturerSKU", "String", "ChildArticle"), Weight("weight", "setWeight"), Dimensions("dimensions", "setDimensions", "BigDecimal", "ChildArticle"), SKU("sku", "setSku", "Sring", "ParentArticle"), Brand("brand", "setBrand","Sring", "ParentArticle"), Model("model", "setModel"), Misc("misc", "setMisc"), TaxClass("taxClass", "setTaxClass"), Color("color", "setColor"), ParentArticleName("parentArticleName", "setParentArticleName"), Attribute("attribute", "setAttribute"), Gender("gender", "setGender"), TopProduct("topProduct", "setTopProduct"), TopProductMobile("topProductMobile", "setTopProductMobile"), SpecialProduct("specialProduct", "setSpecialProduct"), Material("material", "setMaterial"), ProductTypes("productTypes", "setProductTypes"), Category("category", "setCategory"), NumberOfPictures("numberOfPictures", "setNumberOfPictures"), ShortDescription("shortDescription", "setShortDescription"), LongDescription("longDescription", "setLongDescription");
-        
-        private final String attribute;
-        private final String method;
-        private final String inputParameter;
-        private final String class;
-
-        private ColToSave(String attribute, String method, String inputParameter, String class) {
-            this.attribute = attribute;
-            this.method = method;
-            this.inputParameter = inputParameter;
-            this.class = class;
-        }
-        
-        public String getAttribute(){
-            return this.attribute;
-        }
-        
-        public String getMethod(){
-            return this.method;
-        }
-    }
+//    static enum ColToSave {
+//
+//        Size("size", "setSize", "Sizes", "ChildArticle"), PurchasePrice("purchasePrice", "setPurchasePrice", "BigDecimal", "ChildArticle"), AmazonPrice("amazonPrice", "setAmazonPrice", "BigDecimal", "ChildArticle"), EbayPrice("ebayPrice", "setEbayPrice", "BigDecimal", "ChildArticle"), ShopPrice("shopPrice", "setShopPrice", "BigDecimal", "ChildArticle"), Quantity("quantity", "setQuantity", "Integer", "ChildArticle"), EAN("ean", "setEan", "Long", "ChildArticle"), ASIN("asin", "setAsin", "Long", "ChildArticle"), ManufacturerSKU("manufacturerSKU", "setManufacturerSKU", "String", "ChildArticle"), Weight("weight", "setWeight"), Dimensions("dimensions", "setDimensions", "BigDecimal", "ChildArticle"), SKU("sku", "setSku", "Sring", "ParentArticle"), Brand("brand", "setBrand","Sring", "ParentArticle"), Model("model", "setModel", "Sring", "ParentArticle"), Misc("misc", "setMisc", "Sring", "ParentArticle"), TaxClass("taxClass", "setTaxClass", "Float", "ParentArticle"), Color("color", "setColor", "Color", "ParentArticle"), ParentArticleName("parentArticleName", "setParentArticleName", "String", "ParentArticle"), Attribute("attribute", "setAttribute", "Attribute", "ParentArticle"), Gender("gender", "setGender", "Gender", "ParentArticle"), TopProduct("topProduct", "setTopProduct", "Boolean", "ParentArticle"), TopProductMobile("topProductMobile", "setTopProductMobile", "Boolean", "ParentArticle"), SpecialProduct("specialProduct", "setSpecialProduct","Boolean", "ParentArticle"), Material("material", "setMaterial", "Material", "ParentArticle"), ProductTypes("productTypes", "setProductTypes", "List<ProductType>"), Category("category", "setCategory", "Category", "ParentArticle"), NumberOfPictures("numberOfPictures", "setNumberOfPictures", "Integer", "ParentArticle"), ShortDescription("shortDescription", "setShortDescription", "String", "ParentArticle"), LongDescription("longDescription", "setLongDescription", "String", "ParentArticle");
+//        
+//        private final String attribute;
+//        private final String method;
+//        private final String inputParameter;
+//        private final String class;
+//
+//        private ColToSave(String attribute, String method, String inputParameter, String class) {
+//            this.attribute = attribute;
+//            this.method = method;
+//            this.inputParameter = inputParameter;
+//            this.class = class;
+//        }
+//        
+//        public String getAttribute(){
+//            return this.attribute;
+//        }
+//        
+//        public String getMethod(){
+//            return this.method;
+//        }
+//    }
 }
 //        for (String[] s : list) {
 ////            System.out.print("0: "+ s[0]);
