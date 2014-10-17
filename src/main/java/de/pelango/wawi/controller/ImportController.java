@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,7 +113,6 @@ public class ImportController implements Serializable {
 //        FacesContext.getCurrentInstance()
 //                .addMessage(null, message);
 //    }
-
     public void handleColumnImport(FileUploadEvent event) {
 
         columnMap = new LinkedHashMap<>();
@@ -188,7 +188,12 @@ public class ImportController implements Serializable {
     }
 
     public void test() {
-        System.out.println(columnMap);
+        columnMap.keySet();
+        Iterator<String> iterator = columnMap.keySet().iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+
     }
 
 //    static enum ColToSave {
