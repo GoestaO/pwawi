@@ -13,8 +13,8 @@
         </h:form>
 
         <h:form style="width: 400px;">
-            <p:fileUpload fileUploadListener="#{importController.handleFileUpload}" label = "Dateiauswahl" auto = "true" mode="advanced" dragDropSupport="false"
-                          update=":form:messages :columns" fileLimit="3" allowTypes="/(\.|\/)(csv)$/" />
+            <p:fileUpload fileUploadListener="#{importController.handleColumnImport}" label = "Dateiauswahl" auto = "true" mode="advanced" dragDropSupport="false"
+                          update=":form:messages :form2:headers" fileLimit="1" allowTypes="/(\.|\/)(csv)$/"/>
         </h:form>
 
         <h:form id="form2">
@@ -32,7 +32,10 @@
                     </p:selectOneMenu>
                 </p:column>                
             </p:dataTable>
-            <p:commandButton value="Speichern" update = "form2:headers" action="#{importController.test()}"/>
+            <p:commandButton value="Importieren" update = "form2:headers" action="#{importController.importArticles()}"/>
+            <p:commandButton value ="Test" action="#{importController.test()}"/>
         </h:form>
     </ui:define>
+
 </ui:composition>
+
