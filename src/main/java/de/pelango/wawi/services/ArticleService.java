@@ -205,8 +205,6 @@ public class ArticleService {
         Field[] fields2 = p.getDeclaredFields();
         List<String> fieldList = new ArrayList<>();
         for (Field f : fields) {
-
-            System.out.println(f.getName());
             if (!f.getName().contains("serialVersionUID") && !f.getName().contains("id")) {
                 fieldList.add(f.getName());
             }
@@ -216,6 +214,7 @@ public class ArticleService {
                 fieldList.add(f.getName());
             }
         }
+
         return fieldList;
     }
 
