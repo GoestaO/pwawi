@@ -5,6 +5,7 @@
  */
 package de.pelango.wawi.util;
 
+import de.pelango.wawi.model.ChildArticle;
 import de.pelango.wawi.model.ParentArticle;
 import de.pelango.wawi.model.Sizes;
 import de.pelango.wawi.services.AttributeService;
@@ -14,10 +15,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -42,6 +47,8 @@ public class CSVAnalyser {
     //SKU <sku>	String
     //Special Price <special_price> (admin) BigDecimal
     public List<ParentArticle> getData(File file, Map<String, String> columnMap) {
+        
+        // Bedingung: Muss csv sein
         if (file.getName().endsWith(".csv")) {
             List<ParentArticle> list = new ArrayList();
             try {
@@ -84,27 +91,62 @@ public class CSVAnalyser {
 
     private ParentArticle check(String attribute, String entry, ParentArticle pa) {
         ParentArticle pt = pa;
+
+        // Die Setter-Methode zu dem Attribut aus dem Enum ziehen 
         String method = ColToSave.getEnum(attribute).getMethod();
+        // Den Parametertyp aus dem Enum ziehen
         String parameterType = ColToSave.getEnum(attribute).getInputParameter();
-        pt = save(method, parameterType, entry, pt);
+        // Den Klassentyp, auf dem dieses Attribut implementiert ist, aus dem Enum ziehen
+        String className = ColToSave.getEnum(attribute).getClassName();
+        pt = save(method, parameterType, entry, className, pt);
         return pt;
 
     }
 
-    private ParentArticle save(String method, String parameterType, String entry, ParentArticle pa) {
+    private ParentArticle save(String methodName, String parameterType, String entry, String className, ParentArticle pa) {
         ParentArticle pt = pa;
-
+        
+        //Check, ob eines der Attribute auf ChildArticle-Ebene implementiert wird,
+        // dann pt zu ChildArticle-Objekt casten
+        if(className.equals("ChildArticle")){
+            pt = (ChildArticle)pt;
+        }
+        
+        
+        //ParentArticle zu ChildArticle casten 
+        // Ein Inputobjekt erzeugen
+        Object o = new Object();
         Class[] paramTypes = new Class[1];
+        
+        // Jetzt die Paramtertyp-Varianten durchgehen und paramTypes[0] entsprechend setzen
         switch (parameterType) {
             case "Sizes":
                 Sizes size = new Sizes();
                 Long id = sizeService.getSizeId(entry);
                 size.setId(id);
                 size.setName(entry);
+
+                // Das Inputobjekt in ein "Sizes"-Objekt konvertieren
+                o = size;
                 paramTypes[0] = Sizes.class;
 
             case "BigDecimal":
+                BigDecimal bd = new BigDecimal(entry);
                 paramTypes[0] = BigDecimal.class;
+
+            // TODO: DecimalFormat setzen
+//           TODO: Wenn setSKU die Methode ist, muss eine weitere Untersuchung der SKU erfolgen
+            case "String":                
+                paramTypes[0] = String.class;
+        }
+
+        try {
+            // Methoden-Objekt erzeugen
+            Method method = pt.getClass().getDeclaredMethod(methodName, paramTypes);
+            // Setter-Methode per Reflektion ausführen
+            method.invoke(pt, new Object[]{entry});
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return null;
