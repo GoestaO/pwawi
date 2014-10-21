@@ -96,6 +96,10 @@ public class ParentArticle implements Serializable {
         super();
     }
 
+    public ParentArticle(String sku) {
+        this.sku = sku;
+    }
+
     public String getSku() {
         return sku;
     }
