@@ -5,6 +5,7 @@
  */
 package de.pelango.wawi.util;
 
+import de.pelango.wawi.model.ChildArticle;
 import de.pelango.wawi.model.ParentArticle;
 import de.pelango.wawi.model.Sizes;
 import de.pelango.wawi.services.AttributeService;
@@ -14,13 +15,22 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 
 /**
  *
@@ -41,9 +51,11 @@ public class CSVAnalyser {
     //Price <price> (admin) BigDecimal	
     //SKU <sku>	String
     //Special Price <special_price> (admin) BigDecimal
-    public List<ParentArticle> getData(File file, Map<String, String> columnMap) {
+    public List<? extends ParentArticle> getData(File file, Map<String, String> columnMap) {
+        System.out.println("getData");
+        List<ParentArticle> list = new ArrayList();
+        // Bedingung: Muss csv sein
         if (file.getName().endsWith(".csv")) {
-            List<ParentArticle> list = new ArrayList();
             try {
                 FileReader fr = new FileReader(file);
                 BufferedReader br = new BufferedReader(fr);
@@ -52,6 +64,7 @@ public class CSVAnalyser {
                 while (line != null) {
                     ParentArticle pa = new ParentArticle();
                     String[] data = line.split("\t", -1);
+                    list.add(eachCell(data, pa, columnMap));
                     line = br.readLine();
                 }
 
@@ -66,12 +79,13 @@ public class CSVAnalyser {
             }
 
         }
-        return null;
+        return list;
     }
 
     private ParentArticle eachCell(String[] data, ParentArticle pa, Map<String, String> columnMap) {
         ParentArticle pt = pa;
         int columnIndex = 0;
+        System.out.println("eachCell");
         Object[] columns = columnMap.keySet().toArray();
         for (String entry : data) {
             String columnName = columns[columnIndex].toString();
@@ -84,30 +98,105 @@ public class CSVAnalyser {
 
     private ParentArticle check(String attribute, String entry, ParentArticle pa) {
         ParentArticle pt = pa;
+        System.out.println("check");
+
+        // Die Setter-Methode zu dem Attribut aus dem Enum ziehen 
         String method = ColToSave.getEnum(attribute).getMethod();
+        // Den Parametertyp aus dem Enum ziehen
         String parameterType = ColToSave.getEnum(attribute).getInputParameter();
-        pt = save(method, parameterType, entry, pt);
+        // Den Klassentyp, auf dem dieses Attribut implementiert ist, aus dem Enum ziehen
+        String className = ColToSave.getEnum(attribute).getClassName();
+        pt = save(method, parameterType, entry, className, pt);
         return pt;
 
     }
 
-    private ParentArticle save(String method, String parameterType, String entry, ParentArticle pa) {
+    private ParentArticle save(String methodName, String parameterType, String entry, String className, ParentArticle pa) {
         ParentArticle pt = pa;
+        System.out.println("save");
 
-        Class[] paramTypes = new Class[1];
-        switch (parameterType) {
-            case "Sizes":
-                Sizes size = new Sizes();
-                Long id = sizeService.getSizeId(entry);
-                size.setId(id);
-                size.setName(entry);
-                paramTypes[0] = Sizes.class;
-
-            case "BigDecimal":
-                paramTypes[0] = BigDecimal.class;
+        //Check, ob eines der Attribute auf ChildArticle-Ebene implementiert wird,
+        // dann pt zu ChildArticle-Objekt casten
+        if (className.equals("ChildArticle")) {
+            pt = new ChildArticle(pt);
+//            pt = (ChildArticle) pt;
         }
 
-        return null;
+        //ParentArticle zu ChildArticle casten 
+        // Ein Inputobjekt erzeugen
+        Object o = new Object();
+        Class[] paramTypes = new Class[1];
+        System.out.println("parameterType = " + parameterType);
+        // Jetzt die Paramtertyp-Varianten durchgehen und paramTypes[0] entsprechend setzen
+        switch (parameterType) {
+            // Wenn es eine Größe ist
+            case "Sizes":
+                Sizes size = new Sizes();
+                try {
+                    Long id = sizeService.getSizeId(entry);
+                    size.setId(id);
+                    size.setName(entry);
+                    // Das Inputobjekt in ein "Sizes"-Objekt konvertieren
+                    o = size;
+                } catch (NullPointerException ex) {
+                    o = null;
+                }
+                paramTypes[0] = Sizes.class;
+
+            // Wenn es BigDecimal ist, dorthin konvertieren
+            case "BigDecimal": {
+                try {
+                    o = convertString2BigDecimal(entry);
+                } catch (ParseException ex) {
+                    o = new BigDecimal(0);
+                    Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            paramTypes[0] = BigDecimal.class;
+
+            // TODO: DecimalFormat setzen
+            // TODO: Wenn setSKU die Methode ist, muss eine weitere Untersuchung der SKU erfolgen
+            case "String":
+                paramTypes[0] = String.class;
+                o = entry;
+        }
+
+        try {
+            // Methoden-Objekt erzeugen
+            Method method = pt.getClass().getDeclaredMethod(methodName, paramTypes);
+            // Setter-Methode per Reflektion ausführen
+            method.invoke(pt, new Object[]{o});
+        } catch (NoSuchMethodException nsm) {
+            try {
+                Method method2 = pt.getClass().getSuperclass().getDeclaredMethod(methodName, paramTypes);
+                try {
+                    method2.invoke(pt, new Object[]{o});
+                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                    Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (NoSuchMethodException | SecurityException ex) {
+                Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return pt;
+    }
+
+    private BigDecimal convertString2BigDecimal(String entry) throws ParseException {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator('.');
+        symbols.setDecimalSeparator(',');
+        String pattern = "#,00";
+        DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+        decimalFormat.setParseBigDecimal(true);
+        if (!entry.isEmpty()) {
+            BigDecimal bigDecimal = (BigDecimal) decimalFormat.parse(entry);
+            return bigDecimal;
+        }
+        BigDecimal bigDecimal0 = new BigDecimal(0);
+        return bigDecimal0;
     }
 //        ChildArticle ca = new ChildArticle();
     //        list.add(ca);

@@ -183,6 +183,12 @@ public class ChildArticle extends ParentArticle implements Serializable {
 
     }
 
+    public ChildArticle(ParentArticle p) {
+//        super(p.getSku());
+        super();
+
+    }
+
     public ChildArticle(Sizes size, String sku, String brand, String model, String misc, Color color, Attribute attribute, List<Gender> gender, boolean topProduct, boolean topProductMobile, boolean specialProduct, List<Material> material, List<ProductType> productTypes, Category category, int numberOfPictures, String shortDescription, String longDescription) {
         super(sku, brand, model, misc, color, attribute, gender, topProduct, topProductMobile, specialProduct, material, productTypes, category, numberOfPictures, shortDescription, longDescription);
         this.size = size;
