@@ -25,7 +25,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "ARTICLE")
 @DiscriminatorValue("C")
-public class ChildArticle extends ParentArticle implements Serializable {
+public class ChildArticle extends ParentArticle implements Serializable, Article {
 
     private static final long serialVersionUID = 1L;
 
