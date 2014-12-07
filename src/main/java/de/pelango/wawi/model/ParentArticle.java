@@ -15,7 +15,7 @@ import javax.persistence.*;
 @DiscriminatorColumn(name = "TYPE", discriminatorType = DiscriminatorType.STRING, length = 20)
 @DiscriminatorValue("P")
 
-public class ParentArticle implements Serializable {
+public class ParentArticle implements Serializable, Article {
 
     private static final long serialVersionUID = 1L;
 
