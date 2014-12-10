@@ -50,9 +50,9 @@ public class CSVAnalyser {
     //Price <price> (admin) BigDecimal	
     //SKU <sku>	String
     //Special Price <special_price> (admin) BigDecimal
-    public List<Article> getData(File file, Map<String, String> columnMap) {
-
-        List<Article> list = new ArrayList();
+    public List<ChildArticle> getData(File file, Map<String, String> columnMap) {
+//        
+        List<ChildArticle> list = new ArrayList();
         // Bedingung: Muss csv sein
         if (file.getName().endsWith(".csv")) {
             try {
@@ -61,9 +61,8 @@ public class CSVAnalyser {
                 br.readLine();
                 String line = br.readLine();
                 while (line != null) {
-                    ParentArticle pa = new ParentArticle();
                     String[] data = line.split("\t", -1);
-                    list.add(eachCell(data, pa, columnMap));
+                    list.add(eachCell(data, columnMap));
                     line = br.readLine();
                 }
 
@@ -76,13 +75,22 @@ public class CSVAnalyser {
                 FacesContext.getCurrentInstance()
                         .addMessage(null, message);
             }
-
         }
         return list;
     }
 
-    private ParentArticle eachCell(String[] data, ParentArticle pa, Map<String, String> columnMap) {
-        ParentArticle pt = pa;
+    /**
+     * Durchläuft jede Zelle einer Reihe
+     *
+     * @param data
+     * @param columnMap
+     * @return
+     */
+    private ChildArticle eachCell(String[] data, Map<String, String> columnMap) {
+        ChildArticle pa = new ChildArticle();
+        pa.setShortDescription("test123");
+//        System.out.println(pa.getShortDescription());
+        ChildArticle pt = pa;
         int columnIndex = 0;
         Object[] columns = columnMap.keySet().toArray();
         for (String entry : data) {
@@ -94,8 +102,16 @@ public class CSVAnalyser {
         return null;
     }
 
-    private ParentArticle check(String attribute, String entry, ParentArticle pa) {
-        ParentArticle pt = pa;
+    /**
+     * Überprüft jeden Eintrag in der Zelle -> liest das
+     *
+     * @param attribute
+     * @param entry
+     * @param pa
+     * @return
+     */
+    private ChildArticle check(String attribute, String entry, ChildArticle pa) {
+        ChildArticle pt = pa;
 
         // Die Setter-Methode zu dem Attribut aus dem Enum ziehen 
         String method = ColToSave.getEnum(attribute).getMethod();
@@ -108,16 +124,27 @@ public class CSVAnalyser {
 
     }
 
-    private ParentArticle save(String methodName, String parameterType, String entry, String className, ParentArticle pa) {
-        ParentArticle pt = pa;
+    /**
+     * Ruft die Settermethoden der Klasse auf.
+     *
+     * @param methodName
+     * @param parameterType
+     * @param entry
+     * @param className
+     * @param pa
+     * @return
+     */
+    private ChildArticle save(String methodName, String parameterType, String entry, String className, ChildArticle pa) {
+        ChildArticle pt = pa;
 
-        //Check, ob eines der Attribute auf ChildArticle-Ebene implementiert wird,
-        // dann pt zu ChildArticle-Objekt casten
-        if (className.equals("ChildArticle")) {
-            pt = new ChildArticle(pt);
+        //Check, ob es sich beim Artikel um einen ParentArtilce handelt: Die SKU hat n Stellen
+//        if (className.equals("ChildArticle")) {
 //            pt = (ChildArticle) pt;
-        }
-
+////            ca = pt;
+////            pt = (ChildArticle)pt;
+//            System.out.println("pt = " + pt.getShortDescription());
+////            pt = (ChildArticle) pt;
+//        }
         //ParentArticle zu ChildArticle casten 
         // Ein Inputobjekt erzeugen
         Object o = new Object();
@@ -160,7 +187,7 @@ public class CSVAnalyser {
         }
 
         try {
-            System.out.println("entry = " + entry + "; parameter = " + o.getClass() + "; parameterType = " + parameterType);
+//            System.out.println("entry = " + entry + "; parameter = " + o.getClass() + "; parameterType = " + parameterType);
 
             // Methoden-Objekt erzeugen
             Method method = pt.getClass().getDeclaredMethod(methodName, paramTypes);
@@ -168,20 +195,15 @@ public class CSVAnalyser {
 
             method.invoke(pt, new Object[]{o});
         } catch (NoSuchMethodException nsm) {
-            try {
-                Method method2 = pt.getClass().getSuperclass().getDeclaredMethod(methodName, paramTypes);
-                try {
-                    method2.invoke(pt, new Object[]{o});
-                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                    Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } catch (NoSuchMethodException | SecurityException ex) {
-                Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, nsm);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvocationTargetException ex) {
             Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        System.out.println(pt.getSku());
         return pt;
     }
 
@@ -199,9 +221,6 @@ public class CSVAnalyser {
         BigDecimal bigDecimal0 = new BigDecimal(0);
         return bigDecimal0;
     }
-//        ChildArticle ca = new ChildArticle();
-    //        list.add(ca);
-    //        return list;
 
     /**
      * Enum mit den Attributen, dem zugeordneten Setter, welchen

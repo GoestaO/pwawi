@@ -12,4 +12,6 @@ package de.pelango.wawi.model;
  */
 public interface Article {
     
+    public String identifyYourself();
+    
 }

@@ -1,7 +1,6 @@
 package de.pelango.wawi.model;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.*;
 
@@ -246,5 +245,10 @@ public class ParentArticle implements Serializable, Article {
 
     public void setTaxClass(float taxClass) {
         this.taxClass = taxClass;
+    }
+
+    @Override
+    public String identifyYourself() {
+        return "ParentArticle";
     }
 }
