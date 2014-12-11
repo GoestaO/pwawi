@@ -60,8 +60,6 @@ public class CSVAnalyser {
                 while (line != null) {
                     String[] data = line.split("\t", -1);
                     ChildArticle ca = new ChildArticle();
-                    ca.setShortDescription("test123");
-                    System.out.println(ca.getShortDescription());
                     ca = eachCell(data, columnMap, ca);
                     list.add(ca);
                     line = br.readLine();
@@ -81,10 +79,11 @@ public class CSVAnalyser {
     }
 
     /**
-     * Durchläuft jede Zelle einer Reihe
+     * Durchläuft jede Zelle einer Reihe, sucht den Spaltennamen aus dem Spaltenarray anhand des Spaltenindexes heraus, 
+     * zieht das Attribut aus der ColumnMap und übergibt alles die Methode check.
      *
-     * @param data
-     * @param columnMap
+     * @param data Das Array mit den Daten
+     * @param columnMap Die Hashmap mit den Attributen, die zu jeder Spalte hinterlegt sind
      * @return
      */
     private ChildArticle eachCell(String[] data, Map<String, String> columnMap, ChildArticle ca) {
@@ -103,9 +102,12 @@ public class CSVAnalyser {
     }
 
     /**
-     * Überprüft jeden Eintrag in der Zelle -> liest das
+     * Zieht die Setter-Methode anhand des Attributs aus dem Enum 
+     * Zieht den Parametertyp, der an den Setter übergeben wird, aus dem Enum
+     * Zieht den Klassennamen, in der das Attribut angelegt ist, aus dem Enum
+     * Übergibt alles an die Methode save
      *
-     * @param attribute
+     * @param attribute 
      * @param entry
      * @param pa
      * @return
@@ -127,10 +129,10 @@ public class CSVAnalyser {
     /**
      * Ruft die Settermethoden der Klasse auf.
      *
-     * @param methodName
-     * @param parameterType
-     * @param entry
-     * @param className
+     * @param methodName Der Name der Settermethode
+     * @param parameterType Der Parametertyp, der an den Setter übergeben wird
+     * @param entry Der Wert, der in der Zelle steht
+     * @param className Der Klassenname, in der das Attribut/Settermethode implementiert ist
      * @param pa
      * @return
      */
