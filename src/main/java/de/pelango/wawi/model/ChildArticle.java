@@ -176,7 +176,7 @@ public class ChildArticle extends ParentArticle implements Serializable, Article
 
     @Override
     public String toString() {
-        return "de.pelango.wawi.model.ChildArticle[ id=" + id + " ]";
+        return "de.pelango.wawi.model.ChildArticle[ id=" + this.getShortDescription() + " ]";
     }
 
     public ChildArticle() {

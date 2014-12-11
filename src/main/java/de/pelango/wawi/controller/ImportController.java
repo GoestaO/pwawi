@@ -161,11 +161,11 @@ public class ImportController implements Serializable {
         if (columnMap != null) {
 //            System.out.println("analyser = " + analyser);
             List<ChildArticle> liste = analyser.getData(targetFile, columnMap);
-            for (ChildArticle a : liste){
-                System.out.println(a.getClass().getCanonicalName());
+//            System.out.println("liste = " + liste.size());
+            for (ChildArticle ca : liste) {
+                System.out.println("ca = " + ca.getManufacturerSKU());
             }
 
-            
 //            CSVAnalyser analyser = new CSVAnalyser();
 //            try {
 ////                File targetFile = new File("/home/goesta/glassfish-4.0/glassfish/domains/domain1/config/import.csv");

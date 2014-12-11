@@ -5,9 +5,7 @@
  */
 package de.pelango.wawi.util;
 
-import de.pelango.wawi.model.Article;
 import de.pelango.wawi.model.ChildArticle;
-import de.pelango.wawi.model.ParentArticle;
 import de.pelango.wawi.model.Sizes;
 import de.pelango.wawi.services.AttributeService;
 import de.pelango.wawi.services.SizeService;
@@ -36,10 +34,10 @@ import javax.faces.context.FacesContext;
  * @author Gösta Ostendorf <goesta.o@gmail.com>
  */
 public class CSVAnalyser {
-
+    
     @EJB
     private SizeService sizeService;
-
+    
     @EJB
     private AttributeService attributeService;
 
@@ -51,7 +49,6 @@ public class CSVAnalyser {
     //SKU <sku>	String
     //Special Price <special_price> (admin) BigDecimal
     public List<ChildArticle> getData(File file, Map<String, String> columnMap) {
-//        
         List<ChildArticle> list = new ArrayList();
         // Bedingung: Muss csv sein
         if (file.getName().endsWith(".csv")) {
@@ -62,10 +59,14 @@ public class CSVAnalyser {
                 String line = br.readLine();
                 while (line != null) {
                     String[] data = line.split("\t", -1);
-                    list.add(eachCell(data, columnMap));
+                    ChildArticle ca = new ChildArticle();
+                    ca.setShortDescription("test123");
+                    System.out.println(ca.getShortDescription());
+                    ca = eachCell(data, columnMap, ca);
+                    list.add(ca);
                     line = br.readLine();
                 }
-
+                
             } catch (FileNotFoundException fne) {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Keine Datei nicht gefunden. Bitte erst eine Datei hochladen.", fne.getMessage());
                 FacesContext.getCurrentInstance()
@@ -86,12 +87,10 @@ public class CSVAnalyser {
      * @param columnMap
      * @return
      */
-    private ChildArticle eachCell(String[] data, Map<String, String> columnMap) {
-        ChildArticle pa = new ChildArticle();
-        pa.setShortDescription("test123");
-//        System.out.println(pa.getShortDescription());
-        ChildArticle pt = pa;
-        int columnIndex = 0;
+    private ChildArticle eachCell(String[] data, Map<String, String> columnMap, ChildArticle ca) {
+        
+        ChildArticle pt = ca;
+        int columnIndex = 0;        
         Object[] columns = columnMap.keySet().toArray();
         for (String entry : data) {
             String columnName = columns[columnIndex].toString();
@@ -99,7 +98,8 @@ public class CSVAnalyser {
             pt = check(attribute, entry, pt);
             columnIndex++;
         }
-        return null;
+        return pt;
+        
     }
 
     /**
@@ -121,7 +121,7 @@ public class CSVAnalyser {
         String className = ColToSave.getEnum(attribute).getClassName();
         pt = save(method, parameterType, entry, className, pt);
         return pt;
-
+        
     }
 
     /**
@@ -161,6 +161,7 @@ public class CSVAnalyser {
                     size.setName(entry);
                     // Das Inputobjekt in ein "Sizes"-Objekt konvertieren
                     o = size;
+//                    System.out.println("o = " + o);
                 } catch (NullPointerException ex) {
                     o = null;
                 }
@@ -185,14 +186,15 @@ public class CSVAnalyser {
                 o = entry;
                 break;
         }
-
+        
         try {
 //            System.out.println("entry = " + entry + "; parameter = " + o.getClass() + "; parameterType = " + parameterType);
 
             // Methoden-Objekt erzeugen
             Method method = pt.getClass().getDeclaredMethod(methodName, paramTypes);
-            // Setter-Methode per Reflektion ausführen
+//            System.out.println("method = " + method.getName());
 
+            // Setter-Methode per Reflektion ausführen
             method.invoke(pt, new Object[]{o});
         } catch (NoSuchMethodException nsm) {
             Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, nsm);
@@ -203,10 +205,17 @@ public class CSVAnalyser {
         } catch (InvocationTargetException ex) {
             Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println(pt.getSku());
+        
         return pt;
     }
 
+    /**
+     * Konvertiert einen String in eine Zahl mit BigDecimal-Format um
+     *
+     * @param entry
+     * @return
+     * @throws ParseException
+     */
     private BigDecimal convertString2BigDecimal(String entry) throws ParseException {
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setGroupingSeparator('.');
@@ -224,11 +233,11 @@ public class CSVAnalyser {
 
     /**
      * Enum mit den Attributen, dem zugeordneten Setter, welchen
-     * Inputparametertyp der Setter erwartet und die Klasse, in der der Setter
+     * Inputcarametertyp der Setter erwartet und die Klasse, in der der Setter
      * aufgerufen wird
      */
     static enum ColToSave {
-
+        
         Size("size", "setSize", "Sizes", "ChildArticle"),
         PurchasePrice("purchasePrice", "setPurchasePrice", "BigDecimal", "ChildArticle"),
         AmazonPrice("amazonPrice", "setAmazonPrice", "BigDecimal", "ChildArticle"),
@@ -258,35 +267,35 @@ public class CSVAnalyser {
         NumberOfPictures("numberOfPictures", "setNumberOfPictures", "Integer", "ParentArticle"),
         ShortDescription("shortDescription", "setShortDescription", "String", "ParentArticle"),
         LongDescription("longDescription", "setLongDescription", "String", "ParentArticle");
-
+        
         private final String attribute;
         private final String method;
         private final String parameterType;
         private final String className;
-
+        
         private ColToSave(String attribute, String method, String parameterType, String className) {
             this.attribute = attribute;
             this.method = method;
             this.parameterType = parameterType;
             this.className = className;
         }
-
+        
         public String getAttribute() {
             return this.attribute;
         }
-
+        
         public String getMethod() {
             return this.method;
         }
-
+        
         public String getInputParameter() {
             return parameterType;
         }
-
+        
         public String getClassName() {
             return className;
         }
-
+        
         public static ColToSave getEnum(String value) {
             for (ColToSave c : ColToSave.values()) {
                 if (c.getAttribute().equalsIgnoreCase(value)) {
@@ -295,7 +304,7 @@ public class CSVAnalyser {
             }
             throw new IllegalArgumentException();
         }
-
+        
     }
-
+    
 }
