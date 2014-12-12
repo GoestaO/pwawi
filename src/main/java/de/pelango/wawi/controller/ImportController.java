@@ -1,6 +1,8 @@
 package de.pelango.wawi.controller;
 
+import de.pelango.wawi.model.Article;
 import de.pelango.wawi.model.ChildArticle;
+import de.pelango.wawi.model.ParentArticle;
 import de.pelango.wawi.services.ArticleService;
 import de.pelango.wawi.util.CSVAnalyser;
 import java.io.BufferedReader;
@@ -159,42 +161,12 @@ public class ImportController implements Serializable {
     public void importArticles() {
         CSVAnalyser analyser = new CSVAnalyser();
         if (columnMap != null) {
-//            System.out.println("analyser = " + analyser);
-            List<ChildArticle> liste = analyser.getData(targetFile, columnMap);
-//            System.out.println("liste = " + liste.size());
-            for (ChildArticle ca : liste) {
-                System.out.println("ca = " + ca.getManufacturerSKU());
+            List<ParentArticle> liste = analyser.getData(targetFile, columnMap);
+            for (ParentArticle a : liste) {
+                System.out.println(a.getSku() + " -> " + a.getClass().getName());
             }
 
-//            CSVAnalyser analyser = new CSVAnalyser();
-//            try {
-////                File targetFile = new File("/home/goesta/glassfish-4.0/glassfish/domains/domain1/config/import.csv");
-//                FileReader reader = new FileReader(targetFile);
-//                BufferedReader br = new BufferedReader(reader);
-//                
-//                // Erste Zeile = Spaltenköpfe -> so einlesen
-//                br.readLine();
-//                
-//                // Erste Zeile mit Daten
-//                String line = br.readLine();
-//                while (line != null) {
-//                    String[] data = line.split("\t", -1);
-//                    line = br.readLine();
-//                }
-//
-//            } catch (FileNotFoundException fne) {
-//                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Keine Datei nicht gefunden. Bitte erst eine Datei hochladen.", fne.getMessage());
-//                FacesContext.getCurrentInstance()
-//                        .addMessage(null, message);
-//            } catch (IOException ie) {
-//                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Ein- und Ausgabefehler.", ie.getMessage());
-//                FacesContext.getCurrentInstance()
-//                        .addMessage(null, message);
-//            }
-//        } else {
-//            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Keine Spaltenzuweisung.", "Bitte zunächst eine Spaltenzuweisung durchführen.");
-//            FacesContext.getCurrentInstance()
-//                    .addMessage(null, message);
+
         }
     }
 

@@ -5,7 +5,9 @@
  */
 package de.pelango.wawi.util;
 
+import de.pelango.wawi.model.Article;
 import de.pelango.wawi.model.ChildArticle;
+import de.pelango.wawi.model.ParentArticle;
 import de.pelango.wawi.model.Sizes;
 import de.pelango.wawi.services.AttributeService;
 import de.pelango.wawi.services.SizeService;
@@ -28,16 +30,17 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import org.apache.commons.beanutils.BeanUtils;
 
 /**
  *
  * @author Gösta Ostendorf <goesta.o@gmail.com>
  */
 public class CSVAnalyser {
-    
+
     @EJB
     private SizeService sizeService;
-    
+
     @EJB
     private AttributeService attributeService;
 
@@ -48,8 +51,8 @@ public class CSVAnalyser {
     //Price <price> (admin) BigDecimal	
     //SKU <sku>	String
     //Special Price <special_price> (admin) BigDecimal
-    public List<ChildArticle> getData(File file, Map<String, String> columnMap) {
-        List<ChildArticle> list = new ArrayList();
+    public List<ParentArticle> getData(File file, Map<String, String> columnMap) {
+        List<ParentArticle> list = new ArrayList();
         // Bedingung: Muss csv sein
         if (file.getName().endsWith(".csv")) {
             try {
@@ -61,10 +64,22 @@ public class CSVAnalyser {
                     String[] data = line.split("\t", -1);
                     ChildArticle ca = new ChildArticle();
                     ca = eachCell(data, columnMap, ca);
-                    list.add(ca);
+                    if (isValidSKU(ca.getSku())) {
+                        if (isParentArticle(ca)) {
+                            ParentArticle pa = new ParentArticle();
+                            try {
+                                BeanUtils.copyProperties(pa, ca);
+                            } catch (IllegalAccessException | InvocationTargetException ex) {
+                                Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            list.add(pa);
+                        } else {
+                            list.add(ca);
+                        }
+                    }
                     line = br.readLine();
                 }
-                
+
             } catch (FileNotFoundException fne) {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Keine Datei nicht gefunden. Bitte erst eine Datei hochladen.", fne.getMessage());
                 FacesContext.getCurrentInstance()
@@ -79,17 +94,19 @@ public class CSVAnalyser {
     }
 
     /**
-     * Durchläuft jede Zelle einer Reihe, sucht den Spaltennamen aus dem Spaltenarray anhand des Spaltenindexes heraus, 
-     * zieht das Attribut aus der ColumnMap und übergibt alles die Methode check.
+     * Durchläuft jede Zelle einer Reihe, sucht den Spaltennamen aus dem
+     * Spaltenarray anhand des Spaltenindexes heraus, zieht das Attribut aus der
+     * ColumnMap und übergibt alles die Methode check.
      *
      * @param data Das Array mit den Daten
-     * @param columnMap Die Hashmap mit den Attributen, die zu jeder Spalte hinterlegt sind
+     * @param columnMap Die Hashmap mit den Attributen, die zu jeder Spalte
+     * hinterlegt sind
      * @return
      */
     private ChildArticle eachCell(String[] data, Map<String, String> columnMap, ChildArticle ca) {
-        
+
         ChildArticle pt = ca;
-        int columnIndex = 0;        
+        int columnIndex = 0;
         Object[] columns = columnMap.keySet().toArray();
         for (String entry : data) {
             String columnName = columns[columnIndex].toString();
@@ -98,16 +115,16 @@ public class CSVAnalyser {
             columnIndex++;
         }
         return pt;
-        
+
     }
 
     /**
-     * Zieht die Setter-Methode anhand des Attributs aus dem Enum 
-     * Zieht den Parametertyp, der an den Setter übergeben wird, aus dem Enum
-     * Zieht den Klassennamen, in der das Attribut angelegt ist, aus dem Enum
-     * Übergibt alles an die Methode save
+     * Zieht die Setter-Methode anhand des Attributs aus dem Enum Zieht den
+     * Parametertyp, der an den Setter übergeben wird, aus dem Enum Zieht den
+     * Klassennamen, in der das Attribut angelegt ist, aus dem Enum Übergibt
+     * alles an die Methode save
      *
-     * @param attribute 
+     * @param attribute
      * @param entry
      * @param pa
      * @return
@@ -123,7 +140,7 @@ public class CSVAnalyser {
         String className = ColToSave.getEnum(attribute).getClassName();
         pt = save(method, parameterType, entry, className, pt);
         return pt;
-        
+
     }
 
     /**
@@ -132,7 +149,8 @@ public class CSVAnalyser {
      * @param methodName Der Name der Settermethode
      * @param parameterType Der Parametertyp, der an den Setter übergeben wird
      * @param entry Der Wert, der in der Zelle steht
-     * @param className Der Klassenname, in der das Attribut/Settermethode implementiert ist
+     * @param className Der Klassenname, in der das Attribut/Settermethode
+     * implementiert ist
      * @param pa
      * @return
      */
@@ -163,7 +181,6 @@ public class CSVAnalyser {
                     size.setName(entry);
                     // Das Inputobjekt in ein "Sizes"-Objekt konvertieren
                     o = size;
-//                    System.out.println("o = " + o);
                 } catch (NullPointerException ex) {
                     o = null;
                 }
@@ -187,27 +204,24 @@ public class CSVAnalyser {
                 paramTypes[0] = String.class;
                 o = entry;
                 break;
+
         }
-        
+
         try {
-//            System.out.println("entry = " + entry + "; parameter = " + o.getClass() + "; parameterType = " + parameterType);
-
             // Methoden-Objekt erzeugen
-            Method method = pt.getClass().getDeclaredMethod(methodName, paramTypes);
-//            System.out.println("method = " + method.getName());
-
-            // Setter-Methode per Reflektion ausführen
+            Method method;
+            try {
+                // Methode aus ChildArticle 
+                method = pt.getClass().getDeclaredMethod(methodName, paramTypes);
+            } catch (NoSuchMethodException nsm) {
+                // Methode aus ParentArticle
+                method = pt.getClass().getSuperclass().getDeclaredMethod(methodName, paramTypes);
+            }
             method.invoke(pt, new Object[]{o});
-        } catch (NoSuchMethodException nsm) {
-            Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, nsm);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalArgumentException ex) {
-            Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvocationTargetException ex) {
+        } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return pt;
     }
 
@@ -233,13 +247,39 @@ public class CSVAnalyser {
         return bigDecimal0;
     }
 
+    // Validierungsmethoden
+    /**
+     * Check, ob ein Artikel ein ParentArticle ist (hat nämlich nur ein "-")
+     *
+     * @param ca
+     * @return
+     */
+    private boolean isParentArticle(ParentArticle ca) {
+        String sku = ca.getSku();
+
+        // Zählen, wie oft "-" in der SKU vorkommt: wenn einmal, dann ist es ein ParentArticle, 
+        // ansonsten ein ChildArticle
+        int count = sku.length() - sku.replace("-", "").length();
+        return count == 1;
+    }
+
+    /**
+     * Check, ob eine SKU ein gewisse Länge aufweist sowie, ob ein "-" vorkommt
+     *
+     * @param sku
+     * @return
+     */
+    private boolean isValidSKU(String sku) {
+        return sku.length() > 6 && sku.contains("-");
+    }
+
     /**
      * Enum mit den Attributen, dem zugeordneten Setter, welchen
      * Inputcarametertyp der Setter erwartet und die Klasse, in der der Setter
      * aufgerufen wird
      */
     static enum ColToSave {
-        
+
         Size("size", "setSize", "Sizes", "ChildArticle"),
         PurchasePrice("purchasePrice", "setPurchasePrice", "BigDecimal", "ChildArticle"),
         AmazonPrice("amazonPrice", "setAmazonPrice", "BigDecimal", "ChildArticle"),
@@ -251,10 +291,10 @@ public class CSVAnalyser {
         ManufacturerSKU("manufacturerSKU", "setManufacturerSKU", "String", "ChildArticle"),
         Weight("weight", "setWeight", "BigDecimal", "ChildArticle"),
         Dimensions("dimensions", "setDimensions", "BigDecimal", "ChildArticle"),
-        SKU("sku", "setSku", "Sring", "ParentArticle"),
-        Brand("brand", "setBrand", "Sring", "ParentArticle"),
-        Model("model", "setModel", "Sring", "ParentArticle"),
-        Misc("misc", "setMisc", "Sring", "ParentArticle"),
+        SKU("sku", "setSku", "String", "ParentArticle"),
+        Brand("brand", "setBrand", "String", "ParentArticle"),
+        Model("model", "setModel", "String", "ParentArticle"),
+        Misc("misc", "setMisc", "String", "ParentArticle"),
         TaxClass("taxClass", "setTaxClass", "Float", "ParentArticle"),
         Color("color", "setColor", "Color", "ParentArticle"),
         ParentArticleName("parentArticleName", "setParentArticleName", "String", "ParentArticle"),
@@ -269,35 +309,35 @@ public class CSVAnalyser {
         NumberOfPictures("numberOfPictures", "setNumberOfPictures", "Integer", "ParentArticle"),
         ShortDescription("shortDescription", "setShortDescription", "String", "ParentArticle"),
         LongDescription("longDescription", "setLongDescription", "String", "ParentArticle");
-        
+
         private final String attribute;
         private final String method;
         private final String parameterType;
         private final String className;
-        
+
         private ColToSave(String attribute, String method, String parameterType, String className) {
             this.attribute = attribute;
             this.method = method;
             this.parameterType = parameterType;
             this.className = className;
         }
-        
+
         public String getAttribute() {
             return this.attribute;
         }
-        
+
         public String getMethod() {
             return this.method;
         }
-        
+
         public String getInputParameter() {
             return parameterType;
         }
-        
+
         public String getClassName() {
             return className;
         }
-        
+
         public static ColToSave getEnum(String value) {
             for (ColToSave c : ColToSave.values()) {
                 if (c.getAttribute().equalsIgnoreCase(value)) {
@@ -306,7 +346,7 @@ public class CSVAnalyser {
             }
             throw new IllegalArgumentException();
         }
-        
+
     }
-    
+
 }
