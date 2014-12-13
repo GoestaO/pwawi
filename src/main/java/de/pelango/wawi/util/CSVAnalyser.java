@@ -44,51 +44,54 @@ public class CSVAnalyser {
     @EJB
     private AttributeService attributeService;
 
-//    private 
-    //Amazon Price <price_amazon> (admin)	 BigDecimal
-    //Ebay Price <price_ebay> (admin)	BigDecimal
-    //Manufacturer's Suggested Retail Price <msrp> (admin)	 BigDecimal
-    //Price <price> (admin) BigDecimal	
-    //SKU <sku>	String
-    //Special Price <special_price> (admin) BigDecimal
     public List<ParentArticle> getData(File file, Map<String, String> columnMap) {
         List<ParentArticle> list = new ArrayList();
-        // Bedingung: Muss csv sein
-        if (file.getName().endsWith(".csv")) {
-            try {
-                FileReader fr = new FileReader(file);
-                BufferedReader br = new BufferedReader(fr);
-                br.readLine();
-                String line = br.readLine();
-                while (line != null) {
-                    String[] data = line.split("\t", -1);
-                    ChildArticle ca = new ChildArticle();
-                    ca = eachCell(data, columnMap, ca);
-                    if (isValidSKU(ca.getSku())) {
-                        if (isParentArticle(ca)) {
-                            ParentArticle pa = new ParentArticle();
-                            try {
-                                BeanUtils.copyProperties(pa, ca);
-                            } catch (IllegalAccessException | InvocationTargetException ex) {
-                                Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            list.add(pa);
-                        } else {
-                            list.add(ca);
-                        }
-                    }
-                    line = br.readLine();
-                }
+        //Bedingung: SKU ist Pflichtangabe, muss also einmal ausgewählt sein
+        if (columnMap.containsValue("sku")) {
 
-            } catch (FileNotFoundException fne) {
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Keine Datei nicht gefunden. Bitte erst eine Datei hochladen.", fne.getMessage());
-                FacesContext.getCurrentInstance()
-                        .addMessage(null, message);
-            } catch (IOException ie) {
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Ein- und Ausgabefehler.", ie.getMessage());
-                FacesContext.getCurrentInstance()
-                        .addMessage(null, message);
+            // Bedingung: Muss csv sein
+            if (file.getName().endsWith(".csv")) {
+                try {
+                    FileReader fr = new FileReader(file);
+                    BufferedReader br = new BufferedReader(fr);
+                    br.readLine();
+                    String line = br.readLine();
+                    while (line != null) {
+                        String[] data = line.split("\t", -1);
+                        ChildArticle ca = new ChildArticle();
+                        ca = eachCell(data, columnMap, ca);
+
+                        if (isValidSKU(ca.getSku())) {
+                            if (isParentArticle(ca)) {
+                                ParentArticle pa = new ParentArticle();
+                                try {
+                                    BeanUtils.copyProperties(pa, ca);
+                                } catch (IllegalAccessException | InvocationTargetException ex) {
+                                    Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                list.add(pa);
+                            } else {
+                                list.add(ca);
+                            }
+                        }
+                        line = br.readLine();
+                    }
+
+                } catch (FileNotFoundException fne) {
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Keine Datei nicht gefunden. Bitte erst eine Datei hochladen.", fne.getMessage());
+                    FacesContext.getCurrentInstance()
+                            .addMessage(null, message);
+                } catch (IOException ie) {
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Ein- und Ausgabefehler.", ie.getMessage());
+                    FacesContext.getCurrentInstance()
+                            .addMessage(null, message);
+                }
             }
+
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Import nicht möglich", "Eine Spalte muss die SKU enthalten.");
+            FacesContext.getCurrentInstance()
+                    .addMessage(null, message);
         }
         return list;
     }

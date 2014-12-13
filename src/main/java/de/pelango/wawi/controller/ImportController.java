@@ -1,7 +1,5 @@
 package de.pelango.wawi.controller;
 
-import de.pelango.wawi.model.Article;
-import de.pelango.wawi.model.ChildArticle;
 import de.pelango.wawi.model.ParentArticle;
 import de.pelango.wawi.services.ArticleService;
 import de.pelango.wawi.util.CSVAnalyser;
@@ -20,9 +18,9 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.primefaces.context.RequestContext;
 
@@ -35,7 +33,7 @@ import org.primefaces.event.FileUploadEvent;
  * @author Gösta Ostendorf (goesta.o@gmail.com)
  */
 @Named
-@SessionScoped
+@ViewScoped
 public class ImportController implements Serializable {
 
     List<String[]> list;
@@ -153,7 +151,7 @@ public class ImportController implements Serializable {
                     .addMessage(null, message);
         }
 
-        FacesMessage message = new FacesMessage("Import erfolgreich", "Spaltenköpfe importiert");
+        FacesMessage message = new FacesMessage("Spalteköpfe erkannt", "Bitte die Zuweisung vornehmen");
         FacesContext.getCurrentInstance()
                 .addMessage(null, message);
     }
@@ -165,8 +163,6 @@ public class ImportController implements Serializable {
             for (ParentArticle a : liste) {
                 System.out.println(a.getSku() + " -> " + a.getClass().getName());
             }
-
-
         }
     }
 
