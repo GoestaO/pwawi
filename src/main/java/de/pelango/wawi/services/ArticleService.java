@@ -38,12 +38,12 @@ public class ArticleService {
         em.remove(em.merge(entity));
     }
 
-    public ParentArticle findParentArticle(Long id) {
-        return (ParentArticle) em.find(ParentArticle.class, id);
+    public ParentArticle findParentArticle(String sku) {
+        return (ParentArticle) em.find(ParentArticle.class, sku);
     }
 
-    public ChildArticle findChildArticle(Long id) {
-        return (ChildArticle) em.find(ChildArticle.class, id);
+    public ChildArticle findChildArticle(String sku) {
+        return (ChildArticle) em.find(ChildArticle.class, sku);
     }
 
     /**
@@ -84,6 +84,18 @@ public class ArticleService {
         } catch (javax.persistence.NoResultException nrex) {
             return null;
         }
+    }
+
+    /**
+     * Finds a articles containing a string in its sku
+     *
+     * @param sku
+     * @return
+     */
+    public ParentArticle findArticleBySKU(String sku) {
+        String queryString = "select p from ParentArticle p where p.sku like :sku";
+        ParentArticle p = em.find(ParentArticle.class, sku);
+        return p;
     }
 
     public List<ChildArticle> findChildArticle(String brand, Color color, Sizes size) {
@@ -214,7 +226,6 @@ public class ArticleService {
                 fieldList.add(f.getName());
             }
         }
-
         return fieldList;
     }
 

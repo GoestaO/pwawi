@@ -5,7 +5,6 @@
  */
 package de.pelango.wawi.util;
 
-import de.pelango.wawi.model.Article;
 import de.pelango.wawi.model.ChildArticle;
 import de.pelango.wawi.model.ParentArticle;
 import de.pelango.wawi.model.Sizes;
@@ -62,6 +61,9 @@ public class CSVAnalyser {
                         ca = eachCell(data, columnMap, ca);
 
                         if (isValidSKU(ca.getSku())) {
+
+                            // Wenn die SKU darauf hinweist, dass es sich um einen ParentArticle handelt, 
+                            // die Child-Attribute auf ein neu erzeugtes Parent-Objekt übertragen
                             if (isParentArticle(ca)) {
                                 ParentArticle pa = new ParentArticle();
                                 try {
@@ -196,6 +198,7 @@ public class CSVAnalyser {
                     o = convertString2BigDecimal(entry);
                 } catch (ParseException ex) {
                     o = new BigDecimal(0);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Fehler beim Parsen", "Kann nicht den String in Dezimalformat umwandeln."));
                     Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 paramTypes[0] = BigDecimal.class;
@@ -222,6 +225,7 @@ public class CSVAnalyser {
             }
             method.invoke(pt, new Object[]{o});
         } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Parsefehler", ex.getMessage()));
             Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -311,7 +315,9 @@ public class CSVAnalyser {
         Category("category", "setCategory", "Category", "ParentArticle"),
         NumberOfPictures("numberOfPictures", "setNumberOfPictures", "Integer", "ParentArticle"),
         ShortDescription("shortDescription", "setShortDescription", "String", "ParentArticle"),
-        LongDescription("longDescription", "setLongDescription", "String", "ParentArticle");
+        LongDescription("longDescription", "setLongDescription", "String", "ParentArticle"),
+        SpecialPrice("specialPrice", "setSpecialPrice", "BigDecimal", "ChildArticle"),
+        SuggestedRetailPrice("suggestedRetailPrice", "setSuggestedRetailPrice", "BigDecimal", "ChildArticle");
 
         private final String attribute;
         private final String method;

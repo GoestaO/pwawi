@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -161,20 +160,25 @@ public class ImportController implements Serializable {
         if (columnMap != null) {
             List<ParentArticle> liste = analyser.getData(targetFile, columnMap);
             for (ParentArticle a : liste) {
-                System.out.println(a.getSku() + " -> " + a.getClass().getName());
+              ParentArticle p = service.findParentArticle(a.getSku());
+              if(p==null){
+                  service.create(a);
+              }
+              else{
+                  service.update(a);
+              }
             }
         }
     }
 
-    public void test() {
-        columnMap.keySet();
-        Iterator<String> iterator = columnMap.keySet().iterator();
-        while (iterator.hasNext()) {
-            System.out.println(iterator.next());
-        }
-
-    }
-
+//    public void test() {
+//        columnMap.keySet();
+//        Iterator<String> iterator = columnMap.keySet().iterator();
+//        while (iterator.hasNext()) {
+//            System.out.println(iterator.next());
+//        }
+//
+//    }
 //    static enum ColToSave {
 //
 //        Size("size", "setSize", "Sizes", "ChildArticle"), PurchasePrice("purchasePrice", "setPurchasePrice", "BigDecimal", "ChildArticle"), AmazonPrice("amazonPrice", "setAmazonPrice", "BigDecimal", "ChildArticle"), EbayPrice("ebayPrice", "setEbayPrice", "BigDecimal", "ChildArticle"), ShopPrice("shopPrice", "setShopPrice", "BigDecimal", "ChildArticle"), Quantity("quantity", "setQuantity", "Integer", "ChildArticle"), EAN("ean", "setEan", "Long", "ChildArticle"), ASIN("asin", "setAsin", "Long", "ChildArticle"), ManufacturerSKU("manufacturerSKU", "setManufacturerSKU", "String", "ChildArticle"), Weight("weight", "setWeight"), Dimensions("dimensions", "setDimensions", "BigDecimal", "ChildArticle"), SKU("sku", "setSku", "Sring", "ParentArticle"), Brand("brand", "setBrand","Sring", "ParentArticle"), Model("model", "setModel", "Sring", "ParentArticle"), Misc("misc", "setMisc", "Sring", "ParentArticle"), TaxClass("taxClass", "setTaxClass", "Float", "ParentArticle"), Color("color", "setColor", "Color", "ParentArticle"), ParentArticleName("parentArticleName", "setParentArticleName", "String", "ParentArticle"), Attribute("attribute", "setAttribute", "Attribute", "ParentArticle"), Gender("gender", "setGender", "Gender", "ParentArticle"), TopProduct("topProduct", "setTopProduct", "Boolean", "ParentArticle"), TopProductMobile("topProductMobile", "setTopProductMobile", "Boolean", "ParentArticle"), SpecialProduct("specialProduct", "setSpecialProduct","Boolean", "ParentArticle"), Material("material", "setMaterial", "Material", "ParentArticle"), ProductTypes("productTypes", "setProductTypes", "List<ProductType>"), Category("category", "setCategory", "Category", "ParentArticle"), NumberOfPictures("numberOfPictures", "setNumberOfPictures", "Integer", "ParentArticle"), ShortDescription("shortDescription", "setShortDescription", "String", "ParentArticle"), LongDescription("longDescription", "setLongDescription", "String", "ParentArticle");

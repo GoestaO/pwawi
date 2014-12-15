@@ -15,7 +15,7 @@
                          paginator="true"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          currentPageReportTemplate="{startRecord}-{endRecord} von {totalRecords}"
-                         rowsPerPageTemplate="25,50,100" value="#{childArticleOverviewController.articles}" id = "table" var="article" scrollable="true" selectionMode="multiple" selection="#{childArticleOverviewController.selectedChildArticles}" rowKey="#{article.id}">
+                         rowsPerPageTemplate="25,50,100" value="#{childArticleOverviewController.articles}" id = "table" var="article" scrollable="true" selectionMode="multiple" selection="#{childArticleOverviewController.selectedChildArticles}" rowKey="#{article.sku}">
 
                 <f:facet name="header">
                     <p:commandButton id="toggler" type="button" value="Spalten" style="float:right" icon="ui-icon-calculator" />
@@ -154,7 +154,7 @@
                         </p:inputText> 
                     </p:column>  
                 </p:dataTable>
-                <p:commandButton styleClass="dialogbutton" value="Speichern" action ="#{childArticleOverviewController.update(childArticleOverviewController.selectedChildArticles)}" oncomplete ="caEditWidget.hide();" process = "@this" update="table"/>
+                <p:commandButton styleClass="dialogbutton" value="Speichern" action ="#{childArticleOverviewController.update(childArticleOverviewController.selectedChildArticles)}" oncomplete ="PF('caEditWidget').hide();" process = "@this" update="table"/>
             </p:dialog>
         </h:form> 
     </ui:define>
