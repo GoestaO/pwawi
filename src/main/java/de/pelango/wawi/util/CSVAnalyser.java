@@ -43,10 +43,13 @@ public class CSVAnalyser {
     @EJB
     private AttributeService attributeService;
 
-    public List<ParentArticle> getData(File file, Map<String, String> columnMap) {
+    public List<ParentArticle> getData(File file, Map<String, Tuple<String, Boolean>> columnMap) {
         List<ParentArticle> list = new ArrayList();
         //Bedingung: SKU ist Pflichtangabe, muss also einmal ausgewählt sein
-        if (columnMap.containsValue("sku")) {
+
+        Boolean containsSKU = this.containsSKU(columnMap);
+
+        if (containsSKU) {
 
             // Bedingung: Muss csv sein
             if (file.getName().endsWith(".csv")) {
@@ -108,15 +111,16 @@ public class CSVAnalyser {
      * hinterlegt sind
      * @return
      */
-    private ChildArticle eachCell(String[] data, Map<String, String> columnMap, ChildArticle ca) {
+    private ChildArticle eachCell(String[] data, Map<String, Tuple<String, Boolean>> columnMap, ChildArticle ca) {
 
         ChildArticle pt = ca;
         int columnIndex = 0;
         Object[] columns = columnMap.keySet().toArray();
         for (String entry : data) {
             String columnName = columns[columnIndex].toString();
-            String attribute = columnMap.get(columnName);
-            pt = check(attribute, entry, pt);
+            String attribute = columnMap.get(columnName).getX();
+            Boolean update = columnMap.get(columnName).getY();
+            pt = check(attribute, entry, update, pt);
             columnIndex++;
         }
         return pt;
@@ -134,7 +138,7 @@ public class CSVAnalyser {
      * @param pa
      * @return
      */
-    private ChildArticle check(String attribute, String entry, ChildArticle pa) {
+    private ChildArticle check(String attribute, String entry, Boolean update, ChildArticle pa) {
         ChildArticle pt = pa;
 
         // Die Setter-Methode zu dem Attribut aus dem Enum ziehen 
@@ -143,7 +147,8 @@ public class CSVAnalyser {
         String parameterType = ColToSave.getEnum(attribute).getInputParameter();
         // Den Klassentyp, auf dem dieses Attribut implementiert ist, aus dem Enum ziehen
         String className = ColToSave.getEnum(attribute).getClassName();
-        pt = save(method, parameterType, entry, className, pt);
+
+        pt = save(method, parameterType, entry, className, update, pt);
         return pt;
 
     }
@@ -159,7 +164,7 @@ public class CSVAnalyser {
      * @param pa
      * @return
      */
-    private ChildArticle save(String methodName, String parameterType, String entry, String className, ChildArticle pa) {
+    private ChildArticle save(String methodName, String parameterType, String entry, String className, Boolean update, ChildArticle pa) {
         ChildArticle pt = pa;
 
         //Check, ob es sich beim Artikel um einen ParentArtilce handelt: Die SKU hat n Stellen
@@ -212,23 +217,23 @@ public class CSVAnalyser {
                 break;
 
         }
-
-        try {
-            // Methoden-Objekt erzeugen
-            Method method;
+        if (update) {
             try {
-                // Methode aus ChildArticle 
-                method = pt.getClass().getDeclaredMethod(methodName, paramTypes);
-            } catch (NoSuchMethodException nsm) {
-                // Methode aus ParentArticle
-                method = pt.getClass().getSuperclass().getDeclaredMethod(methodName, paramTypes);
+                // Methoden-Objekt erzeugen
+                Method method;
+                try {
+                    // Methode aus ChildArticle 
+                    method = pt.getClass().getDeclaredMethod(methodName, paramTypes);
+                } catch (NoSuchMethodException nsm) {
+                    // Methode aus ParentArticle
+                    method = pt.getClass().getSuperclass().getDeclaredMethod(methodName, paramTypes);
+                }
+                method.invoke(pt, new Object[]{o});
+            } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Parsefehler", ex.getMessage()));
+                Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
             }
-            method.invoke(pt, new Object[]{o});
-        } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Parsefehler", ex.getMessage()));
-            Logger.getLogger(CSVAnalyser.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return pt;
     }
 
@@ -268,6 +273,16 @@ public class CSVAnalyser {
         // ansonsten ein ChildArticle
         int count = sku.length() - sku.replace("-", "").length();
         return count == 1;
+    }
+
+    private boolean containsSKU(Map<String, Tuple<String, Boolean>> columnMap) {
+        Boolean containsSKU = false;
+        for (Tuple<String, Boolean> entry : columnMap.values()) {
+            if (entry.getX().equals("sku")) {
+                containsSKU = true;
+            }
+        }
+        return containsSKU;
     }
 
     /**

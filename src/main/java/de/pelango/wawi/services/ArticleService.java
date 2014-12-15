@@ -226,6 +226,9 @@ public class ArticleService {
                 fieldList.add(f.getName());
             }
         }
+        
+        // Da SKU im Parent und im Child vorkommt, einen davon löschen 
+        fieldList.remove("sku");
         return fieldList;
     }
 

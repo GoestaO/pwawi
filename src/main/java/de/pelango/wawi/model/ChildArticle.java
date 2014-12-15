@@ -67,9 +67,14 @@ public class ChildArticle extends ParentArticle implements Serializable, Article
 
     public void setSKU(String sku) {
         String model = super.getModel();
-        String color = super.getColor().getName();
-        
-        if (color == null) {
+        String color = "";
+        try {
+            color = super.getColor().getName();
+        } catch (NullPointerException ex) {
+            return;
+        }
+
+        if (color.equals("")) {
             this.sku = super.getSku() + "-" + model + "-" + size.getName();
         } else {
             this.sku = super.getSku() + "-" + color + "-" + size.getName();
@@ -202,7 +207,7 @@ public class ChildArticle extends ParentArticle implements Serializable, Article
 //    }
     @Override
     public String toString() {
-        return "de.pelango.wawi.model.ChildArticle[ id=" + this.getShortDescription() + " ]";
+        return "de.pelango.wawi.model.ChildArticle[ sku=" + this.getSKU()+ "]";
     }
 
     public ChildArticle() {

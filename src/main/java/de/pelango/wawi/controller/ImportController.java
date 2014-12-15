@@ -3,6 +3,7 @@ package de.pelango.wawi.controller;
 import de.pelango.wawi.model.ParentArticle;
 import de.pelango.wawi.services.ArticleService;
 import de.pelango.wawi.util.CSVAnalyser;
+import de.pelango.wawi.util.Tuple;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,15 +13,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.primefaces.context.RequestContext;
 
 import org.primefaces.event.FileUploadEvent;
@@ -40,11 +46,13 @@ public class ImportController implements Serializable {
 
     private String[] columnHeaders;
 
-    Map<String, String> columnMap;
+    Map<String, Tuple<String, Boolean>> columnMap;
 
     private List<String> fieldList;
 
     private File targetFile;
+
+    List<ParentArticle> importedArticles;
 
     @EJB
     private ArticleService service;
@@ -70,11 +78,11 @@ public class ImportController implements Serializable {
         this.fieldList = fieldList;
     }
 
-    public Map<String, String> getColumnMap() {
+    public Map<String, Tuple<String, Boolean>> getColumnMap() {
         return columnMap;
     }
 
-    public void setColumnMap(Map<String, String> columnMap) {
+    public void setColumnMap(Map<String, Tuple<String, Boolean>> columnMap) {
         this.columnMap = columnMap;
     }
 
@@ -135,7 +143,7 @@ public class ImportController implements Serializable {
             BufferedReader br = new BufferedReader(reader);
             columnHeaders = br.readLine().split("\t", -1);
             for (String entry : columnHeaders) {
-                columnMap.put(entry, null);
+                columnMap.put(entry, new Tuple<String, Boolean>(null, true));
             }
             RequestContext.getCurrentInstance().update("headers");
             br.close();
@@ -157,19 +165,33 @@ public class ImportController implements Serializable {
 
     public void importArticles() {
         CSVAnalyser analyser = new CSVAnalyser();
+        for (String k : columnMap.keySet()) {
+            System.out.println("column = " + k + "; attribute = " + columnMap.get(k).getX() + "; update = " + columnMap.get(k).getY());
+        }
         if (columnMap != null) {
             List<ParentArticle> liste = analyser.getData(targetFile, columnMap);
             for (ParentArticle a : liste) {
-              ParentArticle p = service.findParentArticle(a.getSku());
-              if(p==null){
-                  service.create(a);
-              }
-              else{
-                  service.update(a);
-              }
+
+                // Überprüfung, ob schon Artikel mit der SKU vorhanden ist, 
+                // wenn ja, nur Update, ansonsten neuen Artikel erstellen
+                ParentArticle p = service.findParentArticle(a.getSku());
+                System.out.println("p = " + p);
+                if (p == null) {
+                    service.create(a);
+                } else {
+                    try {
+                        BeanUtilsBean.getInstance().getConvertUtils().register(false, false, 0);
+                        BeanUtils.copyProperties(p, a);
+//                        System.out.println("ebay-Price = " + a.get);
+                    } catch (IllegalAccessException | InvocationTargetException ex) {
+                        Logger.getLogger(ImportController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                service.update(a);
             }
         }
     }
+}
 
 //    public void test() {
 //        columnMap.keySet();
@@ -203,7 +225,6 @@ public class ImportController implements Serializable {
 //            return this.method;
 //        }
 //    }
-}
 //        for (String[] s : list) {
 ////            System.out.print("0: "+ s[0]);
 ////            System.out.print("1: "+ s[1]);

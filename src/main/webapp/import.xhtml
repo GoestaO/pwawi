@@ -8,17 +8,17 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <ui:define name ="content">
-        <h:form id="form" style="width: 400px;">
+        <h:form id="form" style="width: 500px;">
             <p:messages showDetail="true" id="messages" closable="true"/>
         </h:form>
 
-        <h:form style="width: 400px;">
+        <h:form style="width: 500px;">
             <p:fileUpload fileUploadListener="#{importController.handleColumnImport}" label = "Dateiauswahl" auto = "true" mode="advanced" dragDropSupport="true"
                           update=":form:messages :form2 :form2:headers" fileLimit="1" allowTypes="/(\.|\/)(csv)$/"/>
         </h:form>
         <!--#{importController.columnMap.keySet()==null}-->
         <h:form id="form2">
-            <p:dataTable id = "headers" value="#{importController.columnMap.keySet()}" var="column" binding="#{table}">
+            <p:dataTable id = "headers" value="#{importController.columnMap.keySet()}" var="column" binding="#{table}" style="width: 500px;">
                 <f:facet name="header">
                     <p:outputLabel value="Spaltenzuordnung"/>
                 </f:facet>
@@ -26,11 +26,14 @@
                     <p:outputLabel value="#{column}"/>
                 </p:column>
                 <p:column headerText="Kategorie">
-                    <p:selectOneMenu value="#{importController.columnMap[column]}" filter="true" filterMatchMode="startsWith">
+                    <p:selectOneMenu value="#{importController.columnMap[column].x}" filter="true" filterMatchMode="startsWith">
                         <f:selectItems value="#{importController.fieldList}" var="field" itemLabel="#{field}" itemValue="#{field}"/>
                         <p:ajax/>
                     </p:selectOneMenu>
-                </p:column>                
+                </p:column>
+                <p:column headerText="Update">
+                    <p:selectBooleanCheckbox value="#{importController.columnMap[column].y}"/>                    
+                </p:column>
             </p:dataTable>
             <p:commandButton value="Importieren" update = "form2:headers :form:messages" action="#{importController.importArticles()}"/>            
         </h:form>
