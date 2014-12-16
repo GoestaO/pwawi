@@ -10,10 +10,10 @@
         <h:form id="form">
             <h:panelGrid columns="2">
                 <h:outputLabel value="Bitte EAN eingeben: "></h:outputLabel>
-                <h:inputText id = "ean" class = "form-control" value = "#{outboundBean.ean}" >
+                <h:inputText id = "ean" value = "#{outboundBean.ean}" >
                     <!--<f:validateLength minimum="13" maximum="13" />-->                    
                 </h:inputText>
-                <h:commandButton id = "submitButton" class = "btn btn-default" actionListener = "#{outboundBean.addEan}" value="OK">
+                <h:commandButton id = "submitButton" actionListener = "#{outboundBean.addEan}" value="OK">
                     <f:ajax execute="form:ean" render="form:inboundTable"/>
                 </h:commandButton>
             </h:panelGrid>
@@ -35,10 +35,10 @@
                         <h:outputText value="Artikel erkannt" rendered = "#{outboundBean.checkInput(ean)}"></h:outputText>
                     </h:column>
                     <h:column>
-                        <h:commandButton class = "btn btn-default" value="Unterartikel suchen" action ="#{outboundBean.doSearch(ean)}" rendered = "#{!outboundBean.checkInput(ean)}"/>
+                        <h:commandButton value="Unterartikel suchen" action ="#{outboundBean.doSearch(ean)}" rendered = "#{!outboundBean.checkInput(ean)}"/>
                     </h:column>
                     <h:column>
-                        <h:commandButton id ="deleteButton" class="btn btn-default" value ="x" action = "#{outboundBean.removeEAN(ean)}">
+                        <h:commandButton id ="deleteButton"  value ="x" action = "#{outboundBean.removeEAN(ean)}">
                             <f:ajax execute="@this" render =":form:eanList"/>
                         </h:commandButton>                    
                     </h:column>
@@ -47,7 +47,7 @@
         </h:form>
         <h:form>
             <!--Confirm-Dialog, whether the counted known articles should be processed-->
-            <h:commandButton id ="processOutbound" class = "btn btn-default" value = "Ausbuchen" actionListener="#{outboundBean.processOutbound()}" onclick="return confirm(document.getElementsByClassName('success').length + ' Artikel ausbuchen?')"/>
+            <h:commandButton id ="processOutbound" value = "Ausbuchen" actionListener="#{outboundBean.processOutbound()}" onclick="return confirm(document.getElementsByClassName('success').length + ' Artikel ausbuchen?')"/>
         </h:form>
         <script type="text/javascript">
 

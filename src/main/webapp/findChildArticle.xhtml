@@ -17,40 +17,40 @@
                     <h:outputLabel value="" />
 
                     <h:outputLabel value="Marke" style="font-weight:bold" />
-                    <h:inputText id = "brand" class = "form-control" value="#{findChildArticleController.brand}" >
+                    <h:inputText id = "brand" value="#{findChildArticleController.brand}" style="width: 200px;">
                     </h:inputText>
-                    <h:commandButton id="btnClearBrand" class = "btn btn-default" value="x" action="#{findChildArticleController.clearBrand()}">
+                    <h:commandButton id="btnClearBrand" value="x" action="#{findChildArticleController.clearBrand()}">
                         <f:ajax execute="@this" render="form:brand"></f:ajax>
                     </h:commandButton>
 
                     <h:outputLabel value="Farbe" style="font-weight:bold" />
-                    <h:selectOneMenu id = "color" class = "form-control" value="#{findChildArticleController.color}" >
+                    <h:selectOneMenu id = "color" value="#{findChildArticleController.color}" style="width: 200px;" >
                         <f:selectItem itemLabel="" noSelectionOption="true" />
                         <f:selectItems value="#{colorListBean.colorList}" var = "color" itemValue = "#{color.name}" itemLabel="#{color.name}"/>
                         <f:converter converterId="colorConverter" />
 
                     </h:selectOneMenu>
-                    <h:commandButton id="btnClearColor" class = "btn btn-default" value="x" action="#{findChildArticleController.clearColor()}">
+                    <h:commandButton id="btnClearColor" value="x" action="#{findChildArticleController.clearColor()}">
                         <f:ajax execute="@this" render="form:color"></f:ajax>
                     </h:commandButton>
 
                     <h:outputLabel value="Größe" style="font-weight:bold" />              
-                    <h:selectOneMenu class = "form-control" id = "sizes" value="#{findChildArticleController.size}">
+                    <h:selectOneMenu  id = "sizes" value="#{findChildArticleController.size}" style="width: 200px;">
                         <f:selectItem itemLabel="" noSelectionOption="true" />
                         <f:converter converterId="sizeConverter" />
                         <f:selectItems value="#{selectManySizeBean.allSizesList}" var = "size" itemValue = "#{size.name}" itemLabel="#{size.name}"/> 
 
                     </h:selectOneMenu>
-                    <h:commandButton id="btnClearSize" class = "btn btn-default" value="x" action="#{findChildArticleController.clearSize()}">
+                    <h:commandButton id="btnClearSize"  value="x" action="#{findChildArticleController.clearSize()}">
                         <f:ajax execute="@this" render="form:sizes"></f:ajax>
                     </h:commandButton>
 
 
-                    <h:commandButton id = "searchButton" class = "btn btn-default" value = "Suchen" actionListener="#{findChildArticleController.findChildArticle}">
+                    <h:commandButton id = "searchButton" value = "Suchen" actionListener="#{findChildArticleController.findChildArticle}">
                         <f:ajax execute = "form:brand form:color form:sizes" render="form:searchResults"/>
                     </h:commandButton>
-                    <h:commandButton class = "btn btn-default" value ="Parent suchen" action="#{findChildArticleController.findParent()}"/>
-                    <h:commandButton class = "btn btn-default" value="Alle Filter zurücksetzen" action='#{findChildArticleController.reset()}'>
+                    <h:commandButton value ="Parent suchen" action="#{findChildArticleController.findParent()}"/>
+                    <h:commandButton value="Alle Filter zurücksetzen" action='#{findChildArticleController.reset()}'>
                         <f:ajax execute = "@this" render = "form:brand form:color form:sizes form:searchResults"/>
                     </h:commandButton>
 
@@ -74,7 +74,7 @@
                         <h:outputText value="#{item.ean}"/>
                     </h:column>
                     <h:column>
-                        <h:commandButton rendered = "#{findChildArticleController.ean !=null}" class = "btn btn-default" onclick="if (!confirm('Bist du dir sicher?'))
+                        <h:commandButton rendered = "#{findChildArticleController.ean !=null}" onclick="if (!confirm('Bist du dir sicher?'))
                                     return false" value = "Diese EAN aktualisieren" action="#{findChildArticleController.doUpdateArticle(item, findChildArticleController.ean)}"/>
                     </h:column>
                 </h:dataTable>

@@ -25,16 +25,25 @@ public class AttributeConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        Long id = service.getAttributeId(value);
-        Attribute a = new Attribute();
-        a.setName(value);
-        a.setId(id);
-        return a;
+        if (value != null) {
+            Long id = service.getAttributeId(value);
+            Attribute a = new Attribute();
+            a.setName(value);
+            a.setId(id);
+            return a;
+        } else {
+            return null;
+        }
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        return value.toString();
+        if (value != null) {
+            return value.toString();
+        } else {
+            return null;
+        }
+
     }
 
 }

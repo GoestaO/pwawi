@@ -88,7 +88,7 @@
 
                     <h:panelGroup>
                         <h:outputLabel value="SKU" style="font-weight:bold" />                    
-                        <h:inputText class = "form-control" value="#{parentArticleEditController.pa.sku}" rendered="#{parentArticleEditController.ean == null}"/>
+                        <h:outputText class = "form-control" value="#{parentArticleEditController.pa.sku}" rendered="#{parentArticleEditController.ean == null}"/>
                     </h:panelGroup>
 
                     <h:panelGroup>
@@ -108,6 +108,7 @@
                     <h:panelGroup>
                         <h:outputLabel value="Farbe" style="font-weight:bold" />
                         <h:selectOneMenu class = "form-control" value="#{parentArticleEditController.pa.color}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:selectItem itemLabel="#{parentArticleEditController.pa.color.name}" itemValue ="#{parentArticleEditController.pa.color.name}"/>
                             <f:selectItems value="#{colorListBean.colorList}" var = "color" itemValue = "#{color.name}" itemLabel="#{color.name}"/>
                             <f:converter converterId="colorConverter" />
                         </h:selectOneMenu>
@@ -116,6 +117,7 @@
                     <h:panelGroup>
                         <h:outputLabel value ="Attribut" style="font-weight: bold"/>
                         <h:selectOneMenu class = "form-control" value="#{parentArticleEditController.pa.attribute}" valueChangeListener = "#{selectManySizeBean.attributeChanged}" rendered="#{parentArticleEditController.ean == null}">
+                            <f:selectItem itemLabel="#{parentArticleEditController.pa.attribute.name}" itemValue ="#{parentArticleEditController.pa.attribute.name}"/>
                             <f:selectItems value ="#{attributeBean.attribute}" var ="attribute" itemValue ="#{attribute.name}" itemLabel ="#{attribute.name}"/>
                             <f:converter converterId="attributeConverter"/>
                         </h:selectOneMenu>

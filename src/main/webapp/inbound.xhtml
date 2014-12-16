@@ -10,10 +10,10 @@
         <h:form id="form">
             <h:panelGrid columns="2">
                 <h:outputLabel value="Bitte EAN eingeben: "></h:outputLabel>
-                <h:inputText class = "form-control" id = "ean" value = "#{inboundBean.ean}" >
+                <h:inputText id = "ean" value = "#{inboundBean.ean}" >
                     <!--<f:validateLength minimum="13" maximum="13" />-->                    
                 </h:inputText>
-                <h:commandButton id = "submitButton" class = "btn btn-default" actionListener = "#{inboundBean.addEan}" value="OK">
+                <h:commandButton id = "submitButton" actionListener = "#{inboundBean.addEan}" value="OK">
                     <f:ajax execute="form:ean" render="form:inboundTable"/>
                 </h:commandButton>
             </h:panelGrid>
@@ -35,10 +35,10 @@
                         <h:outputText value="Artikel erkannt" rendered = "#{inboundBean.checkInput(ean)}"></h:outputText>
                     </h:column>
                     <h:column>
-                        <h:commandButton class = "btn btn-default" value="Unterartikel suchen" action ="#{inboundBean.doSearch(ean)}" rendered = "#{!inboundBean.checkInput(ean)}"/>
+                        <h:commandButton value="Unterartikel suchen" action ="#{inboundBean.doSearch(ean)}" rendered = "#{!inboundBean.checkInput(ean)}"/>
                     </h:column>
                     <h:column>
-                        <h:commandButton id ="deleteButton" class="btn btn-default" value ="x" action = "#{inboundBean.removeEAN(ean)}">
+                        <h:commandButton id ="deleteButton" value ="x" action = "#{inboundBean.removeEAN(ean)}">
                             <f:ajax execute="@this" render =":form:eanList"/>
                         </h:commandButton>                    
                     </h:column>

@@ -11,7 +11,7 @@
         <h3> Unterartikel-Übersicht</h3>
         <h:form id="form">
             <p:hotkey bind="alt+n" handler="varEditButton.jq.click()" />
-            <p:dataTable rows="50"
+            <p:dataTable rows="50" 
                          paginator="true"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          currentPageReportTemplate="{startRecord}-{endRecord} von {totalRecords}"
@@ -61,18 +61,18 @@
                         <f:convertNumber type="currency" locale = "de_de" />
                     </h:outputText>
                 </p:column>
-                <p:column>
+<!--                <p:column width="auto">
                     <p:commandButton icon="ui-icon-wrench" oncomplete ="PF('caEditWidget').show();" update=":form:caEdit" >
                         <f:setPropertyActionListener target="#{childArticleEditController.childArticle}" value="#{article}"  />
                     </p:commandButton>
-                </p:column>
+                </p:column>-->
                 <f:facet name="header">                    
                     <p:commandButton id="editButton" widgetVar="varEditButton" process="table" update=":form:caEdit" icon="ui-icon-search"  oncomplete="PF('caEditWidget').show()" />
                 </f:facet>
             </p:dataTable>
 
 
-            <p:dialog id="caEdit" header="Unterartikel bearbeiten" modal="true" widgetVar="caEditWidget" width="95%">
+            <p:dialog id="caEdit" header="Unterartikel bearbeiten" modal="true" widgetVar="caEditWidget" width="auto">
                 <p:dataTable id ="editTable" tableStyle="width:auto" value="#{childArticleOverviewController.selectedChildArticles}" var="selectedChildArticle" editable="true">
 
                     <p:columnGroup type="header">
