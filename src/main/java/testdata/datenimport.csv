@@ -1,5 +1,4 @@
 Amazon Price <price_amazon> (admin)	Ebay Price <price_ebay> (admin)	Manufacturer's Suggested Retail Price <msrp> (admin)	Price <price> (admin)	SKU <sku>	Special Price <special_price> (admin)
-					1
 				2000036-BLA	
 1199	1199		1199	2000036-BLA-M	899
 1199	1199	1799	1199	2000036-BLA-L	899
@@ -704,34 +703,25 @@ Amazon Price <price_amazon> (admin)	Ebay Price <price_ebay> (admin)	Manufacturer
 			899	1000016_2-S4R-W48/L30	699
 			899	1000016_2-B42-W36/L30	649
 			899	1000016_2-S4R-W54/L32	699
-			Default		
-			Default		
 			999	2000047-BLU-XXL	499
 			999	2000047-RED-XL	499
 			899	1000016_2-B42-W44/L34	649
-			Default		
 		899	899	1000017_2-BB0-W38/L36	759
 		899	899	1000017_2-BB0-W40/L36	759
 			899	1000016_2-B42-W58/L30	649
-			Default		
 		499	499	1000018-BLA	
 		499	499	1000018-BLA-L31-W36	
-			Default		
 			899	1000016_2-S4R-W58/L30	699
 			899	1000016_2-S4R-W46/L30	699
 			899	1000016_2-S4R-W42/L36	699
-			Default		
 			899	1000016_2-B42-W60/L30	649
 			899	1000016_2-B42-W56/L30	649
 			999	2000047-BLU-S	549
 		899	899	1000017_2-BB0-W35/L36	759
-			Default		
-			Default		
 			899	1000016_2-B22-W36/L32	649
 			899	1000016_2-B42-W38/L32	649
 			899	1000016_2-B22-W38/L32	649
 			899	1000016_2-S4R-W42/L30	699
-			Default		
 			899	1000016_2-B42-W44/L30	649
 		899	899	1000017_2-BB0-W38/L30	759
 			899	1000016_2-S4R-W56/L32	699

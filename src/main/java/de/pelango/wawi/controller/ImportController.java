@@ -1,8 +1,9 @@
 package de.pelango.wawi.controller;
 
-import de.pelango.wawi.model.ChildArticle;
+import de.pelango.wawi.model.ParentArticle;
 import de.pelango.wawi.services.ArticleService;
 import de.pelango.wawi.util.CSVAnalyser;
+import de.pelango.wawi.util.Tuple;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,16 +13,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.util.Iterator;
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.primefaces.context.RequestContext;
 
 import org.primefaces.event.FileUploadEvent;
@@ -33,7 +38,7 @@ import org.primefaces.event.FileUploadEvent;
  * @author Gösta Ostendorf (goesta.o@gmail.com)
  */
 @Named
-@SessionScoped
+@ViewScoped
 public class ImportController implements Serializable {
 
     List<String[]> list;
@@ -41,11 +46,13 @@ public class ImportController implements Serializable {
 
     private String[] columnHeaders;
 
-    Map<String, String> columnMap;
+    Map<String, Tuple<String, Boolean>> columnMap;
 
     private List<String> fieldList;
 
     private File targetFile;
+
+    List<ParentArticle> importedArticles;
 
     @EJB
     private ArticleService service;
@@ -71,11 +78,11 @@ public class ImportController implements Serializable {
         this.fieldList = fieldList;
     }
 
-    public Map<String, String> getColumnMap() {
+    public Map<String, Tuple<String, Boolean>> getColumnMap() {
         return columnMap;
     }
 
-    public void setColumnMap(Map<String, String> columnMap) {
+    public void setColumnMap(Map<String, Tuple<String, Boolean>> columnMap) {
         this.columnMap = columnMap;
     }
 
@@ -136,7 +143,7 @@ public class ImportController implements Serializable {
             BufferedReader br = new BufferedReader(reader);
             columnHeaders = br.readLine().split("\t", -1);
             for (String entry : columnHeaders) {
-                columnMap.put(entry, null);
+                columnMap.put(entry, new Tuple<String, Boolean>(null, true));
             }
             RequestContext.getCurrentInstance().update("headers");
             br.close();
@@ -151,62 +158,49 @@ public class ImportController implements Serializable {
                     .addMessage(null, message);
         }
 
-        FacesMessage message = new FacesMessage("Import erfolgreich", "Spaltenköpfe importiert");
+        FacesMessage message = new FacesMessage("Spalteköpfe erkannt", "Bitte die Zuweisung vornehmen");
         FacesContext.getCurrentInstance()
                 .addMessage(null, message);
     }
 
     public void importArticles() {
         CSVAnalyser analyser = new CSVAnalyser();
+        for (String k : columnMap.keySet()) {
+            System.out.println("column = " + k + "; attribute = " + columnMap.get(k).getX() + "; update = " + columnMap.get(k).getY());
+        }
         if (columnMap != null) {
-//            System.out.println("analyser = " + analyser);
-            List<ChildArticle> liste = analyser.getData(targetFile, columnMap);
-//            System.out.println("liste = " + liste.size());
-            for (ChildArticle ca : liste) {
-                System.out.println("ca = " + ca.getManufacturerSKU());
+            List<ParentArticle> liste = analyser.getData(targetFile, columnMap);
+            for (ParentArticle a : liste) {
+
+                // Überprüfung, ob schon Artikel mit der SKU vorhanden ist, 
+                // wenn ja, nur Update, ansonsten neuen Artikel erstellen
+                ParentArticle p = service.findParentArticle(a.getSku());
+                System.out.println("p = " + p);
+                if (p == null) {
+                    service.create(a);
+                } else {
+                    try {
+                        BeanUtilsBean.getInstance().getConvertUtils().register(false, false, 0);
+                        BeanUtils.copyProperties(p, a);
+//                        System.out.println("ebay-Price = " + a.get);
+                    } catch (IllegalAccessException | InvocationTargetException ex) {
+                        Logger.getLogger(ImportController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                service.update(a);
             }
+        }
+    }
+}
 
-//            CSVAnalyser analyser = new CSVAnalyser();
-//            try {
-////                File targetFile = new File("/home/goesta/glassfish-4.0/glassfish/domains/domain1/config/import.csv");
-//                FileReader reader = new FileReader(targetFile);
-//                BufferedReader br = new BufferedReader(reader);
-//                
-//                // Erste Zeile = Spaltenköpfe -> so einlesen
-//                br.readLine();
-//                
-//                // Erste Zeile mit Daten
-//                String line = br.readLine();
-//                while (line != null) {
-//                    String[] data = line.split("\t", -1);
-//                    line = br.readLine();
-//                }
+//    public void test() {
+//        columnMap.keySet();
+//        Iterator<String> iterator = columnMap.keySet().iterator();
+//        while (iterator.hasNext()) {
+//            System.out.println(iterator.next());
+//        }
 //
-//            } catch (FileNotFoundException fne) {
-//                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Keine Datei nicht gefunden. Bitte erst eine Datei hochladen.", fne.getMessage());
-//                FacesContext.getCurrentInstance()
-//                        .addMessage(null, message);
-//            } catch (IOException ie) {
-//                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Ein- und Ausgabefehler.", ie.getMessage());
-//                FacesContext.getCurrentInstance()
-//                        .addMessage(null, message);
-//            }
-//        } else {
-//            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Keine Spaltenzuweisung.", "Bitte zunächst eine Spaltenzuweisung durchführen.");
-//            FacesContext.getCurrentInstance()
-//                    .addMessage(null, message);
-        }
-    }
-
-    public void test() {
-        columnMap.keySet();
-        Iterator<String> iterator = columnMap.keySet().iterator();
-        while (iterator.hasNext()) {
-            System.out.println(iterator.next());
-        }
-
-    }
-
+//    }
 //    static enum ColToSave {
 //
 //        Size("size", "setSize", "Sizes", "ChildArticle"), PurchasePrice("purchasePrice", "setPurchasePrice", "BigDecimal", "ChildArticle"), AmazonPrice("amazonPrice", "setAmazonPrice", "BigDecimal", "ChildArticle"), EbayPrice("ebayPrice", "setEbayPrice", "BigDecimal", "ChildArticle"), ShopPrice("shopPrice", "setShopPrice", "BigDecimal", "ChildArticle"), Quantity("quantity", "setQuantity", "Integer", "ChildArticle"), EAN("ean", "setEan", "Long", "ChildArticle"), ASIN("asin", "setAsin", "Long", "ChildArticle"), ManufacturerSKU("manufacturerSKU", "setManufacturerSKU", "String", "ChildArticle"), Weight("weight", "setWeight"), Dimensions("dimensions", "setDimensions", "BigDecimal", "ChildArticle"), SKU("sku", "setSku", "Sring", "ParentArticle"), Brand("brand", "setBrand","Sring", "ParentArticle"), Model("model", "setModel", "Sring", "ParentArticle"), Misc("misc", "setMisc", "Sring", "ParentArticle"), TaxClass("taxClass", "setTaxClass", "Float", "ParentArticle"), Color("color", "setColor", "Color", "ParentArticle"), ParentArticleName("parentArticleName", "setParentArticleName", "String", "ParentArticle"), Attribute("attribute", "setAttribute", "Attribute", "ParentArticle"), Gender("gender", "setGender", "Gender", "ParentArticle"), TopProduct("topProduct", "setTopProduct", "Boolean", "ParentArticle"), TopProductMobile("topProductMobile", "setTopProductMobile", "Boolean", "ParentArticle"), SpecialProduct("specialProduct", "setSpecialProduct","Boolean", "ParentArticle"), Material("material", "setMaterial", "Material", "ParentArticle"), ProductTypes("productTypes", "setProductTypes", "List<ProductType>"), Category("category", "setCategory", "Category", "ParentArticle"), NumberOfPictures("numberOfPictures", "setNumberOfPictures", "Integer", "ParentArticle"), ShortDescription("shortDescription", "setShortDescription", "String", "ParentArticle"), LongDescription("longDescription", "setLongDescription", "String", "ParentArticle");
@@ -231,7 +225,6 @@ public class ImportController implements Serializable {
 //            return this.method;
 //        }
 //    }
-}
 //        for (String[] s : list) {
 ////            System.out.print("0: "+ s[0]);
 ////            System.out.print("1: "+ s[1]);

@@ -50,7 +50,7 @@ public class ChildArticleOverviewController implements Serializable {
 
     public void update(List<ChildArticle> articleList) {
         for (ChildArticle ca : articleList) {
-            Long id = ca.getId();
+//            Long id = ca.getId();
             Long ean = ca.getEan();
             String manufacturerSKU = ca.getManufacturerSKU();
             int quantity = ca.getQuantity();
@@ -58,15 +58,17 @@ public class ChildArticleOverviewController implements Serializable {
             BigDecimal shopPrice = ca.getShopPrice();
             BigDecimal ebayPrice = ca.getEbayPrice();
             BigDecimal amazonPrice = ca.getAmazonPrice();
-            ChildArticle childArticle = articleService.findChildArticle(id);
-            childArticle.setEan(ean);
-            childArticle.setManufacturerSKU(manufacturerSKU);
-            childArticle.setQuantity(quantity);
-            childArticle.setPurchasePrice(purchasePrice);
-            childArticle.setShopPrice(shopPrice);
-            childArticle.setEbayPrice(ebayPrice);
-            childArticle.setAmazonPrice(amazonPrice);            
-            articleService.update(childArticle);
+            ChildArticle childArticle = articleService.findChildArticle(ca.getSku());
+            if (childArticle != null) {
+                childArticle.setEan(ean);
+                childArticle.setManufacturerSKU(manufacturerSKU);
+                childArticle.setQuantity(quantity);
+                childArticle.setPurchasePrice(purchasePrice);
+                childArticle.setShopPrice(shopPrice);
+                childArticle.setEbayPrice(ebayPrice);
+                childArticle.setAmazonPrice(amazonPrice);
+                articleService.update(childArticle);
+            }
         }
 
     }

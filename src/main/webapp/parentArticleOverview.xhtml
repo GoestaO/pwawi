@@ -11,7 +11,7 @@
 
         <p:scrollPanel mode="native" style="width:95%;height:95%">
             <h:form id="overviewForm">
-                <p:dataTable value="#{parentArticleOverviewController.articles}" id = "table" var="article" tableStyleClass="table table-striped">
+                <p:dataTable value="#{parentArticleOverviewController.articles}" id = "table" var="article" tableStyleClass="table table-striped" rowKey="#{article.sku}">
                     <p:column filterBy="#{article.parentArticleName}" sortBy="#{article.parentArticleName}" headerText="Artikelname" filterMatchMode="contains" filterStyle="width: 100%">
                         <h:outputText value ="#{article.parentArticleName}"></h:outputText>
                     </p:column>  

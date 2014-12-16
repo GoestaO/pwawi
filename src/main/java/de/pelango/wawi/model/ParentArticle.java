@@ -19,9 +19,6 @@ public class ParentArticle implements Serializable, Article {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
     private String sku;
 
     private String brand;

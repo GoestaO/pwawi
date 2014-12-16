@@ -29,9 +29,8 @@ public class ChildArticle extends ParentArticle implements Serializable, Article
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    private Long id;
-
+//    @Id
+//    private Long id;
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "SIZE_ID")
     private Sizes size;
@@ -43,6 +42,10 @@ public class ChildArticle extends ParentArticle implements Serializable, Article
     private BigDecimal ebayPrice;
 
     private BigDecimal shopPrice;
+
+    private BigDecimal specialPrice;
+
+    private BigDecimal suggestedRetailPrice;
 
     private int quantity;
 
@@ -56,14 +59,27 @@ public class ChildArticle extends ParentArticle implements Serializable, Article
 
     private String dimensions;
 
-//    @Override
-    public Long getId() {
-        return id;
+    private String sku;
+
+    public String getSKU() {
+        return sku;
     }
 
-//    @Override
-    public void setId(Long id) {
-        this.id = id;
+    public void setSKU(String sku) {
+        String model = super.getModel();
+        String color = "";
+        try {
+            color = super.getColor().getName();
+        } catch (NullPointerException ex) {
+            return;
+        }
+
+        if (color.equals("")) {
+            this.sku = super.getSku() + "-" + model + "-" + size.getName();
+        } else {
+            this.sku = super.getSku() + "-" + color + "-" + size.getName();
+        }
+
     }
 
     public Sizes getSize() {
@@ -154,39 +170,48 @@ public class ChildArticle extends ParentArticle implements Serializable, Article
         this.dimensions = dimensions;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+    public BigDecimal getSpecialPrice() {
+        return specialPrice;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ChildArticle)) {
-            return false;
-        }
-        ChildArticle other = (ChildArticle) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+    public void setSpecialPrice(BigDecimal specialPrice) {
+        this.specialPrice = specialPrice;
     }
 
+    public BigDecimal getSuggestedRetailPrice() {
+        return suggestedRetailPrice;
+    }
+
+    public void setSuggestedRetailPrice(BigDecimal suggestedRetailPrice) {
+        this.suggestedRetailPrice = suggestedRetailPrice;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int hash = 0;
+//        hash += (id != null ? id.hashCode() : 0);
+//        return hash;
+//    }
+//
+//    @Override
+//    public boolean equals(Object object) {
+//        // TODO: Warning - this method won't work in the case the id fields are not set
+//        if (!(object instanceof ChildArticle)) {
+//            return false;
+//        }
+//        ChildArticle other = (ChildArticle) object;
+//        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+//            return false;
+//        }
+//        return true;
+//    }
     @Override
     public String toString() {
-        return "de.pelango.wawi.model.ChildArticle[ id=" + this.getShortDescription() + " ]";
+        return "de.pelango.wawi.model.ChildArticle[ sku=" + this.getSKU()+ "]";
     }
 
     public ChildArticle() {
-
-    }
-
-    public ChildArticle(ParentArticle p) {
-//        super(p.getSku());
-//        super();
-
+        super();
     }
 
     public ChildArticle(Sizes size, String sku, String brand, String model, String misc, Color color, Attribute attribute, List<Gender> gender, boolean topProduct, boolean topProductMobile, boolean specialProduct, List<Material> material, List<ProductType> productTypes, Category category, int numberOfPictures, String shortDescription, String longDescription) {

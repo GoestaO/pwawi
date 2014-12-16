@@ -10,46 +10,46 @@
         <h3> Oberartikel suchen </h3>
         <div style="width:25%">
             <h:form id = "form">
-                <h:panelGrid columns="3" styleClass="table table-bordered table-striped table-condensed" >
-                    <h:outputLabel value="EAN" style="font-weight:bold" rendered="#{findParentArticleController.ean!=null}"/>
+                <h:panelGrid columns="3" styleClass="table table-bordered table-striped table-condensed" style="width: 500px;">
+                    <h:outputLabel value="EAN" style="font-weight:bold" rendered="#{findParentArticleController.ean!=null}" />
                     <h:outputLabel id = "ean" value="#{findParentArticleController.ean}" rendered="#{findParentArticleController.ean!=null}"/>
                     <h:outputLabel  value="" rendered="#{findParentArticleController.ean!=null}"/>
 
                     <h:outputLabel value="Marke" style="font-weight:bold" />
-                    <h:inputText id = "brand" class = "form-control" value="#{findParentArticleController.brand}">
+                    <h:inputText id = "brand" value="#{findParentArticleController.brand}" style="width: 200px;">
                         <f:ajax listener="#{findParentArticleController.listener}" render="form:searchResults" />
                     </h:inputText>
-                    <h:commandButton id="btnClearBrand" value="x" class = "btn btn-default" action="#{findParentArticleController.clearBrand()}">
+                    <h:commandButton id="btnClearBrand" value="x" action="#{findParentArticleController.clearBrand()}">
                         <f:ajax execute="@this" render="brand"></f:ajax>
                     </h:commandButton>
 
                     <h:outputLabel value="Farbe" style="font-weight:bold" />
-                    <h:selectOneMenu id = "color" class = "form-control" value="#{findParentArticleController.color}" >
+                    <h:selectOneMenu id = "color" value="#{findParentArticleController.color}" style="width: 200px;">
                         <f:selectItem itemLabel="" noSelectionOption="true" />
                         <f:selectItems value="#{colorListBean.colorList}" var = "color" itemValue = "#{color.name}" itemLabel="#{color.name}"/>
                         <f:ajax listener="#{findParentArticleController.listener}" render="form:searchResults" />
                         <f:converter converterId="colorConverter" />
                     </h:selectOneMenu>
-                    <h:commandButton id="btnClearColor" value="x" class = "btn btn-default" action="#{findParentArticleController.clearColor()}">
+                    <h:commandButton id="btnClearColor" value="x" action="#{findParentArticleController.clearColor()}">
                         <f:ajax execute="@this" render="form:color form:searchResults"></f:ajax>
                     </h:commandButton>
 
                     <h:outputLabel value="Material" style="font-weight:bold" />              
-                    <h:selectOneMenu class = "form-control" id = "material" value="#{findParentArticleController.material}">
+                    <h:selectOneMenu id = "material" value="#{findParentArticleController.material}" style="width: 200px;">
                         <f:selectItem itemLabel="" noSelectionOption="true" />
                         <f:converter converterId="materialConverter" />
                         <f:selectItems value="#{selectManyMaterialBean.materialList}" var = "material" itemValue = "#{material.name}" itemLabel="#{material.name}"/>
                         <f:ajax listener="#{findParentArticleController.listener}" render="form:searchResults" />
                     </h:selectOneMenu>
-                    <h:commandButton id="btnClearMaterial" value="x" class = "btn btn-default" action="#{findParentArticleController.clearMaterial()}">
+                    <h:commandButton id="btnClearMaterial" value="x" action="#{findParentArticleController.clearMaterial()}">
                         <f:ajax execute="@this" render="form:material form:searchResults"></f:ajax>
                     </h:commandButton>
 
-                    <h:commandButton id = "searchButton" class = "btn btn-default" value = "Suchen" actionListener="#{findParentArticleController.findParentArticle}">
+                    <h:commandButton id = "searchButton"  value = "Suchen" actionListener="#{findParentArticleController.findParentArticle}">
                         <f:ajax execute = "form:brand form:color form:material" render="form:searchResults"/>
                     </h:commandButton>
                     <h:outputLabel value="" />
-                    <h:commandButton class = "btn btn-default" value="Alle Filter zurücksetzen" action='#{findParentArticleController.reset()}'>
+                    <h:commandButton value="Alle Filter zurücksetzen" action='#{findParentArticleController.reset()}'>
                         <f:ajax execute = "@this" render = "form:brand form:color form:material form:searchResults"/>
                     </h:commandButton>
                 </h:panelGrid>
@@ -71,11 +71,11 @@
                         </ui:repeat>
                     </h:column>                    
                     <h:column>
-                        <h:commandButton rendered = "#{findChildArticleController.ean !=null}" class = "btn btn-default" onclick="if (!confirm('Bist du dir sicher?'))
+                        <h:commandButton rendered = "#{findChildArticleController.ean !=null}" onclick="if (!confirm('Bist du dir sicher?'))
                                     return false" value = "Neuen Unterartikel zuordnen" action="#{findParentArticleController.addChildArticle(item)}"/>
                     </h:column>
                 </h:dataTable>
-                <h:commandButton class = "btn btn-default" value ="Neuen Parent erstellen" action="#{findParentArticleController.createParentArticle(ean)}"/>
+                <h:commandButton value ="Neuen Parent erstellen" action="#{findParentArticleController.createParentArticle(ean)}"/>
 
             </h:form>
 
