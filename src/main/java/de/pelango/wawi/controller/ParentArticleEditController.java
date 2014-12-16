@@ -231,16 +231,21 @@ public class ParentArticleEditController implements Serializable {
 
     public void doSave(ParentArticle pa) {
         String sku = pa.getSku();
-        List<ParentArticle> childs = articleService.findArticlesBySKU(sku);
-        for(ParentArticle p : childs){
+
+        // Alle zugehörigen ChildArticles abrufen
+        List<ChildArticle> childs = articleService.findArticlesBySKU(sku);
+        for (ChildArticle c : childs) {
             try {
-                String tempSKU = p.getSku();
-                BeanUtils.copyProperties(p, pa);
-                p.setSku(tempSKU);
-                articleService.update(p);
-            } catch (IllegalAccessException ex) {
-                Logger.getLogger(ParentArticleEditController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InvocationTargetException ex) {
+                // SKU sichern
+                String tempSKU = c.getSku();
+
+                // Alle Properties vom Parent aufs Child übertragen
+                BeanUtils.copyProperties(c, pa);
+
+                // Die alte SKU wiederherstellen
+                c.setSku(tempSKU);
+                articleService.update(c);
+            } catch (IllegalAccessException | InvocationTargetException ex) {
                 Logger.getLogger(ParentArticleEditController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

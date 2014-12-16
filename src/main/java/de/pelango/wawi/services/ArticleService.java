@@ -87,17 +87,17 @@ public class ArticleService {
     }
 
     /**
-     * Finds all articles having the same base sku
+     * Finds all child articles having the same base sku
      *
      * @param sku
      * @return
      */
-    public List<ParentArticle> findArticlesBySKU(String sku) {
-        String queryString = "select p from ParentArticle p where p.sku like :sku";
-        TypedQuery query = em.createQuery(queryString, ParentArticle.class);
+    public List<ChildArticle> findArticlesBySKU(String sku) {
+        String queryString = "select c from ChildArticle c where c.sku like :sku";
+        TypedQuery query = em.createQuery(queryString, ChildArticle.class);
         sku = sku + "%";
         query.setParameter("sku", sku);
-        List<ParentArticle> result = query.getResultList();
+        List<ChildArticle> result = query.getResultList();
         return result;
     }
 
