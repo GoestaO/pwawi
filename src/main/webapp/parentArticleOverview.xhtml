@@ -232,7 +232,7 @@
 
                 </h:panelGrid>
 
-                <p:commandButton styleClass = "btn btn-default" value="Speichern" action = "#{parentArticleEditController.doSave(parentArticleEditController.pa)}" oncomplete ="paEditWidget.hide();" update=":overviewForm:table"/>
+                <p:commandButton styleClass = "btn btn-default" value="Speichern" action = "#{parentArticleEditController.doSave(parentArticleEditController.pa)}" oncomplete ="PF('paEditWidget').hide();" update=":overviewForm:table"/>
 
             </h:form>
         </p:dialog>     

@@ -16,9 +16,12 @@ import de.pelango.wawi.util.SelectManyGenderBean;
 import de.pelango.wawi.util.SelectManyMaterialBean;
 import de.pelango.wawi.util.SelectManyProductTypeBean;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.Conversation;
@@ -26,6 +29,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.commons.beanutils.BeanUtils;
 
 /**
  * The controller implementation for the parentarticle edit page.
@@ -226,6 +230,20 @@ public class ParentArticleEditController implements Serializable {
     }
 
     public void doSave(ParentArticle pa) {
+        String sku = pa.getSku();
+        List<ParentArticle> childs = articleService.findArticlesBySKU(sku);
+        for(ParentArticle p : childs){
+            try {
+                String tempSKU = p.getSku();
+                BeanUtils.copyProperties(p, pa);
+                p.setSku(tempSKU);
+                articleService.update(p);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(ParentArticleEditController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InvocationTargetException ex) {
+                Logger.getLogger(ParentArticleEditController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         articleService.update(pa);
     }
 

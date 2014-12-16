@@ -87,15 +87,18 @@ public class ArticleService {
     }
 
     /**
-     * Finds a articles containing a string in its sku
+     * Finds all articles having the same base sku
      *
      * @param sku
      * @return
      */
-    public ParentArticle findArticleBySKU(String sku) {
+    public List<ParentArticle> findArticlesBySKU(String sku) {
         String queryString = "select p from ParentArticle p where p.sku like :sku";
-        ParentArticle p = em.find(ParentArticle.class, sku);
-        return p;
+        TypedQuery query = em.createQuery(queryString, ParentArticle.class);
+        sku = sku + "%";
+        query.setParameter("sku", sku);
+        List<ParentArticle> result = query.getResultList();
+        return result;
     }
 
     public List<ChildArticle> findChildArticle(String brand, Color color, Sizes size) {
@@ -226,7 +229,7 @@ public class ArticleService {
                 fieldList.add(f.getName());
             }
         }
-        
+
         // Da SKU im Parent und im Child vorkommt, einen davon löschen 
         fieldList.remove("sku");
         return fieldList;
