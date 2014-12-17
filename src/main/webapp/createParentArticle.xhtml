@@ -9,174 +9,176 @@
 
 
     <ui:define name="content">
-        <h3> Artikelanlage </h3>
+        <h3>  </h3>
         <h:form>
             <style type="text/css">
                 .selectCheckboxMenu { display: inline-block; vertical-align: top; }
             </style>
-            <h:panelGrid columns="6" styleClass="table table-striped table-condensed" >
+            <p:panel header="Artikelanlage" style="margin-bottom:20px">
+                <p:panelGrid columns="6" layout="grid">
 
-                <h:panelGroup>
-                    <h:outputLabel value="Nummernpräfix" style="font-weight:bold" />
-                    <h:inputText class = "form-control" id = "number" value="#{articleCreateController.number}" valueChangeListener = "#{sKUGenerator.numberChanged}">
-                        <p:ajax/>                           
-                    </h:inputText>
-                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />  
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value="Nummernpräfix" style="font-weight:bold" />
+                        <h:inputText class = "form-control" id = "number" value="#{articleCreateController.number}" valueChangeListener = "#{sKUGenerator.numberChanged}">
+                            <p:ajax/>                           
+                        </h:inputText>
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />  
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputLabel value="Hersteller" style="font-weight:bold" />
-                    <h:inputText class = "form-control" value="#{articleCreateController.brand}" />
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value="Hersteller" style="font-weight:bold" />
+                        <h:inputText class = "form-control" value="#{articleCreateController.brand}" />
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputLabel value="Model" style="font-weight:bold" />
-                    <h:inputText class = "form-control" value="#{articleCreateController.model}" />
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value="Model" style="font-weight:bold" />
+                        <h:inputText class = "form-control" value="#{articleCreateController.model}" />
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputLabel value="Sonstiges" style="font-weight:bold" />
-                    <h:inputText class = "form-control" value="#{articleCreateController.misc}" />
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value="Sonstiges" style="font-weight:bold" />
+                        <h:inputText class = "form-control" value="#{articleCreateController.misc}" />
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputLabel value="Farbe" style="font-weight:bold" />
-                    <h:selectOneMenu class = "form-control" value="#{articleCreateController.color}" >
-                        <f:selectItems value="#{colorListBean.colorList}" var = "color" itemValue = "#{color.name}" itemLabel="#{color.name}"/>
-                        <f:converter converterId="colorConverter" />
-                    </h:selectOneMenu>
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value="Farbe" style="font-weight:bold" />
+                        <h:selectOneMenu class = "form-control" value="#{articleCreateController.color}" >
+                            <f:selectItems value="#{colorListBean.colorList}" var = "color" itemValue = "#{color.name}" itemLabel="#{color.name}"/>
+                            <f:converter converterId="colorConverter" />
+                        </h:selectOneMenu>
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputLabel value ="Attribut" style="font-weight: bold"/>
-                    <h:selectOneMenu class = "form-control" value="#{articleCreateController.attribute}" valueChangeListener = "#{selectManySizeBean.attributeChanged}">
-                        <f:selectItems value ="#{attributeBean.attribute}" var ="attribute" itemValue ="#{attribute.name}" itemLabel ="#{attribute.name}"/>
-                        <f:converter converterId="attributeConverter"/>
-                        <f:ajax render="sizes"/>                  
-                    </h:selectOneMenu>
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value ="Attribut" style="font-weight: bold"/>
+                        <h:selectOneMenu class = "form-control" value="#{articleCreateController.attribute}" valueChangeListener = "#{selectManySizeBean.attributeChanged}">
+                            <f:selectItems value ="#{attributeBean.attribute}" var ="attribute" itemValue ="#{attribute.name}" itemLabel ="#{attribute.name}"/>
+                            <f:converter converterId="attributeConverter"/>
+                            <f:ajax render="sizes"/>                  
+                        </h:selectOneMenu>
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputLabel value="Geschlecht" style="font-weight:bold" />
-                    <h:selectManyListbox class = "form-control" value="#{articleCreateController.gender}" >
-                        <f:converter converterId="genderConverter" />
-                        <f:selectItems value="#{selectManyGenderBean.genderList}" var = "gender" itemValue = "#{gender.name}" itemLabel="#{gender.name}"/>                   
-                    </h:selectManyListbox>
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value="Geschlecht" style="font-weight:bold" />
+                        <h:selectManyListbox class = "form-control" value="#{articleCreateController.gender}" >
+                            <f:converter converterId="genderConverter" />
+                            <f:selectItems value="#{selectManyGenderBean.genderList}" var = "gender" itemValue = "#{gender.name}" itemLabel="#{gender.name}"/>                   
+                        </h:selectManyListbox>
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputLabel value ="Top-Produkt"/>
-                    <h:selectOneRadio class = "form-control" id="topProduct" value ="#{articleCreateController.topProduct}" >
-                        <f:selectItem itemValue="#{false}" itemLabel="Nein" />
-                        <f:selectItem itemValue="#{true}" itemLabel="Ja"/>                    
-                    </h:selectOneRadio>
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value ="Top-Produkt"/>
+                        <h:selectOneRadio class = "form-control" id="topProduct" value ="#{articleCreateController.topProduct}" >
+                            <f:selectItem itemValue="#{false}" itemLabel="Nein" />
+                            <f:selectItem itemValue="#{true}" itemLabel="Ja"/>                    
+                        </h:selectOneRadio>
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputLabel value ="Top-Produkt mobil"/>
-                    <h:selectOneRadio class = "form-control" id="topProductMobile" value ="#{articleCreateController.topProductMobile}" >
-                        <f:selectItem itemValue="#{false}" itemLabel="Nein" />
-                        <f:selectItem itemValue="#{true}" itemLabel="Ja"/>                    
-                    </h:selectOneRadio>
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value ="Top-Produkt mobil"/>
+                        <h:selectOneRadio class = "form-control" id="topProductMobile" value ="#{articleCreateController.topProductMobile}" >
+                            <f:selectItem itemValue="#{false}" itemLabel="Nein" />
+                            <f:selectItem itemValue="#{true}" itemLabel="Ja"/>                    
+                        </h:selectOneRadio>
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputLabel value ="Besonderes Produkt"/>
-                    <h:selectOneRadio class = "form-control" id="specialProduct" value ="#{articleCreateController.specialProduct}" >
-                        <f:selectItem itemValue="#{false}" itemLabel="Nein" />
-                        <f:selectItem itemValue="#{true}" itemLabel="Ja"/>                 
-                    </h:selectOneRadio>
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value ="Besonderes Produkt"/>
+                        <h:selectOneRadio class = "form-control" id="specialProduct" value ="#{articleCreateController.specialProduct}" >
+                            <f:selectItem itemValue="#{false}" itemLabel="Nein" />
+                            <f:selectItem itemValue="#{true}" itemLabel="Ja"/>                 
+                        </h:selectOneRadio>
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputLabel value="Material" style="font-weight:bold" />               
-                    <h:selectManyListbox class = "form-control" value="#{articleCreateController.material}">
-                        <f:converter converterId="materialConverter" />
-                        <f:selectItems value="#{selectManyMaterialBean.materialList}" var = "material" itemValue = "#{material.name}" itemLabel="#{material.name}"/>                   
-                    </h:selectManyListbox>
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value="Material" style="font-weight:bold" />               
+                        <h:selectManyListbox class = "form-control" value="#{articleCreateController.material}">
+                            <f:converter converterId="materialConverter" />
+                            <f:selectItems value="#{selectManyMaterialBean.materialList}" var = "material" itemValue = "#{material.name}" itemLabel="#{material.name}"/>                   
+                        </h:selectManyListbox>
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputLabel value="Produkttyp" style="font-weight:bold" />
-                    <h:selectManyListbox class = "form-control" value = "#{articleCreateController.productType}">
-                        <f:converter converterId= "productTypeConverter"/>
-                        <f:selectItems value = "#{selectManyProductTypeBean.productTypeList}" var ="productType" itemLabel="#{productType.name}" itemValue="#{productType.name}"/>
-                    </h:selectManyListbox>
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value="Produkttyp" style="font-weight:bold" />
+                        <h:selectManyListbox class = "form-control" value = "#{articleCreateController.productType}">
+                            <f:converter converterId= "productTypeConverter"/>
+                            <f:selectItems value = "#{selectManyProductTypeBean.productTypeList}" var ="productType" itemLabel="#{productType.name}" itemValue="#{productType.name}"/>
+                        </h:selectManyListbox>
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputLabel value="Kategorie" style="font-weight:bold" />
-                    <h:selectOneMenu class = "form-control" value="#{articleCreateController.category}" >
-                        <f:selectItems value="#{selectCategoryBean.categoryList}" var = "category" itemValue = "#{category.name}" itemLabel="#{category.name}"/>
-                        <f:converter converterId="categoryConverter" />
-                    </h:selectOneMenu>
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value="Kategorie" style="font-weight:bold" />
+                        <h:selectOneMenu class = "form-control" value="#{articleCreateController.category}" >
+                            <f:selectItems value="#{selectCategoryBean.categoryList}" var = "category" itemValue = "#{category.name}" itemLabel="#{category.name}"/>
+                            <f:converter converterId="categoryConverter" />
+                        </h:selectOneMenu>
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputLabel value ="Anzahl Bilder" style="font-weight: bold"/>
-                    <h:selectOneMenu class = "form-control" value = "#{articleCreateController.numberOfPictures}">
-                        <f:selectItems value ="#{selectNumberOfPicturesBean.pictureList}" var = "numberOfPictures" itemValue="#{numberOfPictures}" itemLabel="#{numberOfPictures}" />
-                    </h:selectOneMenu>
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value ="Anzahl Bilder" style="font-weight: bold"/>
+                        <h:selectOneMenu class = "form-control" value = "#{articleCreateController.numberOfPictures}">
+                            <f:selectItems value ="#{selectNumberOfPicturesBean.pictureList}" var = "numberOfPictures" itemValue="#{numberOfPictures}" itemLabel="#{numberOfPictures}" />
+                        </h:selectOneMenu>
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputLabel value ="Beschreibung kurz" style ="font-weight: bold"/>
-                    <h:inputText class = "form-control" value ="#{articleCreateController.shortDescription}"/>
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value ="Beschreibung kurz" style ="font-weight: bold"/>
+                        <h:inputText class = "form-control" value ="#{articleCreateController.shortDescription}"/>
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputLabel value ="Beschreibung lang" style ="font-weight: bold"/>
-                    <h:inputTextarea class = "form-control" value="#{articleCreateController.longDescription}"/>
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value ="Beschreibung lang" style ="font-weight: bold"/>
+                        <h:inputTextarea class = "form-control" value="#{articleCreateController.longDescription}"/>
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:panelGrid columns="2">
-                        <!--<h:outputLabel for="sizes" value="Größen:" />-->
-                        <p:selectCheckboxMenu styleClass = "selectCheckboxMenu" id="sizes" value="#{articleCreateController.sizes}" label="Größen"
-                                              filter="true" filterMatchMode="startsWith">
-                            <f:converter converterId="sizeConverter" />
-                            <f:selectItems value="#{selectManySizeBean.sizeList}" var = "size" itemValue = "#{size.name}" itemLabel="#{size.name}" />
-                        </p:selectCheckboxMenu>
-                        <p:commandButton value="OK" update="display" />
-                    </h:panelGrid>
-                    <p:outputPanel id="display">
-                        <p:dataList value="#{articleCreateController.sizes}" var="size" emptyMessage="Keine Größe ausgewählt">
-                            #{size.name}
-                        </p:dataList>
-                    </p:outputPanel>
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:panelGrid columns="2">
+                            <!--<h:outputLabel for="sizes" value="Größen:" />-->
+                            <p:selectCheckboxMenu styleClass = "selectCheckboxMenu" id="sizes" value="#{articleCreateController.sizes}" label="Größen"
+                                                  filter="true" filterMatchMode="startsWith">
+                                <f:converter converterId="sizeConverter" />
+                                <f:selectItems value="#{selectManySizeBean.sizeList}" var = "size" itemValue = "#{size.name}" itemLabel="#{size.name}" />
+                            </p:selectCheckboxMenu>
+                            <p:commandButton value="OK" update="display" />
+                        </h:panelGrid>
+                        <p:outputPanel id="display">
+                            <p:dataList value="#{articleCreateController.sizes}" var="size" emptyMessage="Keine Größe ausgewählt">
+                                #{size.name}
+                            </p:dataList>
+                        </p:outputPanel>
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputLabel value="Einkaufspreis"></h:outputLabel>                   
-                    <h:inputText value ="#{articleCreateController.purchasePrice}">
-                        <f:convertNumber minFractionDigits="2" pattern="#,00" /> 
-                    </h:inputText>
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value="Einkaufspreis"></h:outputLabel>                   
+                        <h:inputText value ="#{articleCreateController.purchasePrice}">
+                            <f:convertNumber minFractionDigits="2" pattern="#,00" /> 
+                        </h:inputText>
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputLabel value="Shop-Preis"></h:outputLabel>
-                    <h:inputText value ="#{articleCreateController.shopPrice}">
-                        <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
-                    </h:inputText>
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value="Shop-Preis"></h:outputLabel>
+                        <h:inputText value ="#{articleCreateController.shopPrice}">
+                            <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
+                        </h:inputText>
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputLabel value="Ebay-Preis"></h:outputLabel>
-                    <h:inputText value ="#{articleCreateController.ebayPrice}">
-                        <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
-                    </h:inputText>
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value="Ebay-Preis"></h:outputLabel>
+                        <h:inputText value ="#{articleCreateController.ebayPrice}">
+                            <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
+                        </h:inputText>
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputLabel value="Amazon-Preis"></h:outputLabel>
-                    <h:inputText value ="#{articleCreateController.amazonPrice}">
-                        <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
-                    </h:inputText> 
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value="Amazon-Preis"></h:outputLabel>
+                        <h:inputText value ="#{articleCreateController.amazonPrice}">
+                            <f:convertNumber minFractionDigits="2" pattern="#,00"/> 
+                        </h:inputText> 
+                    </h:panelGroup>
 
-            </h:panelGrid>
+                </p:panelGrid>
 
-            <h:commandButton styleClass = "btn btn-default" value="Anlegen!" action = "#{articleCreateController.createArticle(articleCreateController.number, articleCreateController.brand,articleCreateController.model,articleCreateController.misc ,articleCreateController.color, articleCreateController.attribute, articleCreateController.gender, articleCreateController.topProduct, articleCreateController.topProductMobile, articleCreateController.specialProduct, articleCreateController.material, articleCreateController.productType, articleCreateController.category,articleCreateController.numberOfPictures, articleCreateController.shortDescription, articleCreateController.longDescription, articleCreateController.sizes)}"/>
+                <h:commandButton styleClass = "btn btn-default" value="Anlegen!" action = "#{articleCreateController.createArticle(articleCreateController.number, articleCreateController.brand,articleCreateController.model,articleCreateController.misc ,articleCreateController.color, articleCreateController.attribute, articleCreateController.gender, articleCreateController.topProduct, articleCreateController.topProductMobile, articleCreateController.specialProduct, articleCreateController.material, articleCreateController.productType, articleCreateController.category,articleCreateController.numberOfPictures, articleCreateController.shortDescription, articleCreateController.longDescription, articleCreateController.sizes)}"/>
+            </p:panel>
         </h:form>
 
 

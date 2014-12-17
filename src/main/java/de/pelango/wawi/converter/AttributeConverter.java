@@ -41,7 +41,7 @@ public class AttributeConverter implements Converter {
         if (value != null) {
             return value.toString();
         } else {
-            return null;
+            return "";
         }
 
     }

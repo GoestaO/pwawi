@@ -17,9 +17,8 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: white;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 14px;
+    font-size: 11px;
     line-height: 1.42857;
     color: #333;
 
@@ -42,7 +41,7 @@ div#content{
 }
 
 
-div#content_left{
+/*div#content_left{
     position:absolute;
     padding:0px; text-align:left; width:200px; float:left;
 }
@@ -142,4 +141,4 @@ a.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-st
 .dialogbutton {
     float:right !important;
     margin:0px 0px 3px 0px;
-}
+}*/

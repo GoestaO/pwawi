@@ -37,11 +37,13 @@ public class SizeService {
         return id;
     }
 
-    /** Gets the sizes filtered by the given attribute: 'Default' -> DressSize, 'Jeans' -> 'JeansSize', '
-     * 
+    /**
+     * Gets the sizes filtered by the given attribute: 'Default' -> DressSize,
+     * 'Jeans' -> 'JeansSize', 'InternationalSize
+     *
      * @param sizeType
-     * @return 
-     */    
+     * @return
+     */
     public List<Sizes> getSizesByType(String sizeType) {
         switch (sizeType) {
             case "Jeans":
@@ -50,10 +52,15 @@ public class SizeService {
             case "Default":
                 parameter = "DressSize";
                 break;
-            default:
+            case "InternationalSize":
                 parameter = "InternationalSize";
+                break;
+            default:
+                parameter = "Sizes";
+                break;
 
         }
+
         TypedQuery<Sizes> query = em.createQuery("Select s from " + parameter + " s", Sizes.class);
         List<Sizes> result = query.getResultList();
         return result;

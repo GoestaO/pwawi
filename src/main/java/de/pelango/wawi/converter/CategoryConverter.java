@@ -25,16 +25,24 @@ public class CategoryConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        Long id = service.getCategoryId(value);
-        Category c = new Category();
-        c.setId(id);
-        c.setName(value);
-        return c;
+        if (value != null) {
+            Long id = service.getCategoryId(value);
+            Category c = new Category();
+            c.setId(id);
+            c.setName(value);
+            return c;
+        } else {
+            return null;
+        }
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        return value.toString();
+        if (value != null) {
+            return value.toString();
+        } else {
+            return "";
+        }
     }
 
 }

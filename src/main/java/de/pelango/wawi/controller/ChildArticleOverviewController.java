@@ -1,6 +1,7 @@
 package de.pelango.wawi.controller;
 
 import de.pelango.wawi.model.ChildArticle;
+import de.pelango.wawi.model.Sizes;
 import de.pelango.wawi.services.ArticleService;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -55,6 +56,7 @@ public class ChildArticleOverviewController implements Serializable {
             String manufacturerSKU = ca.getManufacturerSKU();
             int quantity = ca.getQuantity();
             BigDecimal purchasePrice = ca.getPurchasePrice();
+            Sizes size = ca.getSize();
             BigDecimal shopPrice = ca.getShopPrice();
             BigDecimal ebayPrice = ca.getEbayPrice();
             BigDecimal amazonPrice = ca.getAmazonPrice();
@@ -62,6 +64,7 @@ public class ChildArticleOverviewController implements Serializable {
             if (childArticle != null) {
                 childArticle.setEan(ean);
                 childArticle.setManufacturerSKU(manufacturerSKU);
+                childArticle.setSize(size);
                 childArticle.setQuantity(quantity);
                 childArticle.setPurchasePrice(purchasePrice);
                 childArticle.setShopPrice(shopPrice);
