@@ -12,10 +12,10 @@
         <p:scrollPanel mode="native" style="width:95%;height:95%">
             <h:form id="overviewForm">
                 <p:dataTable rows="50" 
-                         paginator="true"
-                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         currentPageReportTemplate="{startRecord}-{endRecord} von {totalRecords}"
-                         rowsPerPageTemplate="25,50,100" value="#{parentArticleOverviewController.articles}" id = "table" var="article" tableStyleClass="table table-striped" rowKey="#{article.sku}">
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             currentPageReportTemplate="{startRecord}-{endRecord} von {totalRecords}"
+                             rowsPerPageTemplate="25,50,100" value="#{parentArticleOverviewController.articles}" id = "table" var="article" tableStyleClass="table table-striped" rowKey="#{article.sku}">
                     <p:column filterBy="#{article.parentArticleName}" sortBy="#{article.parentArticleName}" headerText="Artikelname" filterMatchMode="contains" filterStyle="width: 100%">
                         <h:outputText value ="#{article.parentArticleName}"></h:outputText>
                     </p:column>  
@@ -129,22 +129,26 @@
 
                     <h:panelGroup>
                         <h:outputLabel value="Geschlecht" style="font-weight:bold" />
-                        <h:panelGroup style="display:inline">
-                            <h:selectManyListbox class = "form-control" id = "containsGender" value="#{parentArticleEditController.selectedGenderLeft}" rendered="#{parentArticleEditController.ean == null}">
-                                <f:converter converterId="genderConverter" />
-                                <f:selectItems value="#{parentArticleEditController.pa.gender}" var = "gender" itemValue = "#{gender.name}" itemLabel="#{gender.name}"/>                   
-                            </h:selectManyListbox>                        
-                            <h:commandButton styleClass = "btn btn-default" value="&darr;" actionListener = "#{parentArticleEditController.removeGender}" rendered="#{parentArticleEditController.ean == null}">
-                                <f:ajax execute="@this form:containsGender" render="form:containsGender form:genderAvailable"/>
-                            </h:commandButton>
-                            <h:commandButton styleClass = "btn btn-default" value="&uarr;" actionListener = "#{parentArticleEditController.addGender}" rendered="#{parentArticleEditController.ean == null}">
-                                <f:ajax execute="@this form:genderAvailable" render="form:containsGender form:genderAvailable"/>
-                            </h:commandButton>
-                            <h:selectManyListbox id ="genderAvailable" class = "form-control" value="#{parentArticleEditController.selectedGenderRight}" rendered="#{parentArticleEditController.ean == null}">
-                                <f:converter converterId="genderConverter" />
-                                <f:selectItems value="#{parentArticleEditController.genderListRight}" var = "item2" itemValue = "#{item2.name}" itemLabel="#{item2.name}"/>                   
-                            </h:selectManyListbox>                           
-                        </h:panelGroup>
+                        <p:selectManyMenu scrollHeight="100" id="genderMenu" value="#{parentArticleEditController.pa.gender}" label="Geschlecht" filterMatchMode="contains" showCheckbox="true" style="text-align: left">
+                            <f:converter converterId="genderConverter" />
+                            <f:selectItems value="#{selectManyGenderBean.genderList}" var = "gender" itemValue = "#{gender.name}" itemLabel ="#{gender.name}"/>
+                        </p:selectManyMenu>
+                        <!--                        <h:panelGroup style="display:inline">
+                                                    <h:selectManyListbox class = "form-control" id = "containsGender" value="#{parentArticleEditController.selectedGenderLeft}" rendered="#{parentArticleEditController.ean == null}">
+                                                        <f:converter converterId="genderConverter" />
+                                                        <f:selectItems value="#{parentArticleEditController.pa.gender}" var = "gender" itemValue = "#{gender.name}" itemLabel="#{gender.name}"/>                   
+                                                    </h:selectManyListbox>                        
+                                                    <h:commandButton styleClass = "btn btn-default" value="&darr;" actionListener = "#{parentArticleEditController.removeGender}" rendered="#{parentArticleEditController.ean == null}">
+                                                        <f:ajax execute="@this form:containsGender" render="form:containsGender form:genderAvailable"/>
+                                                    </h:commandButton>
+                                                    <h:commandButton styleClass = "btn btn-default" value="&uarr;" actionListener = "#{parentArticleEditController.addGender}" rendered="#{parentArticleEditController.ean == null}">
+                                                        <f:ajax execute="@this form:genderAvailable" render="form:containsGender form:genderAvailable"/>
+                                                    </h:commandButton>
+                                                    <h:selectManyListbox id ="genderAvailable" class = "form-control" value="#{parentArticleEditController.selectedGenderRight}" rendered="#{parentArticleEditController.ean == null}">
+                                                        <f:converter converterId="genderConverter" />
+                                                        <f:selectItems value="#{parentArticleEditController.genderListRight}" var = "item2" itemValue = "#{item2.name}" itemLabel="#{item2.name}"/>                   
+                                                    </h:selectManyListbox>                           
+                                                </h:panelGroup>-->
                     </h:panelGroup>
 
                     <h:panelGroup>
@@ -173,27 +177,21 @@
 
                     <h:panelGroup>
                         <h:outputLabel value="Material" style="font-weight:bold" />
-                        <h:panelGroup style="display:block; text-align:center">
-                            <h:selectManyListbox id ="containsMaterial"  class = "form-control" value="#{parentArticleEditController.selectedMaterialLeft}" rendered="#{parentArticleEditController.ean == null}">
-                                <f:converter converterId="materialConverter" />
-                                <f:selectItems value="#{parentArticleEditController.pa.material}" var = "item" itemValue = "#{item.name}" itemLabel="#{item.name}"/>                   
-                            </h:selectManyListbox>                        
-                            <h:commandButton styleClass = "btn btn-default" value="&darr;" actionListener = "#{parentArticleEditController.removeMaterial}" rendered="#{parentArticleEditController.ean == null}">
-                                <f:ajax execute="@this form:containsMaterial" render="form:containsMaterial form:materialLeftover"/>
-                            </h:commandButton>
-                            <h:commandButton styleClass = "btn btn-default" value="&uarr;" actionListener = "#{parentArticleEditController.addMaterial}" rendered="#{parentArticleEditController.ean == null}">
-                                <f:ajax execute="@this form:materialLeftover" render="form:containsMaterial form:materialLeftover"/>
-                            </h:commandButton>
-                            <h:selectManyListbox id ="materialLeftover" class = "form-control" value="#{parentArticleEditController.selectedMaterialRight}" rendered="#{parentArticleEditController.ean == null}">
-                                <f:converter converterId="materialConverter" />
-                                <f:selectItems value="#{parentArticleEditController.materialListRight}" var = "item2" itemValue = "#{item2.name}" itemLabel="#{item2.name}"/>                   
-                            </h:selectManyListbox>
-                        </h:panelGroup>
+                        <p:selectManyMenu scrollHeight="100" id="materialMenu" value="#{parentArticleEditController.pa.material}" filterMatchMode="contains" showCheckbox="true" style="text-align: left">
+                            <f:converter converterId="materialConverter" />
+                            <f:selectItems value="#{selectManyMaterialBean.materialList}" var = "material" itemValue = "#{material.name}" itemLabel ="#{material.name}"/>
+                        </p:selectManyMenu>
+                       
                     </h:panelGroup>
 
                     <h:panelGroup>
                         <h:outputLabel value="Produkttyp" style="font-weight:bold" />
-                        <h:panelGroup style="display:block; text-align:center">
+                        <p:selectManyMenu scrollHeight="100" id="productTypeMenu" value="#{parentArticleEditController.pa.productTypes}" filterMatchMode="contains" showCheckbox="true" style="text-align: left">
+                            <f:converter converterId="productTypeConverter" />
+                            <f:selectItems value="#{selectManyProductTypeBean.productTypeList}" var = "productTypes" itemValue = "#{productTypes.name}" itemLabel ="#{productTypes.name}"/>
+                        </p:selectManyMenu>
+                        
+<!--                        <h:panelGroup style="display:block; text-align:center">
                             <h:selectManyListbox class = "form-control" id = "containsProductTypes" value = "#{parentArticleEditController.selectedProductTypesLeft}" rendered="#{parentArticleEditController.ean == null}">
                                 <f:converter converterId= "productTypeConverter"/>
                                 <f:selectItems value = "#{parentArticleEditController.pa.productTypes}" var ="productType" itemLabel="#{productType.name}" itemValue="#{productType.name}"/>
@@ -208,7 +206,7 @@
                                 <f:converter converterId="productTypeConverter" />
                                 <f:selectItems value="#{parentArticleEditController.productTypeListRight}" var = "item2" itemValue = "#{item2.name}" itemLabel="#{item2.name}"/>                   
                             </h:selectManyListbox>
-                        </h:panelGroup>
+                        </h:panelGroup>-->
                     </h:panelGroup>
 
                     <h:panelGroup>
