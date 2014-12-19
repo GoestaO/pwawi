@@ -196,7 +196,7 @@
                 </h:panelGroup>
             </h:panelGrid>
             
-            <h:commandButton styleClass = "btn btn-default" value="Child zum Parent hinzufügen" action = "#{parentArticleEditController.addChildArticle()}" rendered="#{parentArticleEditController.ean !=null}"/>
+            <h:commandButton styleClass = "btn btn-default" value="Child zum Parent hinzufügen" action = "#{parentArticleEditController.addChildArticle()}"/>
             <h:commandButton styleClass = "btn btn-default" value="Speichern" action = "#{parentArticleEditController.doSave()}" rendered="#{parentArticleEditController.ean == null}"/>
         </h:form>
 

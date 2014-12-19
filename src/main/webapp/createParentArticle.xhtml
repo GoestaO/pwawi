@@ -15,7 +15,7 @@
                 .selectCheckboxMenu { display: inline-block; vertical-align: top; }
             </style>
             <p:panel header="Artikelanlage" style="margin-bottom:20px">
-                <p:panelGrid columns="6" layout="grid">
+                <p:panelGrid columns="6" class="table table-bordered table-striped">
 
                     <h:panelGroup>
                         <h:outputLabel value="Nummernpräfix" style="font-weight:bold" />
@@ -59,10 +59,10 @@
 
                     <h:panelGroup>
                         <h:outputLabel value="Geschlecht" style="font-weight:bold" />
-                        <h:selectManyListbox class = "form-control" value="#{articleCreateController.gender}" >
+                        <p:selectManyMenu style="width: 200px;" showCheckbox="true" value="#{articleCreateController.gender}">
                             <f:converter converterId="genderConverter" />
                             <f:selectItems value="#{selectManyGenderBean.genderList}" var = "gender" itemValue = "#{gender.name}" itemLabel="#{gender.name}"/>                   
-                        </h:selectManyListbox>
+                        </p:selectManyMenu>
                     </h:panelGroup>
 
                     <h:panelGroup>

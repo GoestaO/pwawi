@@ -9,7 +9,7 @@
     <ui:define name="content">
         <h3> Oberartikelübersicht </h3>
 
-        <p:scrollPanel mode="native" style="width:95%;height:95%">
+        <p:scrollPanel mode="native">
             <h:form id="overviewForm">
                 <p:dataTable rows="50" 
                              paginator="true"
@@ -73,23 +73,19 @@
             <p:column filterBy="longDescription" sortBy="longDescription" headerText="Beschreibung lang" filterMatchMode="contains" filterStyle="width: 100%">
                 <h:outputText value ="#{article.longDescription}"/>                
             </p:column>-->
-                    <p:column>
+                    <p:column width="100">
 
                         <p:commandButton value="Bearbeiten"  oncomplete ="PF('paEditWidget').show();" update=":paEditDialog" >
                             <f:setPropertyActionListener target="#{parentArticleEditController.pa}" value="#{article}"  />
-                        </p:commandButton>                       
-
+                        </p:commandButton>                   
                     </p:column>
-
                 </p:dataTable>     
             </h:form>
         </p:scrollPanel>
 
         <p:dialog id="paEditDialog" widgetVar="paEditWidget" header="Oberartikel bearbeiten" modal="true">
             <h:form id="form">
-
-                <h:panelGrid columns="4" style="text-align:center">
-
+                <h:panelGrid class = "table-bordered table-striped" columns="8" style="text-align:center" columnClasses="parentEdit,parentEdit,parentEdit,parentEdit,parentEdit,parentEdit,parentEdit,parentEdit">
                     <h:panelGroup>
                         <h:outputLabel value="SKU" style="font-weight:bold" />                    
                         <h:outputText class = "form-control" value="#{parentArticleEditController.pa.sku}" rendered="#{parentArticleEditController.ean == null}"/>
@@ -133,22 +129,6 @@
                             <f:converter converterId="genderConverter" />
                             <f:selectItems value="#{selectManyGenderBean.genderList}" var = "gender" itemValue = "#{gender.name}" itemLabel ="#{gender.name}"/>
                         </p:selectManyMenu>
-                        <!--                        <h:panelGroup style="display:inline">
-                                                    <h:selectManyListbox class = "form-control" id = "containsGender" value="#{parentArticleEditController.selectedGenderLeft}" rendered="#{parentArticleEditController.ean == null}">
-                                                        <f:converter converterId="genderConverter" />
-                                                        <f:selectItems value="#{parentArticleEditController.pa.gender}" var = "gender" itemValue = "#{gender.name}" itemLabel="#{gender.name}"/>                   
-                                                    </h:selectManyListbox>                        
-                                                    <h:commandButton styleClass = "btn btn-default" value="&darr;" actionListener = "#{parentArticleEditController.removeGender}" rendered="#{parentArticleEditController.ean == null}">
-                                                        <f:ajax execute="@this form:containsGender" render="form:containsGender form:genderAvailable"/>
-                                                    </h:commandButton>
-                                                    <h:commandButton styleClass = "btn btn-default" value="&uarr;" actionListener = "#{parentArticleEditController.addGender}" rendered="#{parentArticleEditController.ean == null}">
-                                                        <f:ajax execute="@this form:genderAvailable" render="form:containsGender form:genderAvailable"/>
-                                                    </h:commandButton>
-                                                    <h:selectManyListbox id ="genderAvailable" class = "form-control" value="#{parentArticleEditController.selectedGenderRight}" rendered="#{parentArticleEditController.ean == null}">
-                                                        <f:converter converterId="genderConverter" />
-                                                        <f:selectItems value="#{parentArticleEditController.genderListRight}" var = "item2" itemValue = "#{item2.name}" itemLabel="#{item2.name}"/>                   
-                                                    </h:selectManyListbox>                           
-                                                </h:panelGroup>-->
                     </h:panelGroup>
 
                     <h:panelGroup>
@@ -181,7 +161,7 @@
                             <f:converter converterId="materialConverter" />
                             <f:selectItems value="#{selectManyMaterialBean.materialList}" var = "material" itemValue = "#{material.name}" itemLabel ="#{material.name}"/>
                         </p:selectManyMenu>
-                       
+
                     </h:panelGroup>
 
                     <h:panelGroup>
@@ -190,23 +170,6 @@
                             <f:converter converterId="productTypeConverter" />
                             <f:selectItems value="#{selectManyProductTypeBean.productTypeList}" var = "productTypes" itemValue = "#{productTypes.name}" itemLabel ="#{productTypes.name}"/>
                         </p:selectManyMenu>
-                        
-<!--                        <h:panelGroup style="display:block; text-align:center">
-                            <h:selectManyListbox class = "form-control" id = "containsProductTypes" value = "#{parentArticleEditController.selectedProductTypesLeft}" rendered="#{parentArticleEditController.ean == null}">
-                                <f:converter converterId= "productTypeConverter"/>
-                                <f:selectItems value = "#{parentArticleEditController.pa.productTypes}" var ="productType" itemLabel="#{productType.name}" itemValue="#{productType.name}"/>
-                            </h:selectManyListbox>                       
-                            <h:commandButton styleClass = "btn btn-default" value="&darr;" actionListener = "#{parentArticleEditController.removeProductType}" rendered="#{parentArticleEditController.ean == null}">
-                                <f:ajax execute="@this form:containsProductTypes" render="form:containsProductTypes form:productTypesLeftover"/>
-                            </h:commandButton>
-                            <h:commandButton styleClass = "btn btn-default" value="&uarr;" actionListener = "#{parentArticleEditController.addProductType}" rendered="#{parentArticleEditController.ean == null}">
-                                <f:ajax execute="@this form:productTypesLeftover" render="form:containsProductTypes form:productTypesLeftover"/>
-                            </h:commandButton>
-                            <h:selectManyListbox id ="productTypesLeftover" class = "form-control" value="#{parentArticleEditController.selectedProductTypesRight}" rendered="#{parentArticleEditController.ean == null}">
-                                <f:converter converterId="productTypeConverter" />
-                                <f:selectItems value="#{parentArticleEditController.productTypeListRight}" var = "item2" itemValue = "#{item2.name}" itemLabel="#{item2.name}"/>                   
-                            </h:selectManyListbox>
-                        </h:panelGroup>-->
                     </h:panelGroup>
 
                     <h:panelGroup>
@@ -233,11 +196,93 @@
                         <h:outputLabel value ="Beschreibung lang" style ="font-weight: bold"/>
                         <h:inputTextarea class = "form-control" value="#{parentArticleEditController.pa.longDescription}" rendered="#{parentArticleEditController.ean == null}"/>
                     </h:panelGroup>
-
                 </h:panelGrid>
-
                 <p:commandButton styleClass = "btn btn-default" value="Speichern" action = "#{parentArticleEditController.doSave(parentArticleEditController.pa)}" oncomplete ="PF('paEditWidget').hide();" update=":overviewForm:table"/>
+                
+                <p:dialog id="addChildArticle" header="Unterartikel hinzufügen" modal="true" widgetVar="caAddWidget" width="auto">
+                <p:dataTable id ="editTable" tableStyle="width:auto" value="#{parentArticleEditController.pa}" var="pa" editable="true">
 
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column headerText="Artikelname"/>
+                            <p:column headerText="EAN"/>
+                            <p:column headerText="Stamm-SKU"/>
+                            <p:column headerText="Hersteller-SKU"/>
+                            <p:column headerText="Größe"/>
+                            <p:column headerText="Bestand"/>
+                            <p:column headerText="Einkaufspreis"/>
+                            <p:column headerText="Shop-Preis"/>
+                            <p:column headerText="Ebay-Preis"/>
+                            <p:column headerText="Amazon-Preis"/>
+                        </p:row>
+                    </p:columnGroup>
+                    <p:column>
+                        <h:outputText value ="#{pa.parentArticleName}"></h:outputText>
+                    </p:column>                    
+
+                    <p:column>                   
+                        <p:inputText value ="#{selectedChildArticle.ean}">
+                            <p:ajax/>
+                        </p:inputText>                  
+                    </p:column>
+
+                    <p:column>                     
+                        <h:outputText value ="#{selectedChildArticle.sku}">
+                        </h:outputText>                
+                    </p:column>
+
+                    <p:column>
+                        <p:inputText value ="#{selectedChildArticle.manufacturerSKU}">
+                            <p:ajax/>
+                        </p:inputText>
+                    </p:column>
+
+                    <p:column>
+                        <p:selectOneMenu value="#{selectedChildArticle.size}">
+                            <f:selectItem itemLabel="#{selectedChildArticle.size.name}" itemValue ="#{selectedChildArticle.size.name}"/>
+                            <f:selectItems value ="#{selectManySizeBean.getSizeListByType(selectedChildArticle.attribute.name)}" var = "size" itemLabel="#{size.name}" itemValue="#{size.name}"/>
+                            <f:converter converterId="sizeConverter" />
+                            <p:ajax/>
+                        </p:selectOneMenu>
+                    </p:column>
+
+                    <p:column>                   
+                        <h:outputText value ="#{selectedChildArticle.quantity}"> 
+                            <f:convertNumber minFractionDigits="0" /> 
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column>      
+                        <p:inputText value ="#{selectedChildArticle.purchasePrice}">
+                            <p:ajax/>
+                            <f:convertNumber minFractionDigits="2"/>                            
+                        </p:inputText>
+                    </p:column>    
+
+                    <p:column> 
+                        <p:inputText value ="#{selectedChildArticle.shopPrice}">
+                            <f:convertNumber minFractionDigits="2" />
+                            <p:ajax/>
+                        </p:inputText>
+                    </p:column>
+
+                    <p:column>
+                        <p:inputText value ="#{selectedChildArticle.ebayPrice}">
+                            <f:convertNumber minFractionDigits="2"/>
+                            <p:ajax/>
+                        </p:inputText>
+                    </p:column>
+
+                    <p:column>
+                        <p:inputText value ="#{selectedChildArticle.amazonPrice}">
+                            <f:convertNumber minFractionDigits="2" />
+                            <p:ajax/>
+                        </p:inputText> 
+                    </p:column>  
+                </p:dataTable>
+                <p:commandButton styleClass="dialogbutton" value="Speichern" action ="#{childArticleOverviewController.update(childArticleOverviewController.selectedChildArticles)}" oncomplete ="PF('caEditWidget').hide();" process = "@this"/>
+            </p:dialog>
+                
             </h:form>
         </p:dialog>     
     </ui:define>
