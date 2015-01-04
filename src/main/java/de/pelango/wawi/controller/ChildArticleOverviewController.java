@@ -38,6 +38,9 @@ public class ChildArticleOverviewController implements Serializable {
     }
 
     public List<ChildArticle> getArticles() {
+        if (articles == null) {
+            articles = this.loadData();
+        }
         return articles;
     }
 
@@ -47,6 +50,11 @@ public class ChildArticleOverviewController implements Serializable {
 
     public void setSelectedChildArticles(List<ChildArticle> selectedChildArticles) {
         this.selectedChildArticles = selectedChildArticles;
+    }
+
+    private List<ChildArticle> loadData() {
+        return articleService.findAllChildArticles();
+
     }
 
     public void update(List<ChildArticle> articleList) {

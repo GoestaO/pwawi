@@ -16,7 +16,6 @@ import javax.inject.Named;
  *
  * @author goesta
  */
-
 @Named
 @RequestScoped
 public class AttributeBean {
@@ -27,11 +26,18 @@ public class AttributeBean {
     private List<Attribute> attributeList;
 
     public List<Attribute> getAttribute() {
-        return service.getAttributes();
+        if (attributeList == null) {
+            attributeList = this.getData();
+        }
+        return attributeList;
     }
 
     public void setAttribute(List<Attribute> attributeList) {
         this.attributeList = attributeList;
+    }
+
+    public List<Attribute> getData() {
+        return service.getAttributes();
     }
 
 }

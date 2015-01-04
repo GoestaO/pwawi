@@ -8,7 +8,7 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <ui:define name ="content">
-        <h:form id="form" style="width: 500px;">
+        <h:form id="form" style="width: 700px;">
             <p:messages showDetail="true" id="messages" closable="true"/>
         </h:form>
 
@@ -18,7 +18,7 @@
         </h:form>
         <!--#{importController.columnMap.keySet()==null}-->
         <h:form id="form2">
-            <p:dataTable id = "headers" value="#{importController.columnMap.keySet()}" var="column" binding="#{table}" style="width: 500px;">
+            <p:dataTable id = "headers" value="#{importController.columnMap.keySet()}" var="column" binding="#{table}" style="width: 700px;">
                 <f:facet name="header">
                     <p:outputLabel value="Spaltenzuordnung"/>
                 </f:facet>

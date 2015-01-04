@@ -3,6 +3,11 @@
 <glassfish-web-app error-url="">
   <class-loader delegate="true"/>
   <parameter-encoding default-charset="UTF-8"/>
+  <security-role-mapping>
+    <role-name>testRole</role-name>
+    <principal-name>testUser</principal-name>
+    <group-name>testGroup</group-name>
+  </security-role-mapping>
   <jsp-config>
     <property name="keepgenerated" value="true">
       <description>Keep a copy of the generated servlet class' java code.</description>

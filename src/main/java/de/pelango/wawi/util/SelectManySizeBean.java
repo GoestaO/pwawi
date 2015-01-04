@@ -25,6 +25,7 @@ public class SelectManySizeBean implements Serializable {
 
     @EJB
     private SizeService service;
+    
     private Attribute attribute;
     private String sizeType = "Default";
 
@@ -67,6 +68,10 @@ public class SelectManySizeBean implements Serializable {
 
     public void setSizeType(Attribute attribute) {
         this.attribute = attribute;
+    }
+
+    public List<Sizes> getAvailableSizes(String sku) {
+        return service.getAvailableSizes(sku);
     }
 
 }

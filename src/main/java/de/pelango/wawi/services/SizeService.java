@@ -5,8 +5,11 @@
  */
 package de.pelango.wawi.services;
 
+import de.pelango.wawi.model.ChildArticle;
 import de.pelango.wawi.model.Sizes;
+import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,6 +21,9 @@ import javax.persistence.TypedQuery;
  */
 @Stateless
 public class SizeService {
+
+    @EJB
+    private ArticleService articleService;
 
     @PersistenceContext
     private EntityManager em;
@@ -64,5 +70,28 @@ public class SizeService {
         TypedQuery<Sizes> query = em.createQuery("Select s from " + parameter + " s", Sizes.class);
         List<Sizes> result = query.getResultList();
         return result;
+    }
+
+    public List<Sizes> getAvailableSizes(String sku) {
+        // Zunächst alle ChildArticles suchen, die zu einer SKU gehören
+
+        List<ChildArticle> caList = articleService.findArticlesBySKU(sku);
+        String sizeType = "";
+        // Den SizeType des ersten ChildArticles ermitteln
+        if (caList != null) {
+            sizeType = caList.get(0).getAttribute().getName();
+        }        
+
+        // Die bereits vergebenen Größen ermitteln
+        List<Sizes> notAvailableSizes = new ArrayList();
+        for (ChildArticle ca : caList) {
+            Sizes size = ca.getSize();
+            if (size != null) {
+                notAvailableSizes.add(size);
+            }
+        }
+        List<Sizes> sizeList = this.getSizesByType(sizeType);
+        sizeList.removeAll(notAvailableSizes);
+        return sizeList;
     }
 }

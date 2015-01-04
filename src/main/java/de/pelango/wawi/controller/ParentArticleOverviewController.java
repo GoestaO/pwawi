@@ -41,7 +41,7 @@ public class ParentArticleOverviewController implements Serializable {
     }
 
     public String edit(ParentArticle pa) {
-        parentArticleEditController.start();
+//        parentArticleEditController.start();
         parentArticleEditController.setPa(pa);
         return "parentArticleEdit?faces-redirect=true";
     }

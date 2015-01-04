@@ -197,94 +197,90 @@
                         <h:inputTextarea class = "form-control" value="#{parentArticleEditController.pa.longDescription}" rendered="#{parentArticleEditController.ean == null}"/>
                     </h:panelGroup>
                 </h:panelGrid>
+                <!--<p:commandButton value="TEST" action="#{parentArticleEditController.test()}"/>-->
                 <p:commandButton styleClass = "btn btn-default" value="Speichern" action = "#{parentArticleEditController.doSave(parentArticleEditController.pa)}" oncomplete ="PF('paEditWidget').hide();" update=":overviewForm:table"/>
-                
-                <p:dialog id="addChildArticle" header="Unterartikel hinzufügen" modal="true" widgetVar="caAddWidget" width="auto">
+                <!--<p:commandButton value="Unterartikel hinzufügen"  oncomplete ="PF('caAddWidget').show() ;" update=":addChildArticle"/>-->                                
+            </h:form>
+        </p:dialog>   
+
+
+
+        <p:dialog id="addChildArticle" header="Unterartikel hinzufügen" modal="true" widgetVar="caAddWidget" width="auto">
+            <h:form>
                 <p:dataTable id ="editTable" tableStyle="width:auto" value="#{parentArticleEditController.pa}" var="pa" editable="true">
 
                     <p:columnGroup type="header">
                         <p:row>
-                            <p:column headerText="Artikelname"/>
+                            <!--<p:column headerText="Artikelname"/>-->
                             <p:column headerText="EAN"/>
                             <p:column headerText="Stamm-SKU"/>
-                            <p:column headerText="Hersteller-SKU"/>
                             <p:column headerText="Größe"/>
-                            <p:column headerText="Bestand"/>
                             <p:column headerText="Einkaufspreis"/>
                             <p:column headerText="Shop-Preis"/>
                             <p:column headerText="Ebay-Preis"/>
                             <p:column headerText="Amazon-Preis"/>
                         </p:row>
                     </p:columnGroup>
-                    <p:column>
-                        <h:outputText value ="#{pa.parentArticleName}"></h:outputText>
-                    </p:column>                    
+                    <!--                    <p:column>
+                                            <h:outputText value ="#{parentArticleEditController.pa.parentArticleName}"></h:outputText>
+                                        </p:column>                    -->
 
                     <p:column>                   
-                        <p:inputText value ="#{selectedChildArticle.ean}">
+                        <p:inputText value ="#{parentArticleEditController.ean}">
                             <p:ajax/>
                         </p:inputText>                  
                     </p:column>
 
                     <p:column>                     
-                        <h:outputText value ="#{selectedChildArticle.sku}">
+                        <h:outputText value ="#{parentArticleEditController.pa.sku}">
                         </h:outputText>                
                     </p:column>
 
                     <p:column>
-                        <p:inputText value ="#{selectedChildArticle.manufacturerSKU}">
-                            <p:ajax/>
-                        </p:inputText>
-                    </p:column>
-
-                    <p:column>
-                        <p:selectOneMenu value="#{selectedChildArticle.size}">
-                            <f:selectItem itemLabel="#{selectedChildArticle.size.name}" itemValue ="#{selectedChildArticle.size.name}"/>
-                            <f:selectItems value ="#{selectManySizeBean.getSizeListByType(selectedChildArticle.attribute.name)}" var = "size" itemLabel="#{size.name}" itemValue="#{size.name}"/>
+                        <p:selectOneMenu value="#{parentArticleEditController.size}">
+                            <!--<f:selectItem itemLabel="" itemValue =""/>-->
+                            <f:selectItems value ="#{parentArticleEditController.availableSizes}" var = "size" itemLabel="#{size.name}" itemValue="#{size.name}"/>
                             <f:converter converterId="sizeConverter" />
                             <p:ajax/>
                         </p:selectOneMenu>
                     </p:column>
 
-                    <p:column>                   
-                        <h:outputText value ="#{selectedChildArticle.quantity}"> 
-                            <f:convertNumber minFractionDigits="0" /> 
-                        </h:outputText>
-                    </p:column>
 
                     <p:column>      
-                        <p:inputText value ="#{selectedChildArticle.purchasePrice}">
+                        <p:inputText value ="#{parentArticleEditController.purchasePrice}">
                             <p:ajax/>
                             <f:convertNumber minFractionDigits="2"/>                            
                         </p:inputText>
                     </p:column>    
 
                     <p:column> 
-                        <p:inputText value ="#{selectedChildArticle.shopPrice}">
+                        <p:inputText value ="#{parentArticleEditController.shopPrice}">
                             <f:convertNumber minFractionDigits="2" />
                             <p:ajax/>
                         </p:inputText>
                     </p:column>
 
                     <p:column>
-                        <p:inputText value ="#{selectedChildArticle.ebayPrice}">
+                        <p:inputText value ="#{parentArticleEditController.ebayPrice}">
                             <f:convertNumber minFractionDigits="2"/>
                             <p:ajax/>
                         </p:inputText>
                     </p:column>
 
                     <p:column>
-                        <p:inputText value ="#{selectedChildArticle.amazonPrice}">
+                        <p:inputText value ="#{parentArticleEditController.amazonPrice}">
                             <f:convertNumber minFractionDigits="2" />
                             <p:ajax/>
                         </p:inputText> 
                     </p:column>  
                 </p:dataTable>
-                <p:commandButton styleClass="dialogbutton" value="Speichern" action ="#{childArticleOverviewController.update(childArticleOverviewController.selectedChildArticles)}" oncomplete ="PF('caEditWidget').hide();" process = "@this"/>
-            </p:dialog>
-                
+                <!--<p:commandButton styleClass="dialogbutton" value="Speichern" action ="#{parentArticleEditController.addChildArticle()}" oncomplete ="PF('caAddWidget').hide();" process = "@this"/>-->
+                <!--<p:commandButton value="TEST" action="#{parentArticleEditController.test()}"/>-->
             </h:form>
-        </p:dialog>     
+        </p:dialog>
+
+
+
     </ui:define>
 </ui:composition>
 
