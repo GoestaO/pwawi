@@ -4,7 +4,7 @@
   <class-loader delegate="true"/>
   <parameter-encoding default-charset="UTF-8"/>
   <security-role-mapping>
-    <role-name>testRole</role-name>
+    <role-name>admin</role-name>
     <principal-name>CN=Robert, OU=Pelango, O=Pelango, L=Erfurt, ST=Unknown, C=DE</principal-name>
     <group-name>testGroup</group-name>
   </security-role-mapping>
