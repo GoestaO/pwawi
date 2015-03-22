@@ -3,6 +3,8 @@ package de.pelango.wawi.model;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Entity implementation class for Entity: ParentArticle
@@ -14,7 +16,8 @@ import javax.persistence.*;
 @DiscriminatorColumn(name = "TYPE", discriminatorType = DiscriminatorType.STRING, length = 20)
 @DiscriminatorValue("P")
 
-public class ParentArticle implements Serializable, Article {
+@XmlRootElement
+public class ParentArticle implements Serializable{
 
     private static final long serialVersionUID = 1L;
 
@@ -89,7 +92,7 @@ public class ParentArticle implements Serializable, Article {
     }
 
     public ParentArticle() {
-        super();
+       
     }
 
     public ParentArticle(String sku) {
@@ -156,6 +159,7 @@ public class ParentArticle implements Serializable, Article {
         this.attribute = attribute;
     }
 
+    @XmlTransient
     public List<Gender> getGender() {
         return gender;
     }
@@ -188,6 +192,7 @@ public class ParentArticle implements Serializable, Article {
         this.specialProduct = specialProduct;
     }
 
+    @XmlTransient
     public List<Material> getMaterial() {
         return material;
     }
@@ -196,6 +201,7 @@ public class ParentArticle implements Serializable, Article {
         this.material = material;
     }
 
+    @XmlTransient
     public List<ProductType> getProductTypes() {
         return productTypes;
     }
@@ -244,8 +250,5 @@ public class ParentArticle implements Serializable, Article {
         this.taxClass = taxClass;
     }
 
-    @Override
-    public String identifyYourself() {
-        return "ParentArticle";
-    }
+  
 }

@@ -12,12 +12,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author goesta
  */
 @Entity
+@XmlRootElement
 public class Attribute implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,6 +49,7 @@ public class Attribute implements Serializable {
         this.name = name;
     }
 
+    @XmlTransient
     public List<ParentArticle> getParentArticleList() {
         return parentArticleList;
     }

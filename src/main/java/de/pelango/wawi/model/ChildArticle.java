@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -25,7 +26,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "ARTICLE")
 @DiscriminatorValue("C")
-public class ChildArticle extends ParentArticle implements Serializable, Article {
+@XmlRootElement
+public class ChildArticle extends ParentArticle implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -186,42 +188,18 @@ public class ChildArticle extends ParentArticle implements Serializable, Article
         this.suggestedRetailPrice = suggestedRetailPrice;
     }
 
-//    @Override
-//    public int hashCode() {
-//        int hash = 0;
-//        hash += (id != null ? id.hashCode() : 0);
-//        return hash;
-//    }
-//
-//    @Override
-//    public boolean equals(Object object) {
-//        // TODO: Warning - this method won't work in the case the id fields are not set
-//        if (!(object instanceof ChildArticle)) {
-//            return false;
-//        }
-//        ChildArticle other = (ChildArticle) object;
-//        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-//            return false;
-//        }
-//        return true;
-//    }
     @Override
     public String toString() {
-        return "de.pelango.wawi.model.ChildArticle[ sku=" + this.getSKU()+ "]";
+        return "de.pelango.wawi.model.ChildArticle[ sku=" + this.getSKU() + "]";
     }
 
     public ChildArticle() {
-        super();
+
     }
 
     public ChildArticle(Sizes size, String sku, String brand, String model, String misc, Color color, Attribute attribute, List<Gender> gender, boolean topProduct, boolean topProductMobile, boolean specialProduct, List<Material> material, List<ProductType> productTypes, Category category, int numberOfPictures, String shortDescription, String longDescription) {
         super(sku, brand, model, misc, color, attribute, gender, topProduct, topProductMobile, specialProduct, material, productTypes, category, numberOfPictures, shortDescription, longDescription);
         this.size = size;
-    }
-
-    @Override
-    public String identifyYourself() {
-        return "ChildArticle";
     }
 
 }
