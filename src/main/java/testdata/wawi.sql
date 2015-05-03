@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `wawi` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `wawi`;
--- MySQL dump 10.13  Distrib 5.5.38, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.15  Distrib 10.0.17-MariaDB, for Linux (x86_64)
 --
--- Host: 127.0.0.1    Database: wawi
+-- Host: localhost    Database: wawi
 -- ------------------------------------------------------
--- Server version	5.5.38-0ubuntu0.14.04.1
+-- Server version	10.0.17-MariaDB-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -25,7 +23,7 @@ DROP TABLE IF EXISTS `ARTICLE`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ARTICLE` (
-  `ID` bigint(20) NOT NULL,
+  `SKU` varchar(255) NOT NULL,
   `TYPE` varchar(20) DEFAULT NULL,
   `BRAND` varchar(255) DEFAULT NULL,
   `LONGDESCRIPTION` varchar(255) DEFAULT NULL,
@@ -34,8 +32,6 @@ CREATE TABLE `ARTICLE` (
   `NUMBEROFPICTURES` int(11) DEFAULT NULL,
   `PARENTARTICLENAME` varchar(255) DEFAULT NULL,
   `SHORTDESCRIPTION` varchar(255) DEFAULT NULL,
-  `SKU` varchar(255) DEFAULT NULL,
-  `SKUPREFIX` bigint(20) DEFAULT NULL,
   `SPECIALPRODUCT` tinyint(1) DEFAULT '0',
   `TAXCLASS` float DEFAULT NULL,
   `TOPPRODUCT` tinyint(1) DEFAULT '0',
@@ -52,18 +48,20 @@ CREATE TABLE `ARTICLE` (
   `PURCHASEPRICE` decimal(38,0) DEFAULT NULL,
   `QUANTITY` int(11) DEFAULT NULL,
   `SHOPPRICE` decimal(38,0) DEFAULT NULL,
+  `SPECIALPRICE` decimal(38,0) DEFAULT NULL,
+  `SUGGESTEDRETAILPRICE` decimal(38,0) DEFAULT NULL,
   `WEIGHT` decimal(38,0) DEFAULT NULL,
   `SIZE_ID` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
+  PRIMARY KEY (`SKU`),
   KEY `FK_ARTICLE_SIZE_ID` (`SIZE_ID`),
-  KEY `FK_ARTICLE_CATEGORY_ID` (`CATEGORY_ID`),
   KEY `FK_ARTICLE_ATTRIBUTE_ID` (`ATTRIBUTE_ID`),
+  KEY `FK_ARTICLE_CATEGORY_ID` (`CATEGORY_ID`),
   KEY `FK_ARTICLE_COLOR_ID` (`COLOR_ID`),
   CONSTRAINT `FK_ARTICLE_ATTRIBUTE_ID` FOREIGN KEY (`ATTRIBUTE_ID`) REFERENCES `ATTRIBUTE` (`ID`),
   CONSTRAINT `FK_ARTICLE_CATEGORY_ID` FOREIGN KEY (`CATEGORY_ID`) REFERENCES `CATEGORY` (`ID`),
   CONSTRAINT `FK_ARTICLE_COLOR_ID` FOREIGN KEY (`COLOR_ID`) REFERENCES `COLOR` (`ID`),
   CONSTRAINT `FK_ARTICLE_SIZE_ID` FOREIGN KEY (`SIZE_ID`) REFERENCES `SIZES` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +70,6 @@ CREATE TABLE `ARTICLE` (
 
 LOCK TABLES `ARTICLE` WRITE;
 /*!40000 ALTER TABLE `ARTICLE` DISABLE KEYS */;
-INSERT INTO `ARTICLE` VALUES (1,'C','Levi\'s','','','501',2,'Levi\'s501--Blau','','1000001-Blau',NULL,0,0,0,0,1,2,2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,1),(2,'C','Levi\'s','','','501',2,'Levi\'s501--Blau','','1000001-Blau',NULL,0,0,0,0,1,2,2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,2),(3,'C','Levi\'s','','','501',2,'Levi\'s501--Blau','','1000001-Blau',NULL,0,0,0,0,1,2,2,NULL,NULL,NULL,NULL,NULL,'',NULL,0,NULL,NULL,3),(4,'P','Levi\'s','','','501',2,'Levi\'s501--Blau','','1000001-Blau',NULL,0,0,0,0,1,2,2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(51,'C','Wrangler','','','Texas Stretch',4,'WranglerTexas Stretch--Blau','','1000003-Blau',NULL,0,0,0,0,2,2,2,123213213,NULL,NULL,NULL,213213,NULL,123,0,123213,NULL,32),(52,'C','Wrangler','','','Texas Stretch',4,'WranglerTexas Stretch--Blau','','1000003-Blau',NULL,0,0,0,0,2,2,2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,34),(53,'C','Wrangler','','','Texas Stretch',4,'WranglerTexas Stretch--Blau','','1000003-Blau',NULL,0,0,0,0,2,2,2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,36),(54,'P','Wrangler','','','Texas Stretch',4,'WranglerTexas Stretch--Blau','','1000003-Blau',NULL,0,0,0,0,2,2,2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(101,'P','Testhersteller','','','straight leg',1,'Testherstellerstraight leg--Grün','','1000004-Grün',NULL,0,0,0,0,2,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(102,'C','Testhersteller','','','straight leg',1,'Testherstellerstraight leg--Grün','','1000006-Grün',NULL,0,0,0,0,2,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,33),(103,'C','Testhersteller','','','straight leg',1,'Testherstellerstraight leg--Grün','','1000006-Grün',NULL,0,0,0,0,2,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,34),(104,'P','Testhersteller','','','straight leg',1,'Testherstellerstraight leg--Grün','','1000006-Grün',NULL,0,0,0,0,2,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `ARTICLE` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -85,12 +82,12 @@ DROP TABLE IF EXISTS `ARTICLE_GENDER`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ARTICLE_GENDER` (
   `gender_ID` bigint(20) NOT NULL,
-  `ParentArticle_ID` bigint(20) NOT NULL,
+  `ParentArticle_ID` varchar(255) NOT NULL,
   PRIMARY KEY (`gender_ID`,`ParentArticle_ID`),
   KEY `FK_ARTICLE_GENDER_ParentArticle_ID` (`ParentArticle_ID`),
-  CONSTRAINT `FK_ARTICLE_GENDER_gender_ID` FOREIGN KEY (`gender_ID`) REFERENCES `GENDER` (`ID`),
-  CONSTRAINT `FK_ARTICLE_GENDER_ParentArticle_ID` FOREIGN KEY (`ParentArticle_ID`) REFERENCES `ARTICLE` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `FK_ARTICLE_GENDER_ParentArticle_ID` FOREIGN KEY (`ParentArticle_ID`) REFERENCES `ARTICLE` (`SKU`),
+  CONSTRAINT `FK_ARTICLE_GENDER_gender_ID` FOREIGN KEY (`gender_ID`) REFERENCES `GENDER` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,7 +96,6 @@ CREATE TABLE `ARTICLE_GENDER` (
 
 LOCK TABLES `ARTICLE_GENDER` WRITE;
 /*!40000 ALTER TABLE `ARTICLE_GENDER` DISABLE KEYS */;
-INSERT INTO `ARTICLE_GENDER` VALUES (1,1),(1,2),(1,3),(1,4),(1,101),(2,101),(1,102),(2,102),(1,103),(2,103),(1,104),(2,104);
 /*!40000 ALTER TABLE `ARTICLE_GENDER` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,12 +108,12 @@ DROP TABLE IF EXISTS `ARTICLE_MATERIAL`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ARTICLE_MATERIAL` (
   `materials_ID` bigint(20) NOT NULL,
-  `ParentArticle_ID` bigint(20) NOT NULL,
+  `ParentArticle_ID` varchar(255) NOT NULL,
   PRIMARY KEY (`materials_ID`,`ParentArticle_ID`),
   KEY `FK_ARTICLE_MATERIAL_ParentArticle_ID` (`ParentArticle_ID`),
-  CONSTRAINT `FK_ARTICLE_MATERIAL_materials_ID` FOREIGN KEY (`materials_ID`) REFERENCES `MATERIAL` (`ID`),
-  CONSTRAINT `FK_ARTICLE_MATERIAL_ParentArticle_ID` FOREIGN KEY (`ParentArticle_ID`) REFERENCES `ARTICLE` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `FK_ARTICLE_MATERIAL_ParentArticle_ID` FOREIGN KEY (`ParentArticle_ID`) REFERENCES `ARTICLE` (`SKU`),
+  CONSTRAINT `FK_ARTICLE_MATERIAL_materials_ID` FOREIGN KEY (`materials_ID`) REFERENCES `MATERIAL` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,7 +122,6 @@ CREATE TABLE `ARTICLE_MATERIAL` (
 
 LOCK TABLES `ARTICLE_MATERIAL` WRITE;
 /*!40000 ALTER TABLE `ARTICLE_MATERIAL` DISABLE KEYS */;
-INSERT INTO `ARTICLE_MATERIAL` VALUES (2,1),(2,2),(2,3),(2,4),(1,51),(1,52),(1,53),(1,54),(1,101),(2,101),(3,101),(1,102),(2,102),(3,102),(1,103),(2,103),(3,103),(1,104),(2,104),(3,104);
 /*!40000 ALTER TABLE `ARTICLE_MATERIAL` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,13 +133,13 @@ DROP TABLE IF EXISTS `ARTICLE_PRODUCTTYPE`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ARTICLE_PRODUCTTYPE` (
-  `ParentArticle_ID` bigint(20) NOT NULL,
+  `ParentArticle_SKU` varchar(255) NOT NULL,
   `productTypes_ID` bigint(20) NOT NULL,
-  PRIMARY KEY (`ParentArticle_ID`,`productTypes_ID`),
+  PRIMARY KEY (`ParentArticle_SKU`,`productTypes_ID`),
   KEY `FK_ARTICLE_PRODUCTTYPE_productTypes_ID` (`productTypes_ID`),
-  CONSTRAINT `FK_ARTICLE_PRODUCTTYPE_ParentArticle_ID` FOREIGN KEY (`ParentArticle_ID`) REFERENCES `ARTICLE` (`ID`),
+  CONSTRAINT `FK_ARTICLE_PRODUCTTYPE_ParentArticle_SKU` FOREIGN KEY (`ParentArticle_SKU`) REFERENCES `ARTICLE` (`SKU`),
   CONSTRAINT `FK_ARTICLE_PRODUCTTYPE_productTypes_ID` FOREIGN KEY (`productTypes_ID`) REFERENCES `PRODUCTTYPE` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -153,7 +148,6 @@ CREATE TABLE `ARTICLE_PRODUCTTYPE` (
 
 LOCK TABLES `ARTICLE_PRODUCTTYPE` WRITE;
 /*!40000 ALTER TABLE `ARTICLE_PRODUCTTYPE` DISABLE KEYS */;
-INSERT INTO `ARTICLE_PRODUCTTYPE` VALUES (51,1),(52,1),(53,1),(54,1),(101,1),(102,1),(103,1),(104,1),(101,2),(102,2),(103,2),(104,2),(1,3),(2,3),(3,3),(4,3),(101,3),(102,3),(103,3),(104,3);
 /*!40000 ALTER TABLE `ARTICLE_PRODUCTTYPE` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -165,10 +159,10 @@ DROP TABLE IF EXISTS `ATTRIBUTE`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ATTRIBUTE` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -189,10 +183,10 @@ DROP TABLE IF EXISTS `CATEGORY`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `CATEGORY` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -213,10 +207,10 @@ DROP TABLE IF EXISTS `COLOR`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `COLOR` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -237,10 +231,10 @@ DROP TABLE IF EXISTS `GENDER`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `GENDER` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -261,10 +255,10 @@ DROP TABLE IF EXISTS `MATERIAL`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `MATERIAL` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -285,9 +279,9 @@ DROP TABLE IF EXISTS `PREFIXNUMBER`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `PREFIXNUMBER` (
-  `NUMBER` bigint(20) NOT NULL AUTO_INCREMENT,
+  `NUMBER` bigint(20) NOT NULL,
   PRIMARY KEY (`NUMBER`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000007 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -296,7 +290,7 @@ CREATE TABLE `PREFIXNUMBER` (
 
 LOCK TABLES `PREFIXNUMBER` WRITE;
 /*!40000 ALTER TABLE `PREFIXNUMBER` DISABLE KEYS */;
-INSERT INTO `PREFIXNUMBER` VALUES (1000000),(1000001),(1000002),(1000003),(1000004),(1000006);
+INSERT INTO `PREFIXNUMBER` VALUES (1000000);
 /*!40000 ALTER TABLE `PREFIXNUMBER` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -308,10 +302,10 @@ DROP TABLE IF EXISTS `PRODUCTTYPE`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `PRODUCTTYPE` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -325,30 +319,6 @@ INSERT INTO `PRODUCTTYPE` VALUES (1,'Produkt-Typ A'),(2,'Produkt-Typ B'),(3,'Pro
 UNLOCK TABLES;
 
 --
--- Table structure for table `SEQUENCE`
---
-
-DROP TABLE IF EXISTS `SEQUENCE`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `SEQUENCE` (
-  `SEQ_NAME` varchar(50) NOT NULL,
-  `SEQ_COUNT` decimal(38,0) DEFAULT NULL,
-  PRIMARY KEY (`SEQ_NAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `SEQUENCE`
---
-
-LOCK TABLES `SEQUENCE` WRITE;
-/*!40000 ALTER TABLE `SEQUENCE` DISABLE KEYS */;
-INSERT INTO `SEQUENCE` VALUES ('SEQ_GEN',150);
-/*!40000 ALTER TABLE `SEQUENCE` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `SIZES`
 --
 
@@ -356,11 +326,11 @@ DROP TABLE IF EXISTS `SIZES`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `SIZES` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `SIZE_TYPE` varchar(31) DEFAULT NULL,
   `NAME` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=291 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -382,4 +352,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-10-08 21:04:28
+-- Dump completed on 2015-05-03 14:32:50
