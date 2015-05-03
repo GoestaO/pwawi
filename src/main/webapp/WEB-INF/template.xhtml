@@ -17,7 +17,7 @@
         <ui:insert name="header">
 
             <h:form>
-                <p:tabMenu activeIndex="#{param.i}">             
+                <p:menubar>             
                     <p:menuitem value="Oberartikelanlage" outcome="createParentArticle.jsf" icon="ui-icon-wrench">
                         <f:param name="i" value="0" />
                     </p:menuitem>
@@ -42,7 +42,10 @@
                     <p:menuitem value="Import" outcome="import.jsf" icon="ui-icon-arrowthickstop-1-n">
                         <f:param name="i" value="7" />
                     </p:menuitem>
-                </p:tabMenu>
+                    <f:facet name="options">
+                        <p:graphicImage value="resources/img/pelango-logo_edit.jpg"/>
+                    </f:facet>
+                </p:menubar>
                 <!--<p:commandButton value="Logout" action="#{logoutManager.logout()}" ajax="false" rendered="#{logoutManager.validSession}"></p:commandButton>-->
             </h:form>
         </ui:insert>
