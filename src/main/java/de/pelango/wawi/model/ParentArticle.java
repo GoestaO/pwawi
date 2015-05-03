@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @DiscriminatorValue("P")
 
 @XmlRootElement
-public class ParentArticle implements Serializable{
+public class ParentArticle implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -91,8 +91,27 @@ public class ParentArticle implements Serializable{
         this.longDescription = longDescription;
     }
 
+    public ParentArticle(String brand, String model, String misc, Color color, Attribute attribute, List<Gender> gender, boolean topProduct, boolean topProductMobile, boolean specialProduct, List<Material> material, List<ProductType> productTypes, Category category, int numberOfPictures, String shortDescription, String longDescription) {
+        this.brand = brand;
+        this.model = model;
+        this.misc = misc;
+        this.color = color;
+        this.parentArticleName = brand + model + "-" + misc + "-" + color.getName();
+        this.attribute = attribute;
+        this.gender = gender;
+        this.topProduct = topProduct;
+        this.topProductMobile = topProductMobile;
+        this.specialProduct = specialProduct;
+        this.material = material;
+        this.productTypes = productTypes;
+        this.category = category;
+        this.numberOfPictures = numberOfPictures;
+        this.shortDescription = shortDescription;
+        this.longDescription = longDescription;
+    }
+
     public ParentArticle() {
-       
+
     }
 
     public ParentArticle(String sku) {
@@ -250,5 +269,4 @@ public class ParentArticle implements Serializable{
         this.taxClass = taxClass;
     }
 
-  
 }

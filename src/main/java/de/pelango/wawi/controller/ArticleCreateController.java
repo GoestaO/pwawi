@@ -250,11 +250,13 @@ public class ArticleCreateController implements Serializable {
         ParentArticle pa = new ParentArticle(sku, brand, model, misc, color, attribute, gender, topProduct, topProductMobile, specialProduct, material, productType, category, numberOfPictures, shortDescription, longDescription);          
         numberService.create(number);
         for (Sizes s : sizes) {
-            ChildArticle ca = new ChildArticle(s, sku, brand, model, misc, color, attribute, gender, topProduct, topProductMobile, specialProduct, material, productType, category, numberOfPictures, shortDescription, longDescription);
+            ChildArticle ca = new ChildArticle(s, brand, model, misc, color, attribute, gender, topProduct, topProductMobile, specialProduct, material, productType, category, numberOfPictures, shortDescription, longDescription);
             ca.setPurchasePrice(purchasePrice);
             ca.setAmazonPrice(amazonPrice);
             ca.setEbayPrice(ebayPrice);
             ca.setShopPrice(shopPrice);
+            ca.setSKU(sku);
+           
             service.create(ca);
         }
         service.create(pa);        
