@@ -73,7 +73,7 @@ public class ChildArticle extends ParentArticle implements Serializable {
         try {
             color = super.getColor().getName();
         } catch (NullPointerException ex) {
-            return;
+            color = "";
         }
         
         if (color.equals("")) {
@@ -197,8 +197,8 @@ public class ChildArticle extends ParentArticle implements Serializable {
         
     }
     
-    public ChildArticle(Sizes size, String brand, String model, String misc, Color color, Attribute attribute, List<Gender> gender, boolean topProduct, boolean topProductMobile, boolean specialProduct, List<Material> material, List<ProductType> productTypes, Category category, int numberOfPictures, String shortDescription, String longDescription) {
-        super(brand, model, misc, color, attribute, gender, topProduct, topProductMobile, specialProduct, material, productTypes, category, numberOfPictures, shortDescription, longDescription);        
+    public ChildArticle(Sizes size, String sku, String brand, String model, String misc, Color color, Attribute attribute, List<Gender> gender, boolean topProduct, boolean topProductMobile, boolean specialProduct, List<Material> material, List<ProductType> productTypes, Category category, int numberOfPictures, String shortDescription, String longDescription) {
+        super(sku, brand, model, misc, color, attribute, gender, topProduct, topProductMobile, specialProduct, material, productTypes, category, numberOfPictures, shortDescription, longDescription);        
         this.size = size;
     }
     

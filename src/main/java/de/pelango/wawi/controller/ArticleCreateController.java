@@ -248,9 +248,10 @@ public class ArticleCreateController implements Serializable {
     public String createArticle(Long number, String brand, String model, String misc, Color color, Attribute attribute, List<Gender> gender, boolean topProduct, boolean topProductMobile, boolean specialProduct, List<Material> material, List<ProductType> productType, Category category, int numberOfPictures, String shortDescription, String longDescription, List<Sizes> size) {
         String sku = number + "-" + color.getName();
         ParentArticle pa = new ParentArticle(sku, brand, model, misc, color, attribute, gender, topProduct, topProductMobile, specialProduct, material, productType, category, numberOfPictures, shortDescription, longDescription);          
+       
         numberService.create(number);
         for (Sizes s : sizes) {
-            ChildArticle ca = new ChildArticle(s, brand, model, misc, color, attribute, gender, topProduct, topProductMobile, specialProduct, material, productType, category, numberOfPictures, shortDescription, longDescription);
+            ChildArticle ca = new ChildArticle(s, sku, brand, model, misc, color, attribute, gender, topProduct, topProductMobile, specialProduct, material, productType, category, numberOfPictures, shortDescription, longDescription);
             ca.setPurchasePrice(purchasePrice);
             ca.setAmazonPrice(amazonPrice);
             ca.setEbayPrice(ebayPrice);

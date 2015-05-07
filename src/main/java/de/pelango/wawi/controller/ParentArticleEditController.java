@@ -157,9 +157,9 @@ public class ParentArticleEditController implements Serializable {
     }
     
     public List<Sizes> getAvailableSizes() {
-        if (availableSizes == null) {
-            availableSizes = loadAvailableSizes();
-        }
+//        if (availableSizes == null) {
+//            availableSizes = loadAvailableSizes();
+//        }
         return availableSizes;
     }
     

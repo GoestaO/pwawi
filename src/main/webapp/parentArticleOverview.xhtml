@@ -75,7 +75,7 @@
             </p:column>-->
                     <p:column width="100">
 
-                        <p:commandButton value="Bearbeiten"  oncomplete ="PF('paEditWidget').show();" update=":paEditDialog" >
+                        <p:commandButton value="Bearbeiten" styleClass = "btn btn-default" oncomplete ="PF('paEditWidget').show();" update=":paEditDialog" >
                             <f:setPropertyActionListener target="#{parentArticleEditController.pa}" value="#{article}"  />
                         </p:commandButton>                   
                     </p:column>
